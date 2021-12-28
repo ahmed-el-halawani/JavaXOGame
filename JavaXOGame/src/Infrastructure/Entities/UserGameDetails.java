@@ -69,6 +69,36 @@ public class UserGameDetails {
         this.gameBord = gameBord;
     }
     
+    public PlayerDetail getPlayerOneDetails() {
+        return playerOneDetails;
+    }
+
+    public void setPlayerOneDetails(PlayerDetail playerOneDetails) {
+        this.playerOneDetails = playerOneDetails;
+    }
+
+    public PlayerDetail getPlayerTwoDetails() {
+        return playerTwoDetails;
+    }
+
+    public void setPlayerTwoDetails(PlayerDetail playerTwoDetails) {
+        this.playerTwoDetails = playerTwoDetails;
+    }
+    
+    
+    
+    private GameModes gameMode;
+    private GameDifficultyLvl gameDifficultyLvl;
+    private PlayerDetail playerOneDetails;
+    private PlayerDetail playerTwoDetails;
+    private Map<Integer,Integer> record;
+    private Map<Integer,Integer> gameBordBeforRecording;
+    private Map<Integer,Integer> gameBord;
+
+    
+    
+    
+    
     class PlayerDetail{
 
         public User getPlayer() {
@@ -111,12 +141,4 @@ public class UserGameDetails {
         private PlayerState playerState;
         private PlayerSimbole  playerSample;
     }
-    
-    private GameModes gameMode;
-    private GameDifficultyLvl gameDifficultyLvl;
-    
-    private Map<Integer,Integer> record;
-    private Map<Integer,Integer> gameBordBeforRecording;
-    private Map<Integer,Integer> gameBord;
-    
 }
