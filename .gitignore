@@ -1,2 +1,7 @@
 TestingServer/
 TestingServer/src/testingserver/TestingServer.java
+JavaXOServer/build/classes/.netbeans_automatic_build
+JavaXOServer/build/classes/.netbeans_update_resources
+JavaXOServer/build/classes/javaxoserver/JavaXOServer.class
+JavaXOServer/build/classes/javaxoserver/RequestHandler.class
+*.class
