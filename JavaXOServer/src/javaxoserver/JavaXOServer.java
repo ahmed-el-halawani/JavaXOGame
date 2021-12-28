@@ -5,6 +5,7 @@
  */
 package javaxoserver;
 
+import Entities.User;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -13,6 +14,8 @@ import java.net.Socket;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.JSONException;
+import org.json.*;
 
 /**
  *
@@ -61,6 +64,10 @@ class RequestHandler extends Thread {
             try {
                 str = dis.readUTF();
                 System.out.println(str);
+                JSONObject json = new JSONObject(str);
+                User u = User.fromJson(json);
+                
+                ps.writeUTF(u.toString());
             } 
             
             catch (java.net.SocketException ex) {
@@ -69,7 +76,9 @@ class RequestHandler extends Thread {
             }catch (IOException ex) {
                 Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
                 
-            }
+            } catch (JSONException ex) {
+                Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
+            } 
         }
     }
 
