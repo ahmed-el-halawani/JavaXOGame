@@ -5,6 +5,7 @@
  */
 package Entities;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -15,6 +16,18 @@ import org.json.JSONObject;
 public class User {
     public static  enum UserType{
         Cpu,Account,Player
+    }
+    
+    public static User fromJson(JSONObject json) throws JSONException{
+        return 
+            new User(
+                json.getString("name"),
+                json.getString("userName"),
+                json.getString("password"),
+                UserType.valueOf(
+                    json.getString("userType")
+                )
+            );
     }
 
     public UserType getUserType() {
@@ -49,12 +62,22 @@ public class User {
         this.password = password;
     }
     
-    public String toJson(){
-        return "";
+    public String toJson() throws JSONException{
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("name", name);
+        jsonObj.put("userName", userName);
+        jsonObj.put("password", password);
+        jsonObj.put("userType", userType.name());
+        
+        return jsonObj.toString();
     }
     
+    @Override
+    public String toString(){
+        return "name: "+name+"\npassword: "+password+"\nusername: "+userName+"\nuserType: "+userType.name();
+    }
     
-    
+   
     public User(String name, String userName, String password) {
         this.name = name;
         this.userName = userName;
@@ -74,6 +97,13 @@ public class User {
         this.userName = "";
         this.password = "";
         this.userType = UserType.Cpu;
+    }
+    
+    private User(String name, String userName, String password,UserType userType) {
+        this.name = name;
+        this.userName = userName;
+        this.password = password;
+        this.userType = userType;
     }
     
     private String name;
