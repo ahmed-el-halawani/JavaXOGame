@@ -67,23 +67,20 @@ class RequestHandler extends Thread {
 
     public void run() {
         while (true) {
-            String str="no message";
             try {
-                str = dis.readUTF();
+                String str = dis.readUTF();
                 System.out.println(str);
                 JsonAction action = JsonAction.fromJson(str);
                 
                 if(action.getCt() == User.class){
                     System.out.println("here we are again");
                 }
-                
-                ObjectMapper obm = new ObjectMapper();
-
+          
                 if(action.getCt() == User.class){
 
                     switch(action.getType()){
                         case Add:
-                            (new UserCrud(dis,ps)).add(obm.readValue(action.getObject(), User.class));
+                            (new UserCrud(dis,ps)).add(new ObjectMapper().readValue(action.getObject(), User.class));
                         break;
                         case GetAll:
                          (new UserCrud(dis,ps)).getAll();
@@ -93,7 +90,7 @@ class RequestHandler extends Thread {
                         break;
                         case Update:
                             
-                         (new UserCrud(dis,ps)).update(action.getParams(),obm.readValue(action.getObject(), User.class));
+                         (new UserCrud(dis,ps)).update(action.getParams(),new ObjectMapper().readValue(action.getObject(), User.class));
                         break;
                         case Delete:
                          (new UserCrud(dis,ps)).delete(action.getParams());
@@ -102,7 +99,7 @@ class RequestHandler extends Thread {
                 }else if(action.getCt() == UserGameDetails.class){
                      switch(action.getType()){
                         case Add:
-                           (new UserGameDetailsCrud(dis,ps)).add(obm.readValue(action.getObject(), UserGameDetails.class));
+                           (new UserGameDetailsCrud(dis,ps)).add(new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
                         break;
                         case GetAll:
                         (new UserGameDetailsCrud(dis,ps)).getAll();
@@ -111,7 +108,7 @@ class RequestHandler extends Thread {
                         (new UserGameDetailsCrud(dis,ps)).get(action.getParams());
                         break;
                         case Update:
-                        (new UserGameDetailsCrud(dis,ps)).update(action.getParams(),obm.readValue(action.getObject(), UserGameDetails.class));
+                        (new UserGameDetailsCrud(dis,ps)).update(action.getParams(),new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
                         break;
                         case Delete:
                         (new UserGameDetailsCrud(dis,ps)).delete(action.getParams());
@@ -121,7 +118,6 @@ class RequestHandler extends Thread {
                 
                 
                 System.out.println(action);
-                ps.writeUTF(action.toString());
             } 
             
             catch (java.net.SocketException ex) {
