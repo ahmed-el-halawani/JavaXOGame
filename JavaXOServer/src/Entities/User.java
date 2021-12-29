@@ -5,6 +5,9 @@
  */
 package Entities;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,22 +16,15 @@ import org.json.JSONObject;
  * @author A H M E D
  */
 
-public class User {
+public class User extends BaseEntity{
     public static  enum UserType{
         Cpu,Account,Player
     }
+    public static User fromJson(String body) throws  JsonProcessingException{
+           ObjectMapper obm = new ObjectMapper();
+            return obm.readValue(body, User.class);
+        }
     
-    public static User fromJson(JSONObject json) throws JSONException{
-        return 
-            new User(
-                json.getString("name"),
-                json.getString("userName"),
-                json.getString("password"),
-                UserType.valueOf(
-                    json.getString("userType")
-                )
-            );
-    }
 
     public UserType getUserType() {
         return userType;
@@ -62,20 +58,13 @@ public class User {
         this.password = password;
     }
     
-    public String toJson() throws JSONException{
-        JSONObject jsonObj = new JSONObject();
-        jsonObj.put("name", name);
-        jsonObj.put("userName", userName);
-        jsonObj.put("password", password);
-        jsonObj.put("userType", userType.name());
+    public String toJson() throws JsonProcessingException {
+        ObjectMapper obm = new ObjectMapper();
         
-        return jsonObj.toString();
+        return obm.writeValueAsString(this);
     }
     
-    @Override
-    public String toString(){
-        return "name: "+name+"\npassword: "+password+"\nusername: "+userName+"\nuserType: "+userType.name();
-    }
+    
     
    
     public User(String name, String userName, String password) {
@@ -99,12 +88,21 @@ public class User {
         this.userType = UserType.Cpu;
     }
     
-    private User(String name, String userName, String password,UserType userType) {
+    private User(String id,String name, String userName, String password,UserType userType) {
+        super(id);
         this.name = name;
         this.userName = userName;
         this.password = password;
         this.userType = userType;
     }
+
+    @Override
+    public String toString() {
+        return "User{" + "name=" + name + ", userName=" + userName + ", password=" + password + ", userType=" + userType + '}';
+    }
+    
+    
+    
     
     private String name;
     private String userName;

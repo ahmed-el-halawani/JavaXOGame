@@ -6,9 +6,16 @@
 package javaxoserver;
 
 import Entities.User;
+import Entities.UserGameDetails;
+import Utils.JsonAction;
+import Utils.UserCrud;
+import Utils.UserGameDetailsCrud;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import static java.lang.System.in;
+import static java.lang.System.out;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
@@ -64,10 +71,57 @@ class RequestHandler extends Thread {
             try {
                 str = dis.readUTF();
                 System.out.println(str);
-                JSONObject json = new JSONObject(str);
-                User u = User.fromJson(json);
+                JsonAction action = JsonAction.fromJson(str);
                 
-                ps.writeUTF(u.toString());
+                if(action.getCt() == User.class){
+                    System.out.println("here we are again");
+                }
+                
+                ObjectMapper obm = new ObjectMapper();
+
+                if(action.getCt() == User.class){
+
+                    switch(action.getType()){
+                        case Add:
+                            (new UserCrud(dis,ps)).add(obm.readValue(action.getObject(), User.class));
+                        break;
+                        case GetAll:
+                         (new UserCrud(dis,ps)).getAll();
+                        break;
+                        case Get:
+                         (new UserCrud(dis,ps)).get(action.getParams());
+                        break;
+                        case Update:
+                            
+                         (new UserCrud(dis,ps)).update(action.getParams(),obm.readValue(action.getObject(), User.class));
+                        break;
+                        case Delete:
+                         (new UserCrud(dis,ps)).delete(action.getParams());
+                        break;
+                    }
+                }else if(action.getCt() == UserGameDetails.class){
+                     switch(action.getType()){
+                        case Add:
+                           (new UserGameDetailsCrud(dis,ps)).add(obm.readValue(action.getObject(), UserGameDetails.class));
+                        break;
+                        case GetAll:
+                        (new UserGameDetailsCrud(dis,ps)).getAll();
+                        break;
+                        case Get:
+                        (new UserGameDetailsCrud(dis,ps)).get(action.getParams());
+                        break;
+                        case Update:
+                        (new UserGameDetailsCrud(dis,ps)).update(action.getParams(),obm.readValue(action.getObject(), UserGameDetails.class));
+                        break;
+                        case Delete:
+                        (new UserGameDetailsCrud(dis,ps)).delete(action.getParams());
+                        break;
+                    }
+                }
+                
+                
+                System.out.println(action);
+                ps.writeUTF(action.toString());
             } 
             
             catch (java.net.SocketException ex) {
@@ -76,8 +130,6 @@ class RequestHandler extends Thread {
             }catch (IOException ex) {
                 Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
                 
-            } catch (JSONException ex) {
-                Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
             } 
         }
     }
