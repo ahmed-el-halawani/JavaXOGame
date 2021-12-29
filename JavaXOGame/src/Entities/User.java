@@ -3,17 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Infrastructure.Entities;
+package Entities;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
  * @author A H M E D
  */
 
-public class User {
+public class User extends BaseEntity{
+    
     public static  enum UserType{
         Cpu,Account,Player
     }
+    public static User fromJson(String body) throws  JsonProcessingException{
+           ObjectMapper obm = new ObjectMapper();
+            return obm.readValue(body, User.class);
+        }
 
     public UserType getUserType() {
         return userType;
@@ -47,6 +57,15 @@ public class User {
         this.password = password;
     }
     
+    public String toJson() throws JsonProcessingException {
+        ObjectMapper obm = new ObjectMapper();
+        
+        return obm.writeValueAsString(this);
+    }
+    
+    
+    
+   
     public User(String name, String userName, String password) {
         this.name = name;
         this.userName = userName;
@@ -67,6 +86,22 @@ public class User {
         this.password = "";
         this.userType = UserType.Cpu;
     }
+    
+    private User(String id,String name, String userName, String password,UserType userType) {
+        super(id);
+        this.name = name;
+        this.userName = userName;
+        this.password = password;
+        this.userType = userType;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "name=" + name + ", userName=" + userName + ", password=" + password + ", userType=" + userType + '}';
+    }
+    
+    
+    
     
     private String name;
     private String userName;
