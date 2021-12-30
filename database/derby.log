@@ -1,24 +1,7 @@
-Thu Dec 30 14:42:07 EET 2021 : Apache Derby Network Server - 10.10.2.0 - (1582446) started and ready to accept connections on port 1527
+Thu Dec 30 17:01:53 EET 2021 : Apache Derby Network Server - 10.10.2.0 - (1582446) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Thu Dec 30 14:42:08 EET 2021:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-017e-0b5c-a3bf-ffffe9d6c76d 
-on database directory F:\iti lessons\tasks\java\XOGame\database\javaOXDatabase with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
-Loaded from file:/H:/empty%20drive%20files/local%20programe%20file/glossyFish/glassfish-4.1.1/javadb/lib/derby.jar
-java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_201-b09
-user.dir=H:\empty drive files\local programe file\glossyFish\glassfish-4.1.1\javadb
-os.name=Windows 10
-os.arch=amd64
-os.version=10.0
-derby.system.home=F:\iti lessons\tasks\java\XOGame\database
-Database Class Loader started - derby.database.classpath=''
-----------------------------------------------------------------
-Thu Dec 30 14:42:15 EET 2021:
-Shutting down instance a816c00e-017e-0b5c-a3bf-ffffe9d6c76d on database directory F:\iti lessons\tasks\java\XOGame\database\javaOXDatabase with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
-Thu Dec 30 14:42:15 EET 2021 Thread[DRDAConnThread_2,5,main] (DATABASE = javaOXDatabase), (DRDAID = {2}), Database 'javaOXDatabase' shutdown.
-----------------------------------------------------------------
-Thu Dec 30 14:45:23 EET 2021:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance 560740aa-017e-0b5c-a3bf-ffffe9d6c76d 
+Thu Dec 30 17:01:53 EET 2021:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-017e-0bdc-97fa-ffffe9d6c76d 
 on database directory F:\iti lessons\tasks\java\XOGame\database\javaOXDatabase with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
 Loaded from file:/H:/empty%20drive%20files/local%20programe%20file/glossyFish/glassfish-4.1.1/javadb/lib/derby.jar
 java.vendor=Oracle Corporation
