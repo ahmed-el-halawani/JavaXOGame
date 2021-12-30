@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.JSONException;
 
 /**
  *
@@ -25,11 +26,11 @@ import java.util.logging.Logger;
 
 
 public interface ICrud<T>{
-    public void add(T entity);
-    public void update(String id,T entity);
-    public void delete(String id);
-    public void get(String id);
-    public void getAll();
+    public void add(T entity)throws JSONException, IOException;
+    public void update(String id,T entity)throws JSONException, IOException;
+    public void delete(String id)throws JSONException, IOException;
+    public void get(String id)throws JSONException, IOException;
+    public void getAll()throws JSONException, IOException;
 } 
 
 
