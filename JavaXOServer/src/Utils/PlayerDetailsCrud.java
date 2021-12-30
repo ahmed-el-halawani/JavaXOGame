@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Utils;
 
+import Entities.PlayerDetails;
 import Entities.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.ByteArrayOutputStream;
@@ -17,45 +13,49 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 /**
  *
  * @author A H M E D
  */
-
-
-public class UserCrud implements ICrud<User>{
-    DataOutputStream out;
+public class PlayerDetailsCrud{
+DataOutputStream out;
     DataInputStream in;
 
-    public UserCrud( DataInputStream in,DataOutputStream out) {
+    public PlayerDetailsCrud( DataInputStream in,DataOutputStream out) {
         this.out = out;
         this.in = in;
     }
     
-    @Override
-    public void add(User entity) throws JSONException, IOException {
+    public PlayerDetails add(PlayerDetails entity) throws JSONException, IOException {
         System.out.print(entity);
+        
+        
         Connection con = null;
          try {
                 con = DriverManager.getConnection("jdbc:derby://localhost:1527/javaOXDatabase","javaProject","javaProject");
                 String id = UUID.randomUUID().toString();
-                PreparedStatement query = con.prepareStatement("INSERT INTO USERDATA VALUES(?,?,?,?,?)");
-                query.setString(1,id);
-                query.setString(2,entity.getName());
-                query.setString(3,entity.getUserName());
-                query.setString(4,entity.getPassword());
-                query.setString(5,entity.getUserType().name());
-                
-                out.writeInt(query.executeUpdate());
-            } catch (IOException ex) {
-                Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
+                entity.setId(id);
+                PreparedStatement query = con.prepareStatement("INSERT INTO PLAYERDETAILS VALUES(?,?,?,?)");
+                query.setString(1,entity.getPlayerState().name());
+                query.setString(2,entity.getPlayerSample().name());
+                query.setString(3,entity.getPlayer().getId());
+                query.setString(4,entity.getId());
+
+                if(query.executeUpdate()!=0){
+                    return entity;
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
             }finally{
@@ -65,34 +65,32 @@ public class UserCrud implements ICrud<User>{
                     Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+        return null;
     }
 
-    @Override
-    public void update(String idParam, User entity) throws JSONException, IOException {
+    public PlayerDetails update(String idParam, PlayerDetails entity) throws JSONException, IOException {
         JSONObject jsonObject = new JSONObject(idParam);
         final String id = jsonObject.getString("id");
+        entity.setId(id);
         Connection con = null;
          try {
                 con = DriverManager.getConnection("jdbc:derby://localhost:1527/javaOXDatabase","javaProject","javaProject");
                 PreparedStatement query = con.prepareStatement(
-                        "UPDATE USERDATA "
+                        "UPDATE PLAYERDETAILS "
                         + "SET "
-                        + "NAME = ?,"
-                        + "USERNAME = ?,"
-                        + "PASSWORD = ?,"
-                        + "USERTYPE = ? "
+                        + "PLAYER_STATE = ?,"
+                        + "PLAYER_SIMBOLE = ?,"
+                        + "USER_ID = ?,"
                         + "WHERE ID=?"
                 );
                 
-                query.setString(1,entity.getName());
-                query.setString(2,entity.getUserName());
-                query.setString(3,entity.getPassword());
-                query.setString(4,entity.getUserType().name());
-                query.setString(5,id);
-
-                out.writeInt(query.executeUpdate());
-            } catch (IOException ex) {
-                Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
+                query.setString(1,entity.getPlayerState().name());
+                query.setString(2,entity.getPlayerSample().name());
+                query.setString(3,entity.getPlayer().getId());
+                query.setString(4,entity.getId());
+                if(query.executeUpdate()!=0){
+                    return entity;
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
             }finally{
@@ -103,12 +101,11 @@ public class UserCrud implements ICrud<User>{
                }
          }
             
-            
+         return null;   
         
     }
 
-    @Override
-    public void delete(String idParam)throws JSONException, IOException {
+    public int delete(String idParam)throws JSONException, IOException {
            JSONObject jsonObject = new JSONObject(idParam);
         final String id = jsonObject.getString("id");
         
@@ -116,14 +113,12 @@ public class UserCrud implements ICrud<User>{
          try {
                 con = DriverManager.getConnection("jdbc:derby://localhost:1527/javaOXDatabase","javaProject","javaProject");
                 PreparedStatement query = con.prepareStatement(
-                        "DELETE FROM  USERDATA WHERE ID =?"
+                        "DELETE FROM  PLAYERDETAILS WHERE ID =?"
                 );
                 
                 query.setString(1,id);
 
-                out.writeInt(query.executeUpdate());
-            } catch (IOException ex) {
-                Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
+                return query.executeUpdate();
             } catch (SQLException ex) {
                 Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
             }finally{
@@ -133,55 +128,35 @@ public class UserCrud implements ICrud<User>{
                    Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
                }
          }
-      
+          
+         return -1;   
     }
-    
-    public User getWithId(Connection con,String id) throws SQLException{
-            final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
-            final ObjectMapper mapper = new ObjectMapper();
 
-            ArrayList<User> users = new ArrayList<>();
-            PreparedStatement query = con.prepareStatement("SELECT * FROM USERDATA WHERE ID=?");
-            query.setString(1,id);
-            ResultSet rs = query.executeQuery();
-             if(rs.next()){
-                return User.fromResultSet(rs);
-            }else{
-                 return null;
-            }
-
-}
-
-    @Override
-    public void get(String idParam)throws JSONException, IOException  {
+    public PlayerDetails get(String id)throws JSONException, IOException  {
           final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
             final ObjectMapper mapper = new ObjectMapper();
-
-             JSONObject jsonObject = new JSONObject(idParam);
-            final String id = jsonObject.getString("id");
-        
-            
             
             Connection con = null;
             
             try {
                 con = DriverManager.getConnection("jdbc:derby://localhost:1527/javaOXDatabase","javaProject","javaProject");
-               User u = getWithId(con, id);
-                if(u !=null){
-                    out.writeUTF(u.toJson());
-                }else{
-                    out.writeUTF("null");
+                ArrayList<User> users = new ArrayList<>();
+                PreparedStatement query = con.prepareStatement("SELECT * FROM PLAYERDETAILS WHERE ID=?");
+                query.setString(1,id);
+                ResultSet rs = query.executeQuery();
+                
+                if(rs.next()){
+                    User user = new UserCrud(in, out).getWithId(con,rs.getString("USER_ID"));
+                    return PlayerDetails.fromResultSet(rs,user);
                 }
 
-            } catch (IOException ex) {
-                Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
                 Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
             }
+            return null;
     }
 
-    @Override
-    public void getAll() {
+    public ArrayList<PlayerDetails> getAll() {
         final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
         final ObjectMapper mapper = new ObjectMapper();
 
@@ -189,25 +164,21 @@ public class UserCrud implements ICrud<User>{
 
         try {
             con = DriverManager.getConnection("jdbc:derby://localhost:1527/javaOXDatabase","javaProject","javaProject");
-            ArrayList<User> users = new ArrayList<>();
+            ArrayList<PlayerDetails>  playersDetails = new ArrayList<>();
             String id = UUID.randomUUID().toString();
-            PreparedStatement query = con.prepareStatement("SELECT * FROM USERDATA");
+            PreparedStatement query = con.prepareStatement("SELECT * FROM PLAYERDETAILS");
             ResultSet rs = query.executeQuery();
 
             while(rs.next()){
-               users.add(User.fromResultSet(rs));
+               User user = new UserCrud(in, out).getWithId(con,rs.getString("USER_ID"));
+               playersDetails.add(PlayerDetails.fromResultSet(rs,user));
             }
 
-             mapper.writeValue(out2,  users);
-
-            final byte[] data = out2.toByteArray();
-            System.out.println(new String(data));
-
-            out.writeUTF(new String(data));
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
+             return playersDetails;
         } catch (SQLException ex) {
             Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
+        return null;
     }
 }
+

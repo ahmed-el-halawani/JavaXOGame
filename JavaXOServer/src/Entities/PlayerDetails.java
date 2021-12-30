@@ -5,8 +5,11 @@
  */
 package Entities;
 
+import Entities.UserGameDetails.PlayerState;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,6 +18,15 @@ import org.json.JSONObject;
  * @author A H M E D
  */
 public class PlayerDetails extends BaseEntity {
+
+    public static PlayerDetails fromResultSet(ResultSet rs,User u) throws SQLException {
+        return new PlayerDetails(
+                rs.getString("ID"),
+                u,
+                PlayerState.valueOf(rs.getString("PLAYER_STATE")),
+                UserGameDetails.PlayerSimbole.valueOf(rs.getString("PLAYER_SIMBOLE"))
+        );
+    }
     public PlayerDetails() {
     }
     

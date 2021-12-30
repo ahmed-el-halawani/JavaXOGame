@@ -7,7 +7,11 @@ package Entities;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,6 +29,22 @@ public class User extends BaseEntity{
             return obm.readValue(body, User.class);
         }
     
+    public String toJson() throws JsonProcessingException {
+        ObjectMapper obm = new ObjectMapper();
+        
+        return obm.writeValueAsString(this);
+    }
+    
+    public static User fromResultSet(ResultSet rs) throws SQLException {
+            return new User(
+                    rs.getString("ID"),
+                    rs.getString("NAME"),
+                    rs.getString("USERNAME"),
+                    rs.getString("PASSWORD"),
+                    UserType.valueOf(rs.getString("USERTYPE"))
+            );
+      
+    }
 
     public UserType getUserType() {
         return userType;
@@ -58,11 +78,6 @@ public class User extends BaseEntity{
         this.password = password;
     }
     
-    public String toJson() throws JsonProcessingException {
-        ObjectMapper obm = new ObjectMapper();
-        
-        return obm.writeValueAsString(this);
-    }
     
     
     

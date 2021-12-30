@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,24 +30,38 @@ import org.json.JSONException;
 public class JavaXOServer {
  ServerSocket serverSocket;
 
-    public JavaXOServer() throws IOException {
+    public JavaXOServer() throws IOException, SQLException {
         serverSocket = new ServerSocket(5005);
         System.out.println("wiating client...");
         while (true) {
             Socket s = serverSocket.accept();
             System.out.println("hi Client how r u?");
             System.out.println("garsone handle him but him in ur eaise");
-            new RequestHandler(s);
+            DataInputStream in = new DataInputStream(s.getInputStream());
+            DataOutputStream out = new DataOutputStream(s.getOutputStream());
+            new RequestHandler(in,out);
             
         }
     }
 
     public static void main(String[] args) {
         try {
+            DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
             new JavaXOServer();
-        } catch (IOException ex) {
+        } catch (SQLException ex) {
+            Logger.getLogger(JavaXOServer.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (IOException ex) {
             Logger.getLogger(JavaXOServer.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+}
+
+class Room{
+    String roomId;
+    Vector<RequestHandler> clientsVector = new Vector<RequestHandler>();
+    
+    public void run(JsonAction ja){
+        
     }
 }
 
@@ -56,9 +71,9 @@ class RequestHandler extends Thread {
 //    static Vector<RequestHandler> clientsVector = new Vector<RequestHandler>();
 //    clientsVector.add(this);
 
-    public RequestHandler(Socket cs) throws IOException {
-        in = new DataInputStream(cs.getInputStream());
-        out = new DataOutputStream(cs.getOutputStream());
+    public RequestHandler(DataInputStream in,DataOutputStream out) throws IOException {
+        this.in = in;
+        this.out = out;
         start();
     }
 
