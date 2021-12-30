@@ -25,11 +25,11 @@ import java.util.logging.Logger;
 
 
 public interface ICrud<T>{
-    public int add(T entity);
-    public int update(String id,T entity);
-    public int delete(String id);
-    public T get(String id);
-    public ArrayList<T> getAll();
+    public void add(T entity);
+    public void update(String id,T entity);
+    public void delete(String id);
+    public void get(String id);
+    public void getAll();
 } 
 
 

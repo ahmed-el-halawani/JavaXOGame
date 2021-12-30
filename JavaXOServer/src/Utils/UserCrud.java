@@ -6,7 +6,6 @@
 package Utils;
 
 import Entities.User;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -14,9 +13,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,70 +32,43 @@ public class UserCrud implements ICrud<User>{
     }
     
     @Override
-    public int add(User entity) {
+    public void add(User entity) throws JSONException, IOException {
         System.out.print(entity);
-        try {
             out.writeInt(1);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return -1;
+        
     }
 
     @Override
-    public int update(String id, User entity) {
+    public void update(String id, User entity) throws JSONException, IOException {
         
-        try {
             JSONObject jsonObject = new JSONObject(id);
             System.out.println(jsonObject.getString("id"));
             System.out.print("id: "+id+"entity: "+entity);
         
             out.writeInt(1);
-        } catch (JsonProcessingException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JSONException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return -1;
+        
     }
 
     @Override
-    public int delete(String id) {
-        try {
+    public void delete(String id)throws JSONException, IOException {
             JSONObject jsonObject = new JSONObject(id);
             System.out.println(jsonObject.getString("id"));
             out.writeInt(1);
-        } catch (JSONException ex) { 
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return -1;
+      
     }
 
     @Override
-    public User get(String id) {
+    public void get(String id)throws JSONException, IOException  {
         System.out.print("id: "+id);
-         try {
             JSONObject jsonObject = new JSONObject(id);
             System.out.println(jsonObject.getString("id"));
             
             out.writeUTF(new User("ahmed","ahmed","gomaa").toJson());
-        } catch (JsonProcessingException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JSONException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+       
     }
 
     @Override
-    public ArrayList<User> getAll() {
-         try {
+    public void getAll()throws JSONException, IOException {
             final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
             final ObjectMapper mapper = new ObjectMapper();
 
@@ -109,13 +78,5 @@ public class UserCrud implements ICrud<User>{
             System.out.println(new String(data));
     
             out.writeUTF(new String(data));
-         } catch (JsonProcessingException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
     }
-    
-   
 }

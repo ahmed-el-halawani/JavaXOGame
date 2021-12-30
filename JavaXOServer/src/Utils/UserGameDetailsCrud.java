@@ -34,69 +34,42 @@ DataOutputStream out;
         this.in = in;
     }
     @Override
-    public int add(UserGameDetails entity) {
+    public void add(UserGameDetails entity) throws JSONException, IOException{
         System.out.print(entity);
-        try {
-            out.writeInt(1);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return -1;
+        out.writeInt(1);
     }
 
     @Override
-    public int update(String id, Entities.UserGameDetails entity) {
-       try {
+    public void update(String id, Entities.UserGameDetails entity) throws JSONException, IOException {
+       
             JSONObject jsonObject = new JSONObject(id);
             String id2 = jsonObject.getString("id");
             System.out.print("id: "+id2+"entity: "+entity);
         
             out.writeInt(1);
-        } catch (JsonProcessingException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JSONException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return -1;  
+        
     }
 
     @Override
-    public int delete(String id) {
-         try {
+    public void delete(String id) throws JSONException, IOException{
             JSONObject jsonObject = new JSONObject(id);
             System.out.println(jsonObject.getString("id"));
             out.writeInt(1);
-        } catch (JSONException ex) { 
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return -1;
+        
     }
 
     @Override
-    public UserGameDetails get(String id) {
+    public void get(String id) throws JSONException, IOException{
          System.out.print("id: "+id);
-         try {
             JSONObject jsonObject = new JSONObject(id);
             System.out.println(jsonObject.getString("id"));
             
             out.writeUTF(UserGameDetails.dumyObject().toJson());
-        } catch (JsonProcessingException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JSONException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+       
     }
 
     @Override
-    public ArrayList<Entities.UserGameDetails> getAll() {
-      try {
+    public void getAll() throws JSONException, IOException{
             final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
             final ObjectMapper mapper = new ObjectMapper();
 
@@ -106,12 +79,41 @@ DataOutputStream out;
             System.out.println(new String(data));
     
             out.writeUTF(new String(data));
-         } catch (JsonProcessingException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+         
+    }
+    
+    
+    public void getAllWithId(String id) throws JSONException, IOException {
+         System.out.print("id: "+id);
+        JSONObject jsonObject = new JSONObject(id);
+        System.out.println(jsonObject.getString("id"));
+        final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
+        final ObjectMapper mapper = new ObjectMapper();
+
+        mapper.writeValue(out2,  new ArrayList(Arrays.asList(new UserGameDetails[]{UserGameDetails.dumyObject(),UserGameDetails.dumyObject()})));
+
+        final byte[] data = out2.toByteArray();
+        System.out.println(new String(data));
+
+        out.writeUTF(new String(data));
+      
+    }
+    
+    
+    public void getAllWithUserName(String userName) throws JSONException, IOException {
+         System.out.print("userName: "+userName);
+        JSONObject jsonObject = new JSONObject(userName);
+        System.out.println(jsonObject.getString("userName"));
+        final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
+        final ObjectMapper mapper = new ObjectMapper();
+
+        mapper.writeValue(out2,  new ArrayList(Arrays.asList(new UserGameDetails[]{UserGameDetails.dumyObject(),UserGameDetails.dumyObject()})));
+
+        final byte[] data = out2.toByteArray();
+        System.out.println(new String(data));
+
+        out.writeUTF(new String(data));
+
     }
    
 

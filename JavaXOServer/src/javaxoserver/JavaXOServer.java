@@ -19,6 +19,7 @@ import java.net.Socket;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.JSONException;
 
 /**
  *
@@ -49,21 +50,21 @@ public class JavaXOServer {
 }
 
 class RequestHandler extends Thread {
-    DataInputStream dis;
-    DataOutputStream ps;
+    DataInputStream in;
+    DataOutputStream out;
 //    static Vector<RequestHandler> clientsVector = new Vector<RequestHandler>();
 //    clientsVector.add(this);
 
     public RequestHandler(Socket cs) throws IOException {
-        dis = new DataInputStream(cs.getInputStream());
-        ps = new DataOutputStream(cs.getOutputStream());
+        in = new DataInputStream(cs.getInputStream());
+        out = new DataOutputStream(cs.getOutputStream());
         start();
     }
 
     public void run() {
         while (true) {
             try {
-                String str = dis.readUTF();
+                String str = in.readUTF();
                 System.out.println(str);
                 JsonAction action = JsonAction.fromJson(str);
                 
@@ -72,43 +73,47 @@ class RequestHandler extends Thread {
                 }
           
                 if(action.getCt() == User.class){
-
                     switch(action.getType()){
                         case Add:
-                            (new UserCrud(dis,ps)).add(new ObjectMapper().readValue(action.getObject(), User.class));
+                            (new UserCrud(in,out)).add(new ObjectMapper().readValue(action.getObject(), User.class));
                         break;
                         case GetAll:
-                         (new UserCrud(dis,ps)).getAll();
+                            new UserCrud(in,out).getAll();
                         break;
                         case Get:
-                         (new UserCrud(dis,ps)).get(action.getParams());
+                            new UserCrud(in,out).get(action.getParams());
                         break;
                         case Update:
-                            
-                         (new UserCrud(dis,ps)).update(action.getParams(),new ObjectMapper().readValue(action.getObject(), User.class));
+                            new UserCrud(in,out).update(action.getParams(),new ObjectMapper().readValue(action.getObject(), User.class));
                         break;
                         case Delete:
-                         (new UserCrud(dis,ps)).delete(action.getParams());
+                            new UserCrud(in,out).delete(action.getParams());
                         break;
                     }
                 }else if(action.getCt() == UserGameDetails.class){
                      switch(action.getType()){
                         case Add:
-                           (new UserGameDetailsCrud(dis,ps)).add(new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
+                           (new UserGameDetailsCrud(in,out)).add(new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
                         break;
                         case GetAll:
-                        (new UserGameDetailsCrud(dis,ps)).getAll();
+                            new UserGameDetailsCrud(in,out).getAll();
                         break;
                         case Get:
-                        (new UserGameDetailsCrud(dis,ps)).get(action.getParams());
+                            new UserGameDetailsCrud(in,out).get(action.getParams());
                         break;
                         case Update:
-                        (new UserGameDetailsCrud(dis,ps)).update(action.getParams(),new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
+                            new UserGameDetailsCrud(in,out).update(action.getParams(),new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
                         break;
                         case Delete:
-                        (new UserGameDetailsCrud(dis,ps)).delete(action.getParams());
+                            new UserGameDetailsCrud(in,out).delete(action.getParams());
                         break;
-                    }
+                        case GetAllWithId:
+                            new UserGameDetailsCrud(in,out).getAllWithId(action.getParams());
+                        break;
+                        case GetAllWithUesrName:
+                            new UserGameDetailsCrud(in,out).getAllWithUserName(action.getParams());
+                        break;
+                     }
                 }
                 
                 
@@ -121,6 +126,8 @@ class RequestHandler extends Thread {
             }catch (IOException ex) {
                 Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
                 
+            } catch (JSONException ex) {
+                Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
             } 
         }
     }
