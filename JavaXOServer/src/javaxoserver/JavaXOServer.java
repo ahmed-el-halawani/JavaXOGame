@@ -72,7 +72,7 @@ class RequestHandler extends Thread {
                     System.out.println("here we are again");
                 }
           
-                if(action.getCt() == User.class){
+                if(action.getCt() == UserCrud.class){
                     switch(action.getType()){
                         case Add:
                             (new UserCrud(in,out)).add(new ObjectMapper().readValue(action.getObject(), User.class));
@@ -90,7 +90,7 @@ class RequestHandler extends Thread {
                             new UserCrud(in,out).delete(action.getParams());
                         break;
                     }
-                }else if(action.getCt() == UserGameDetails.class){
+                }else if(action.getCt() == UserGameDetailsCrud.class){
                      switch(action.getType()){
                         case Add:
                            (new UserGameDetailsCrud(in,out)).add(new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
