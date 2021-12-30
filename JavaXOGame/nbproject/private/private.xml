@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/Interfaces/ICrud.java</file>
+            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/Utils/UserCrud.java</file>
+            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/Entities/BaseEntity.java</file>
+            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/Utils/UserGameDetailsCrud.java</file>
+            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/UI/Main.java</file>
+            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/Entities/User.java</file>
+            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/Interfaces/IJsonSerialize.java</file>
+            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/Entities/PlayerDetails.java</file>
+            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/Utils/ConnectionManager.java</file>
+            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/Entities/UserGameDetails.java</file>
+            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/Utils/JsonAction.java</file>
+        </group>
+    </open-files>
 </project-private>
