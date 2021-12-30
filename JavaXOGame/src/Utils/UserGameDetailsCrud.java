@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  */
 public 
 class UserGameDetailsCrud implements ICrud<Entities.UserGameDetails>{
-        private ObjectMapper obm = new ObjectMapper();
+        private final ObjectMapper obm = new ObjectMapper();
 
 DataOutputStream out;
     DataInputStream in;
@@ -135,6 +135,54 @@ DataOutputStream out;
                     JsonAction.Types.GetAll,
                     UserGameDetails.class,
                     ""
+            );
+            System.out.println(obm.writeValueAsString(jsonAction));
+            out.writeUTF(obm.writeValueAsString(jsonAction));
+            CollectionType typeReference = TypeFactory.defaultInstance().constructCollectionType(List.class, UserGameDetails.class);
+            String j = in.readUTF();
+            return obm.readValue(j, typeReference);
+         } catch (JsonProcessingException ex) {
+            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public ArrayList<UserGameDetails> getAllWithId(String id) {
+       Map<String,String> m = new HashMap();
+        m.put("id",id);
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            JsonAction jsonAction = new JsonAction(
+                    "",
+                    JsonAction.Types.GetAllWithId,
+                    UserGameDetails.class,
+                    obm.writeValueAsString(m)
+            );
+            System.out.println(obm.writeValueAsString(jsonAction));
+            out.writeUTF(obm.writeValueAsString(jsonAction));
+            CollectionType typeReference = TypeFactory.defaultInstance().constructCollectionType(List.class, UserGameDetails.class);
+            String j = in.readUTF();
+            return obm.readValue(j, typeReference);
+         } catch (JsonProcessingException ex) {
+            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public ArrayList<UserGameDetails> getAllWithUserName(String userName) {
+       Map<String,String> m = new HashMap();
+        m.put("userName",userName);
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            JsonAction jsonAction = new JsonAction(
+                    "",
+                    JsonAction.Types.GetAllWithUesrName,
+                    UserGameDetails.class,
+                    obm.writeValueAsString(m)
             );
             System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
