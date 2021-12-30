@@ -47,7 +47,7 @@ public class UserCrud implements ICrud<User>{
             JsonAction jsonAction = new JsonAction(
                     entity.toJson(),
                     JsonAction.Types.Add,
-                    entity.getClass(),
+                    this.getClass(),
                     ""
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -70,7 +70,7 @@ public class UserCrud implements ICrud<User>{
             JsonAction jsonAction = new JsonAction(
                     entity.toJson(),
                     JsonAction.Types.Update,
-                    entity.getClass(),
+                    this.getClass(),
                     obm.writeValueAsString(m)
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -92,7 +92,7 @@ public class UserCrud implements ICrud<User>{
             JsonAction jsonAction = new JsonAction(
                     "",
                     JsonAction.Types.Delete,
-                    User.class,
+                    this.getClass(),
                     obm.writeValueAsString(m)
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -114,7 +114,7 @@ public class UserCrud implements ICrud<User>{
             JsonAction jsonAction = new JsonAction(
                     "",
                     JsonAction.Types.Get,
-                    User.class,
+                    this.getClass(),
                     obm.writeValueAsString(m)
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -136,13 +136,15 @@ public class UserCrud implements ICrud<User>{
             JsonAction jsonAction = new JsonAction(
                     "",
                     JsonAction.Types.GetAll,
-                    User.class,
+                    this.getClass(),
                     ""
             );
             System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
             CollectionType typeReference = TypeFactory.defaultInstance().constructCollectionType(List.class, User.class);
             String j = in.readUTF();
+            System.out.println("here1");
+             System.out.println(j);
             return obm.readValue(j, typeReference);
          } catch (JsonProcessingException ex) {
             Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);

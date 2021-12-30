@@ -5,7 +5,6 @@
  */
 package Utils;
 
-import Entities.User;
 import Entities.UserGameDetails;
 import Interfaces.ICrud;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -44,7 +43,7 @@ DataOutputStream out;
             JsonAction jsonAction = new JsonAction(
                     entity.toJson(),
                     JsonAction.Types.Add,
-                    entity.getClass(),
+                    this.getClass(),
                     ""
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -67,7 +66,7 @@ DataOutputStream out;
             JsonAction jsonAction = new JsonAction(
                     entity.toJson(),
                     JsonAction.Types.Update,
-                    entity.getClass(),
+                    this.getClass(),
                     obm.writeValueAsString(m)
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -89,7 +88,7 @@ DataOutputStream out;
             JsonAction jsonAction = new JsonAction(
                     "",
                     JsonAction.Types.Delete,
-                    UserGameDetails.class,
+                    this.getClass(),
                     obm.writeValueAsString(m)
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -111,7 +110,7 @@ DataOutputStream out;
             JsonAction jsonAction = new JsonAction(
                     "",
                     JsonAction.Types.Get,
-                    UserGameDetails.class,
+                    this.getClass(),
                     obm.writeValueAsString(m)
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -133,7 +132,7 @@ DataOutputStream out;
             JsonAction jsonAction = new JsonAction(
                     "",
                     JsonAction.Types.GetAll,
-                    UserGameDetails.class,
+                    this.getClass(),
                     ""
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -157,7 +156,7 @@ DataOutputStream out;
             JsonAction jsonAction = new JsonAction(
                     "",
                     JsonAction.Types.GetAllWithId,
-                    UserGameDetails.class,
+                    this.getClass(),
                     obm.writeValueAsString(m)
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -181,7 +180,7 @@ DataOutputStream out;
             JsonAction jsonAction = new JsonAction(
                     "",
                     JsonAction.Types.GetAllWithUesrName,
-                    UserGameDetails.class,
+                    this.getClass(),
                     obm.writeValueAsString(m)
             );
             System.out.println(obm.writeValueAsString(jsonAction));
