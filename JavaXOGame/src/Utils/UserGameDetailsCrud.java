@@ -115,7 +115,10 @@ DataOutputStream out;
             );
             System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
-            return obm.readValue(in.readUTF(), UserGameDetails.class);
+            String data= in.readUTF();
+            if(!data.equals("null"))
+                return obm.readValue(data, UserGameDetails.class);
+
         } catch (JsonProcessingException ex) {
             Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

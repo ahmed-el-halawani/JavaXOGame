@@ -30,7 +30,7 @@ import java.util.logging.Logger;
  */
 
 
-public class UserCrud implements ICrud<User>{
+public  class UserCrud implements ICrud<User>{
     private ObjectMapper obm = new ObjectMapper();
     DataOutputStream out;
     DataInputStream in;
@@ -40,8 +40,13 @@ public class UserCrud implements ICrud<User>{
         this.in = in;
     }
     
+    public UserCrud( ConnectionManager cm) {
+        this.out = cm.out;
+        this.in = cm.in;
+    }
+    
     @Override
-    public int add(User entity) {
+    public synchronized int add(User entity) {
         System.out.println(entity);
         try {
             JsonAction jsonAction = new JsonAction(
@@ -62,7 +67,7 @@ public class UserCrud implements ICrud<User>{
     }
 
     @Override
-    public int update(String id, User entity) {
+    public synchronized int update(String id, User entity) {
         System.out.print(entity);
         Map<String,String> m = new HashMap();
         m.put("id",id);
@@ -85,7 +90,7 @@ public class UserCrud implements ICrud<User>{
     }
 
     @Override
-    public int delete(String id) {
+    public synchronized int delete(String id) {
         Map<String,String> m = new HashMap();
         m.put("id",id);
         try {
@@ -107,7 +112,7 @@ public class UserCrud implements ICrud<User>{
     }
 
     @Override
-    public User get(String id) {
+    public synchronized User get(String id) {
         Map<String,String> m = new HashMap();
         m.put("id",id);
         try {
@@ -119,7 +124,14 @@ public class UserCrud implements ICrud<User>{
             );
             System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
-            return obm.readValue(in.readUTF(), User.class);
+            
+            String res = in.readUTF();
+            if(res.equals("null")){
+                return null;
+            }
+            
+            return obm.readValue(res, User.class);
+            
         } catch (JsonProcessingException ex) {
             Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -129,7 +141,7 @@ public class UserCrud implements ICrud<User>{
     }
 
     @Override
-    public ArrayList<User> getAll() {
+    public synchronized ArrayList<User> getAll() {
          Map<String,String> m = new HashMap();
         try {
             final ObjectMapper mapper = new ObjectMapper();
@@ -156,3 +168,5 @@ public class UserCrud implements ICrud<User>{
     
    
 }
+
+
