@@ -38,14 +38,13 @@ public class UserGameDetails extends BaseEntity {
     public static enum GameDifficultyLvl{
         Easy,Medium,Intermediate
     }
-
     
-       public static UserGameDetails dumyObject(){
+    public static UserGameDetails dumyObject(){
         return new UserGameDetails(
                 GameModes.Single,
                 GameDifficultyLvl.Medium,
                 new PlayerDetails(new User("ahmed", "mo", "123123"), PlayerSimbole.X),
-                 new PlayerDetails(new User("ahmed2", "mo", "123123"), PlayerSimbole.O),
+                new PlayerDetails(new User("ahmed2", "mo", "123123"), PlayerSimbole.O),
                 new HashMap(),
                 new HashMap(),
                 new HashMap(),
@@ -143,6 +142,42 @@ public class UserGameDetails extends BaseEntity {
     public void setPlayerTwoDetails(PlayerDetails playerTwoDetails) {
         this.playerTwoDetails = playerTwoDetails;
     }
+    
+    public boolean isPlayerPartWithId(String id){
+         return this.getPlayerOneDetails().getPlayer().getId().equals(id)||
+                this.getPlayerTwoDetails().getPlayer().getId().equals(id);
+    }
+    
+    public boolean isPlayerPartWithUserName(String userName){
+        return this.getPlayerOneDetails().getPlayer().getUserName().equals(userName)||
+                this.getPlayerTwoDetails().getPlayer().getUserName().equals(userName);
+    }
+    
+    public PlayerDetails getPlayerWithId(String id){
+        if(this.getPlayerOneDetails().getPlayer().getId().equals(id)){
+                return this.getPlayerOneDetails();
+        }else if (this.getPlayerTwoDetails().getPlayer().getId().equals(id)){
+            return this.getPlayerTwoDetails();
+        }
+        return null;
+    }
+    
+    public PlayerDetails getPlayerWithUserName(String userName){
+        if(this.getPlayerOneDetails().getPlayer().getUserName().equals(userName)){
+                return this.getPlayerOneDetails();
+        }else if (this.getPlayerTwoDetails().getPlayer().getUserName().equals(userName)){
+            return this.getPlayerTwoDetails();
+        }
+        return null;
+    }
+    
+    public PlayerState getPlayerStateWithId(String id){
+        return getPlayerWithId(id).getPlayerState();
+    }
+    
+    public PlayerState getPlayerStateWithUserName(String userName){
+        return getPlayerWithUserName(userName).getPlayerState();
+    }
 
     public UserGameDetails(
             String id,
@@ -211,15 +246,10 @@ public class UserGameDetails extends BaseEntity {
                 );
     }
     
-    
-    
     @Override
     public String toString() {
         return "UserGameDetails{" + "gameMode=" + gameMode + ", gameDifficultyLvl=" + gameDifficultyLvl + ", playerOneDetails=" + playerOneDetails + ", playerTwoDetails=" + playerTwoDetails + ", record=" + record + ", gameBordBeforRecording=" + gameBordBeforRecording + ", gameBord=" + gameBord + ", isRecorded=" + isRecorded + '}';
     }
-    
-    
-    
     
     private GameModes gameMode;
     private GameDifficultyLvl gameDifficultyLvl;
