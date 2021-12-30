@@ -14,15 +14,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import static java.lang.System.in;
-import static java.lang.System.out;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.json.JSONException;
-import org.json.*;
 
 /**
  *
@@ -50,18 +46,17 @@ public class JavaXOServer {
             Logger.getLogger(JavaXOServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 }
 
 class RequestHandler extends Thread {
     DataInputStream dis;
     DataOutputStream ps;
-    static Vector<RequestHandler> clientsVector = new Vector<RequestHandler>();
+//    static Vector<RequestHandler> clientsVector = new Vector<RequestHandler>();
+//    clientsVector.add(this);
 
     public RequestHandler(Socket cs) throws IOException {
         dis = new DataInputStream(cs.getInputStream());
         ps = new DataOutputStream(cs.getOutputStream());
-        clientsVector.add(this);
         start();
     }
 
@@ -121,7 +116,7 @@ class RequestHandler extends Thread {
             } 
             
             catch (java.net.SocketException ex) {
-                clientsVector.remove(this);
+//                clientsVector.remove(this);
                 break;
             }catch (IOException ex) {
                 Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);

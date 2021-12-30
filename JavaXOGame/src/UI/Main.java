@@ -5,6 +5,8 @@
  */
 package UI;
 
+import Utils.ConnectionManager;
+
 /**
  *
  * @author A H M E D
@@ -14,8 +16,10 @@ public class Main extends javax.swing.JFrame {
     /**
      * Creates new form Main
      */
+    ConnectionManager cm;
     public Main() {
         initComponents();
+        cm = ConnectionManager.getInstance();
     }
 
     /**
@@ -76,7 +80,16 @@ public class Main extends javax.swing.JFrame {
                 new Main().setVisible(true);
             }
         });
+        
     }
+
+    @Override
+    public void disable() {
+        super.disable(); //To change body of generated methods, choose Tools | Templates.
+        cm.dispose();
+    }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

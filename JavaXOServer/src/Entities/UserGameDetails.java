@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,16 +44,22 @@ public class UserGameDetails extends BaseEntity {
         return new UserGameDetails(
                 GameModes.Single,
                 GameDifficultyLvl.Medium,
-                new PlayerDetails(new User("ahmed", "mo", "123123"), PlayerSimbole.X),
-                 new PlayerDetails(new User("ahmed2", "mo", "123123"), PlayerSimbole.O),
+                new PlayerDetails(UUID.randomUUID().toString(),
+                        new User("ahmed", "mo", "123123"),
+                        UserGameDetails.PlayerState.Loser, 
+                        PlayerSimbole.X
+                ),
+                new PlayerDetails(UUID.randomUUID().toString(),
+                        new User("ahmed2", "moo", "123123"),
+                        UserGameDetails.PlayerState.Winner,
+                        PlayerSimbole.O
+                ),
                 new HashMap(),
                 new HashMap(),
                 new HashMap(),
-                false);
+                false
+        );
     }
-
-    
-     
 
     private static Map<Integer,PlayerSimbole> toBordMap(Map<Integer, String> map){
         Map<Integer,PlayerSimbole> m = new HashMap();
@@ -231,6 +238,5 @@ public class UserGameDetails extends BaseEntity {
     private Map<Integer,PlayerSimbole> gameBordBeforRecording;
     private Map<Integer,PlayerSimbole> gameBord;
     private boolean isRecorded;
-
     
-   }
+}
