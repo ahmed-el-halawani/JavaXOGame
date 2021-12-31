@@ -162,6 +162,7 @@ class RequestHandler extends Thread {
                     s.close();
                     System.out.print("User quit");
                 } catch (IOException|SQLException ex1) {
+                    System.out.print("User quit");
                     Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex1);
                 } 
                 break;
