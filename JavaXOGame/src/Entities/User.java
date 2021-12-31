@@ -59,7 +59,6 @@ public class User extends BaseEntity{
     
     public String toJson() throws JsonProcessingException {
         ObjectMapper obm = new ObjectMapper();
-        
         return obm.writeValueAsString(this);
     }
     
@@ -87,7 +86,15 @@ public class User extends BaseEntity{
         this.userType = UserType.Cpu;
     }
     
-    private User(String id,String name, String userName, String password,UserType userType) {
+    public User(String id,String name, String userName, String password,UserType userType) {
+        super(id);
+        this.name = name;
+        this.userName = userName;
+        this.password = password;
+        this.userType = userType;
+    }
+    
+    public User(String id,String name, String userName, String password) {
         super(id);
         this.name = name;
         this.userName = userName;
@@ -97,10 +104,8 @@ public class User extends BaseEntity{
 
     @Override
     public String toString() {
-        return "User{" + "name=" + name + ",\n userName=" + userName + ",\n password=" + password + ",\n userType=" + userType + "\n}\n";
+        return "User{\n" + "id=" + id + ",\nname=" + name +",\n userName=" + userName + ",\n password=" + password + ",\n userType=" + userType + "\n}";
     }
-    
-   
     
     
     

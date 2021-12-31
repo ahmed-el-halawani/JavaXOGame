@@ -7,9 +7,16 @@ package Entities;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -172,6 +179,16 @@ public class UserGameDetails extends BaseEntity {
         return getPlayerWithUserName(userName).getPlayerState();
     }
 
+    public boolean isIsRecorded() {
+        return isRecorded;
+    }
+
+    public void setIsRecorded(boolean isRecorded) {
+        this.isRecorded = isRecorded;
+    }
+    
+    
+
     public UserGameDetails(
             String id,
             GameModes gameMode, 
@@ -215,6 +232,23 @@ public class UserGameDetails extends BaseEntity {
         this.isRecorded = isRecorded;
 
     }
+    
+    public UserGameDetails(
+            GameModes gameMode, 
+            GameDifficultyLvl gameDifficultyLvl, 
+            PlayerDetails playerOneDetails, 
+            PlayerDetails playerTwoDetails
+    ) {
+        this.gameMode = gameMode;
+        this.gameDifficultyLvl = gameDifficultyLvl;
+        this.playerOneDetails = playerOneDetails;
+        this.playerTwoDetails = playerTwoDetails;
+        this.record = new HashMap();
+        this.gameBordBeforRecording = new HashMap();
+        this.gameBord = new HashMap();
+        this.isRecorded = false;
+
+    }
 
     public UserGameDetails(
             GameModes gameMode,
@@ -239,10 +273,15 @@ public class UserGameDetails extends BaseEntity {
                 );
     }
     
+    
+    
     @Override
     public String toString() {
-        return "UserGameDetails{" + "gameMode=" + gameMode + ", gameDifficultyLvl=" + gameDifficultyLvl + ", playerOneDetails=" + playerOneDetails + ", playerTwoDetails=" + playerTwoDetails + ", record=" + record + ", gameBordBeforRecording=" + gameBordBeforRecording + ", gameBord=" + gameBord + ", isRecorded=" + isRecorded + '}';
+        return "UserGameDetails{\n" + "id=" + id+ ",\n gameMode=" + gameMode + ",\n gameDifficultyLvl=" + gameDifficultyLvl + ",\n playerOneDetails=" + playerOneDetails + ",\n playerTwoDetails=" + playerTwoDetails + ",\n record=" + record + ",\n gameBordBeforRecording=" + gameBordBeforRecording + ",\n gameBord=" + gameBord + ",\n isRecorded=" + isRecorded + "\n}";
     }
+    
+    
+    
     
     private GameModes gameMode;
     private GameDifficultyLvl gameDifficultyLvl;

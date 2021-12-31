@@ -15,23 +15,23 @@ import org.json.JSONObject;
  * @author A H M E D
  */
 public class PlayerDetails extends BaseEntity {
-    public PlayerDetails() {
-    }
+   
     
-     public static PlayerDetails fromJson(String body) throws  JsonProcessingException{
+    public static PlayerDetails fromJson(String body) throws  JsonProcessingException{
            ObjectMapper obm = new ObjectMapper();
             return obm.readValue(body, PlayerDetails.class);
-        }
-
-    
-     
-     
+    }
         
     public String toJson() throws JsonProcessingException {
         ObjectMapper obm = new ObjectMapper();
         
         return obm.writeValueAsString(this);
     }
+    
+    @Override
+        public String toString() {
+            return "PlayerDetails{\n" +"player=" + player + ",\n player=" + player + ",\n playerState=" + playerState + ",\n PlayerSimbole=" + PlayerSimbole + "\n}";
+        }
     
 
         public User getPlayer() {
@@ -70,14 +70,10 @@ public class PlayerDetails extends BaseEntity {
             this.PlayerSimbole = playerSample;
             this.playerState = UserGameDetails.PlayerState.Draw;
         }
-
-    
-        @Override
-        public String toString() {
-            return "PlayerDetails{" + "player=" + player + ", playerState=" + playerState + ", PlayerSimbole=" + PlayerSimbole + '}';
+        
+        public PlayerDetails() {
         }
-        
-        
+    
         private User player;
         private UserGameDetails.PlayerState playerState;
         private UserGameDetails.PlayerSimbole  PlayerSimbole;
