@@ -97,8 +97,10 @@ public class User extends BaseEntity{
 
     @Override
     public String toString() {
-        return "User{" + "name=" + name + ", userName=" + userName + ", password=" + password + ", userType=" + userType + '}';
+        return "User{" + "name=" + name + ",\n userName=" + userName + ",\n password=" + password + ",\n userType=" + userType + "\n}\n";
     }
+    
+   
     
     
     
