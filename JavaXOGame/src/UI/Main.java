@@ -5,6 +5,7 @@
  */
 package UI;
 
+import Testing.MainTest;
 import Utils.ConnectionManager;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -84,7 +85,13 @@ public class Main extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Main().setVisible(true);
+                boolean isTesting = true;
+                if(isTesting){
+                    new MainTest().setVisible(true);
+                }else{
+                    new Main().setVisible(true);
+
+                }
             }
         });
         
