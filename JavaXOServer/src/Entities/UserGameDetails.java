@@ -31,6 +31,7 @@ public class UserGameDetails extends BaseEntity {
     public static UserGameDetails fromResultSet(ResultSet rs,PlayerDetails playerOne,PlayerDetails playerTwo) throws SQLException, JsonProcessingException {
         ObjectMapper obm = new ObjectMapper();
         return new UserGameDetails(
+            rs.getString("ID"),
             GameModes.valueOf(rs.getString("GAMEMODE")),
             GameDifficultyLvl.valueOf(rs.getString("GAMEDIFFICULTYLVL")),
             playerOne,

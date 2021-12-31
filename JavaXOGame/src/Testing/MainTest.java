@@ -40,11 +40,9 @@ public final class MainTest extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        getUser = new javax.swing.JButton();
-        id = new javax.swing.JTextField();
         getAllUsers = new javax.swing.JButton();
         getAllUsers1 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
@@ -54,6 +52,11 @@ public final class MainTest extends javax.swing.JFrame {
         jRadioButton2 = new javax.swing.JRadioButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         messages = new javax.swing.JTextArea();
+        jPanel6 = new javax.swing.JPanel();
+        getUser2 = new javax.swing.JButton();
+        withUserId1 = new javax.swing.JTextField();
+        userWithId = new javax.swing.JRadioButton();
+        userWithName = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(800, 500));
@@ -64,18 +67,6 @@ public final class MainTest extends javax.swing.JFrame {
 
         jPanel3.setMinimumSize(new java.awt.Dimension(200, 200));
         jPanel3.setPreferredSize(new java.awt.Dimension(200, 150));
-
-        jPanel2.setPreferredSize(new java.awt.Dimension(258, 30));
-        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
-
-        getUser.setText("get user");
-        getUser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getUserActionPerformed(evt);
-            }
-        });
-        jPanel2.add(getUser);
-        jPanel2.add(id);
 
         getAllUsers.setText("getAllUsers");
         getAllUsers.addActionListener(new java.awt.event.ActionListener() {
@@ -105,7 +96,6 @@ public final class MainTest extends javax.swing.JFrame {
 
         buttonGroup1.add(jRadioButton1);
         jRadioButton1.setMnemonic('1');
-        jRadioButton1.setSelected(true);
         jRadioButton1.setText("with user id");
         jPanel5.add(jRadioButton1);
 
@@ -118,6 +108,30 @@ public final class MainTest extends javax.swing.JFrame {
         messages.setColumns(20);
         messages.setRows(5);
         jScrollPane1.setViewportView(messages);
+
+        jPanel6.setPreferredSize(new java.awt.Dimension(258, 30));
+        jPanel6.setLayout(new javax.swing.BoxLayout(jPanel6, javax.swing.BoxLayout.LINE_AXIS));
+
+        getUser2.setText("get all UserGamesData");
+        getUser2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                getUser2ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(getUser2);
+        jPanel6.add(withUserId1);
+
+        buttonGroup2.add(userWithId);
+        userWithId.setMnemonic('1');
+        userWithId.setSelected(true);
+        userWithId.setText("user with id");
+        jPanel6.add(userWithId);
+
+        buttonGroup2.add(userWithName);
+        userWithName.setMnemonic('2');
+        userWithName.setText("user with name");
+        userWithName.setToolTipText("");
+        jPanel6.add(userWithName);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -135,20 +149,20 @@ public final class MainTest extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(0, 0, 0)))
                         .addContainerGap())))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(15, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 604, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -163,49 +177,58 @@ public final class MainTest extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void getAllUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllUsersActionPerformed
-        ArrayList<User> users = userCrud.getAll();
-        System.out.println(users);
+    private void getUser2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getUser2ActionPerformed
+        User user = null;
         
-        messages.setText(users.toString());
-    }//GEN-LAST:event_getAllUsersActionPerformed
-
-    private void getUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getUserActionPerformed
-        User user =userCrud.get(id.getText());
-        System.out.println(user);
-        messages.setText(user.toString());
-    }//GEN-LAST:event_getUserActionPerformed
-
-    private void getAllUsers1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllUsers1ActionPerformed
-                try {
-        ArrayList<UserGameDetails> userGameDetails;
-            userGameDetails = userGameDetailsCrud.getAll();
-        
-        System.out.println(userGameDetails);
-        messages.setText(userGameDetails.toString());
-        } catch (IOException ex) {
-            Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
+        if(buttonGroup2.getSelection().getMnemonic()==userWithId.getMnemonic()){
+            user = userCrud.get(withUserId1.getText());
+        }else{
+            user = userCrud.getWithUserName(withUserId1.getText());
         }
-    }//GEN-LAST:event_getAllUsers1ActionPerformed
+        System.out.println(user);
+        if(user!=null)
+            messages.setText(user.toString());
+        else
+            messages.setText("no user with this id or user name");
+        
+    }//GEN-LAST:event_getUser2ActionPerformed
 
     private void getUser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getUser1ActionPerformed
         try {
             System.out.println(buttonGroup1.getSelection().getMnemonic());
-            
-                        
+
             ArrayList<UserGameDetails> userGameDetails;
             if(buttonGroup1.getSelection().getMnemonic()==jRadioButton1.getMnemonic()){
                 userGameDetails = userGameDetailsCrud.getAllWithId(withUserId.getText().trim());
             }else{
                 userGameDetails = userGameDetailsCrud.getAllWithUserName(withUserId.getText());
             }
-        
+
             System.out.println(userGameDetails);
             messages.setText(userGameDetails.toString());
         } catch (IOException ex) {
             Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_getUser1ActionPerformed
+
+    private void getAllUsers1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllUsers1ActionPerformed
+        try {
+            ArrayList<UserGameDetails> userGameDetails;
+            userGameDetails = userGameDetailsCrud.getAll();
+
+            System.out.println(userGameDetails);
+            messages.setText(userGameDetails.toString());
+        } catch (IOException ex) {
+            Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_getAllUsers1ActionPerformed
+
+    private void getAllUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllUsersActionPerformed
+        ArrayList<User> users = userCrud.getAll();
+        System.out.println(users);
+
+        messages.setText(users.toString());
+    }//GEN-LAST:event_getAllUsersActionPerformed
 
     /**
      * @param args the command line arguments
@@ -244,19 +267,22 @@ public final class MainTest extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton getAllUsers;
     private javax.swing.JButton getAllUsers1;
-    private javax.swing.JButton getUser;
     private javax.swing.JButton getUser1;
-    private javax.swing.JTextField id;
+    private javax.swing.JButton getUser2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea messages;
+    private javax.swing.JRadioButton userWithId;
+    private javax.swing.JRadioButton userWithName;
     private javax.swing.JTextField withUserId;
+    private javax.swing.JTextField withUserId1;
     // End of variables declaration//GEN-END:variables
 }

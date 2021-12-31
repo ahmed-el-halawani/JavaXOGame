@@ -91,17 +91,38 @@ public class UserCrud{
 
 }
 
-    public User get(String idParam)throws JSONException, IOException, SQLException {
+    public User get(String params)throws JSONException, IOException, SQLException {
         final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
+        final ArrayList<User> users = new ArrayList<>();
         final ObjectMapper mapper = new ObjectMapper();
-
-        JSONObject jsonObject = new JSONObject(idParam);
+        final JSONObject jsonObject = new JSONObject(params);
         final String id = jsonObject.getString("id");
 
+        PreparedStatement query = con.prepareStatement("SELECT * FROM USERDATA WHERE ID=?");
+        query.setString(1,id);
+        ResultSet rs = query.executeQuery();
+        if(rs.next()){
+            return User.fromResultSet(rs);
+        }else{
+             return null;
+        }
+    }
+    
+    public User getWithUserName(String params)throws JSONException, IOException, SQLException {
+        final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
+        final ArrayList<User> users = new ArrayList<>();
+        final ObjectMapper mapper = new ObjectMapper();
+        final JSONObject jsonObject = new JSONObject(params);
+        final String userName = jsonObject.getString("userName");
 
-        User u = getWithId(con, id);
-        
-        return u;
+        PreparedStatement query = con.prepareStatement("SELECT * FROM USERDATA WHERE USERNAME=?");
+        query.setString(1,userName);
+        ResultSet rs = query.executeQuery();
+        if(rs.next()){
+            return User.fromResultSet(rs);
+        }else{
+             return null;
+        }
     }
 
     public ArrayList<User> getAll()throws JSONException, IOException, SQLException {

@@ -172,6 +172,42 @@ public  class UserCrud implements ICrud<User>{
         return null;
     }
 
+    public User getWithUserName(String userName) {
+        Map<String,String> m = new HashMap();
+        m.put("userName",userName);
+        try {
+            JsonAction jsonAction = new JsonAction(
+                    "",
+                    JsonAction.Types.GetAllWithUesrName,
+                    this.getClass(),
+                    obm.writeValueAsString(m)
+            );
+            System.out.println(obm.writeValueAsString(jsonAction));
+            out.writeUTF(obm.writeValueAsString(jsonAction));
+            
+            
+            Responce res = obm.readValue(in.readUTF(), Responce.class);
+            
+            if(res.getStatusCode() == 200){
+                if(res.getObject().equals("null")){
+                    return null;
+                }
+            
+                return obm.readValue(res.getObject(), User.class);
+            }else{
+                throw new IOException(res.getObject());
+            }
+            
+            
+            
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
     @Override
     public synchronized ArrayList<User> getAll() {
          Map<String,String> m = new HashMap();

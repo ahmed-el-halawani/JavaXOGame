@@ -30,7 +30,7 @@ public class PlayerDetails extends BaseEntity {
     
     @Override
         public String toString() {
-            return "PlayerDetails{\n" +"player=" + player + ",\n player=" + player + ",\n playerState=" + playerState + ",\n PlayerSimbole=" + PlayerSimbole + "\n}";
+            return "PlayerDetails{\n" +"id=" + id + ",\n player=" + player + ",\n playerState=" + playerState + ",\n PlayerSimbole=" + PlayerSimbole + "\n}";
         }
     
 

@@ -103,7 +103,11 @@ class RequestHandler extends Thread {
                         break;
                         case Get:
                             User user = userCrud.get(action.getParams());
-                            new Responce(200, user.toJson()).sendJson(out);
+                            new Responce(200, user!=null?user.toJson():"null").sendJson(out);
+                        break;
+                        case GetAllWithUesrName:
+                            User userWithUserName = userCrud.getWithUserName(action.getParams());
+                            new Responce(200, userWithUserName!=null?userWithUserName.toJson():"null").sendJson(out);
                         break;
                         case Update:
                             Integer updatedRow = userCrud.update(action.getParams(),new ObjectMapper().readValue(action.getObject(), User.class));
@@ -126,7 +130,7 @@ class RequestHandler extends Thread {
                         break;
                         case Get:
                             UserGameDetails userGameDetails = userGameDetailsCrud.get(action.getParams());
-                            new Responce(200, userGameDetails.toJson()).sendJson(out);
+                            new Responce(200, userGameDetails!=null?userGameDetails.toJson():"null").sendJson(out);
                         break;
                         case Update:
                             Integer updatedRow = userGameDetailsCrud.update(action.getParams(),new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
@@ -149,8 +153,11 @@ class RequestHandler extends Thread {
                 
             } 
             
+        
+            
             catch ( IOException ex) {
                 try {
+                    new Responce(404, ex.toString()).sendJson(out);
                     con.close();
                     s.close();
                     System.out.print("User quit");
