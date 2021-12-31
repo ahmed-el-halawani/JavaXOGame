@@ -1,23 +1,11 @@
 package Utils;
 
-import Entities.PlayerDetails;
-import Entities.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.json.JSONException;
-import org.json.JSONObject;
+import Entities.*;
+import java.io.*;
+import java.sql.*;
+import java.util.*;
+import org.json.*;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

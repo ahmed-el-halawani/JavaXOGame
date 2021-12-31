@@ -7,22 +7,10 @@ package Utils;
 
 import Entities.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.io.*;
+import java.sql.*;
+import java.util.*;
+import org.json.*;
 
 /**
  *
@@ -31,17 +19,8 @@ import org.json.JSONObject;
 
 
 public class UserCrud{
-    DataOutputStream out;
-    DataInputStream in;
-    Connection con;
-
-    public UserCrud( DataInputStream in,DataOutputStream out,Connection con) {
-        this.out = out;
-        this.in = in;
-        this.con= con;
-    }
     
-    public void add(User entity) throws JSONException, IOException, SQLException{
+    public int add(User entity) throws JSONException, IOException, SQLException{
         System.out.print(entity);
          
         String id = UUID.randomUUID().toString();
@@ -52,11 +31,12 @@ public class UserCrud{
         query.setString(4,entity.getPassword());
         query.setString(5,entity.getUserType().name());
 
-        out.writeInt(query.executeUpdate());
+//        out.writeInt();
+        return query.executeUpdate();
             
     }
 
-    public void update(String idParam, User entity) throws JSONException, IOException, SQLException {
+    public int update(String idParam, User entity) throws JSONException, IOException, SQLException {
         JSONObject jsonObject = new JSONObject(idParam);
         final String id = jsonObject.getString("id");
         
@@ -76,11 +56,12 @@ public class UserCrud{
         query.setString(4,entity.getUserType().name());
         query.setString(5,id);
 
-        out.writeInt(query.executeUpdate());
+//        out.writeInt(query.executeUpdate());
+        return query.executeUpdate();
            
     }
 
-    public void delete(String idParam)throws JSONException, IOException, SQLException {
+    public int delete(String idParam)throws JSONException, IOException, SQLException {
            JSONObject jsonObject = new JSONObject(idParam);
         final String id = jsonObject.getString("id");
         PreparedStatement query = con.prepareStatement(
@@ -89,7 +70,8 @@ public class UserCrud{
 
         query.setString(1,id);
 
-        out.writeInt(query.executeUpdate());
+//        out.writeInt(query.executeUpdate());
+        return query.executeUpdate();
       
     }
     
@@ -101,7 +83,7 @@ public class UserCrud{
             PreparedStatement query = con.prepareStatement("SELECT * FROM USERDATA WHERE ID=?");
             query.setString(1,id);
             ResultSet rs = query.executeQuery();
-             if(rs.next()){
+            if(rs.next()){
                 return User.fromResultSet(rs);
             }else{
                  return null;
@@ -109,7 +91,7 @@ public class UserCrud{
 
 }
 
-    public void get(String idParam)throws JSONException, IOException, SQLException {
+    public User get(String idParam)throws JSONException, IOException, SQLException {
         final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
         final ObjectMapper mapper = new ObjectMapper();
 
@@ -118,34 +100,36 @@ public class UserCrud{
 
 
         User u = getWithId(con, id);
-        if(u !=null){
-            out.writeUTF(u.toJson());
-        }else{
-            out.writeUTF("null");
-        }
+        
+        return u;
     }
 
-    public void getAll()throws JSONException, IOException, SQLException {
-        final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
-        final ObjectMapper mapper = new ObjectMapper();
-
-
+    public ArrayList<User> getAll()throws JSONException, IOException, SQLException {
+        final ArrayList<User> users = new ArrayList<>();
+        
+        PreparedStatement query = null;
+        ResultSet rs = null;
      
-            ArrayList<User> users = new ArrayList<>();
-            String id = UUID.randomUUID().toString();
-            PreparedStatement query = con.prepareStatement("SELECT * FROM USERDATA");
-            ResultSet rs = query.executeQuery();
+        query = con.prepareStatement("SELECT * FROM USERDATA");
+        rs = query.executeQuery();
 
-            while(rs.next()){
-               users.add(User.fromResultSet(rs));
-            }
-
-             mapper.writeValue(out2,  users);
-
-            final byte[] data = out2.toByteArray();
-            System.out.println(new String(data));
-
-            out.writeUTF(new String(data));
-       
+        while(rs.next()){
+           users.add(User.fromResultSet(rs));
+        }
+        return users;
     }
+    
+    
+    public UserCrud( DataInputStream in,DataOutputStream out,Connection con) {
+        this.out = out;
+        this.in = in;
+        this.con= con;
+        this.mapper = new ObjectMapper();
+    }
+    
+    final private DataOutputStream out;
+    final private DataInputStream in;
+    final private Connection con;
+    final private ObjectMapper mapper;
+
 }

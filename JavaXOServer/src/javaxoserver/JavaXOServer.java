@@ -5,25 +5,16 @@
  */
 package javaxoserver;
 
-import Entities.User;
-import Entities.UserGameDetails;
-import Utils.JsonAction;
-import Utils.PlayerDetailsCrud;
-import Utils.UserCrud;
-import Utils.UserGameDetailsCrud;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.Vector;
+import org.json.JSONException;
+import Entities.*;
+import Utils.*;
+import java.io.*;
+import java.net.*;
+import java.sql.*;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.json.JSONException;
 
 /**
  *
@@ -39,9 +30,7 @@ public class JavaXOServer {
             Socket s = serverSocket.accept();
             System.out.println("hi Client how r u?");
             System.out.println("garsone handle him but him in ur eaise");
-            DataInputStream in = new DataInputStream(s.getInputStream());
-            DataOutputStream out = new DataOutputStream(s.getOutputStream());
-            new RequestHandler(in,out);
+            new RequestHandler(s);
             
         }
     }
@@ -70,16 +59,19 @@ class Room{
 class RequestHandler extends Thread {
     DataInputStream in;
     DataOutputStream out;
+    Socket s;
     Connection con;
 
 //    static Vector<RequestHandler> clientsVector = new Vector<RequestHandler>();
 //    clientsVector.add(this);
 
-    public RequestHandler(DataInputStream in,DataOutputStream out) {
+    public RequestHandler(Socket s) throws IOException {
         try {
-            this.in = in;
-            this.out = out;
+            this.in = new DataInputStream(s.getInputStream());
+            this.out = new DataOutputStream(s.getOutputStream());
+            this.s = s;
             con = DriverManager.getConnection("jdbc:derby://localhost:1527/javaOXDatabase","javaProject","javaProject");
+            new Responce(200, "Done").sendJson(out);
             start();
         } catch (SQLException ex) {
             Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -97,71 +89,82 @@ class RequestHandler extends Thread {
                 System.out.println(str);
                 JsonAction action = JsonAction.fromJson(str);
                 
-                if(action.getCt() == User.class){
-                    System.out.println("here we are again");
-                }
-                
-                
+                System.out.println("action: "+action);
           
                 if(action.getCt() == UserCrud.class){
                     switch(action.getType()){
                         case Add:
-                            userCrud.add(new ObjectMapper().readValue(action.getObject(), User.class));
+                            Integer res = userCrud.add(new ObjectMapper().readValue(action.getObject(), User.class));
+                            new Responce(200, res.toString()).sendJson(out);
                         break;
                         case GetAll:
-                            userCrud.getAll();
+                            ArrayList<User> users = userCrud.getAll();
+                            new Responce(200, Responce.arrayToString(users)).sendJson(out);
                         break;
                         case Get:
-                            userCrud.get(action.getParams());
+                            User user = userCrud.get(action.getParams());
+                            new Responce(200, user.toJson()).sendJson(out);
                         break;
                         case Update:
-                            userCrud.update(action.getParams(),new ObjectMapper().readValue(action.getObject(), User.class));
+                            Integer updatedRow = userCrud.update(action.getParams(),new ObjectMapper().readValue(action.getObject(), User.class));
+                            new Responce(200, updatedRow.toString()).sendJson(out);
                         break;
                         case Delete:
-                            userCrud.delete(action.getParams());
+                            Integer deletedRow= userCrud.delete(action.getParams());
+                            new Responce(200, deletedRow.toString()).sendJson(out);
                         break;
                     }
                 }else if(action.getCt() == UserGameDetailsCrud.class){
                      switch(action.getType()){
                         case Add:
-                           userGameDetailsCrud.add(new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
+                            Integer addedRow = userGameDetailsCrud.add(new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
+                            new Responce(200, addedRow.toString()).sendJson(out);
                         break;
                         case GetAll:
-                            userGameDetailsCrud.getAll();
+                            ArrayList<UserGameDetails> array = userGameDetailsCrud.getAll();
+                            new Responce(200, Responce.arrayToString(array)).sendJson(out);
                         break;
                         case Get:
-                            userGameDetailsCrud.get(action.getParams());
+                            UserGameDetails userGameDetails = userGameDetailsCrud.get(action.getParams());
+                            new Responce(200, userGameDetails.toJson()).sendJson(out);
                         break;
                         case Update:
-                            userGameDetailsCrud.update(action.getParams(),new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
-                        break;
+                            Integer updatedRow = userGameDetailsCrud.update(action.getParams(),new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
+                            new Responce(200, updatedRow.toString()).sendJson(out);
+                            break;
                         case Delete:
-                            userGameDetailsCrud.delete(action.getParams());
+                            Integer deletedRow =userGameDetailsCrud.delete(action.getParams());
+                            new Responce(200, deletedRow.toString()).sendJson(out);
                         break;
                         case GetAllWithId:
-                            userGameDetailsCrud.getAllWithId(action.getParams());
+                            ArrayList<UserGameDetails> arrayWithId =userGameDetailsCrud.getAllWithId(action.getParams());
+                            new Responce(200, Responce.arrayToString(arrayWithId)).sendJson(out);
                         break;
                         case GetAllWithUesrName:
-                            userGameDetailsCrud.getAllWithUserName(action.getParams());
+                           ArrayList<UserGameDetails> arrayWithUserName = userGameDetailsCrud.getAllWithUserName(action.getParams());
+                            new Responce(200, Responce.arrayToString(arrayWithUserName)).sendJson(out);
                         break;
                      }
                 }
                 
-                
-                System.out.println(action);
             } 
             
-            catch (java.net.SocketException ex) {
-//                clientsVector.remove(this);
+            catch ( IOException ex) {
+                try {
+                    con.close();
+                    s.close();
+                    System.out.print("User quit");
+                } catch (IOException|SQLException ex1) {
+                    Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex1);
+                } 
                 break;
-            }catch (IOException ex) {
+            } catch (JSONException |SQLException ex) {
                 Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
-                
-            } catch (JSONException ex) {
-                Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                
-                Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
+                try {
+                    new Responce(404, ex.toString()).sendJson(out);
+                } catch (IOException ex1) {
+                    Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex1);
+                }
             } 
         }
     }
