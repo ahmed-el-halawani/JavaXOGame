@@ -6,6 +6,9 @@
 package UI;
 
 import Utils.ConnectionManager;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,7 +22,11 @@ public class Main extends javax.swing.JFrame {
     ConnectionManager cm;
     public Main() {
         initComponents();
-        cm = ConnectionManager.getInstance();
+        try {
+            cm = ConnectionManager.getInstance();
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
