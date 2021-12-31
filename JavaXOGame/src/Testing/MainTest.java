@@ -53,23 +53,12 @@ public class MainTest extends javax.swing.JFrame {
         messages = new javax.swing.JTextArea();
         jPanel1 = new javax.swing.JPanel();
         getAllUsers = new javax.swing.JButton();
-        getAllUsers1 = new javax.swing.JButton();
-        getAllUsers2 = new javax.swing.JButton();
-        getAllUsers3 = new javax.swing.JButton();
-        getAllUsers4 = new javax.swing.JButton();
-        getAllUsers5 = new javax.swing.JButton();
-        getAllUsers6 = new javax.swing.JButton();
-        getAllUsers7 = new javax.swing.JButton();
-        getAllUsers8 = new javax.swing.JButton();
-        getAllUsers9 = new javax.swing.JButton();
-        getAllUsers10 = new javax.swing.JButton();
-        getAllUsers11 = new javax.swing.JButton();
-        getAllUsers12 = new javax.swing.JButton();
-        getAllUsers13 = new javax.swing.JButton();
-        getAllUsers14 = new javax.swing.JButton();
-        getAllUsers15 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        getUser = new javax.swing.JButton();
+        userId = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(800, 500));
 
         messages.setColumns(20);
         messages.setRows(5);
@@ -87,125 +76,20 @@ public class MainTest extends javax.swing.JFrame {
         });
         jPanel1.add(getAllUsers);
 
-        getAllUsers1.setText("getAllUsers");
-        getAllUsers1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getAllUsers1ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(getAllUsers1);
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
 
-        getAllUsers2.setText("getAllUsers");
-        getAllUsers2.addActionListener(new java.awt.event.ActionListener() {
+        getUser.setText("get user");
+        getUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getAllUsers2ActionPerformed(evt);
+                getUserActionPerformed(evt);
             }
         });
-        jPanel1.add(getAllUsers2);
+        jPanel2.add(getUser);
 
-        getAllUsers3.setText("getAllUsers");
-        getAllUsers3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getAllUsers3ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(getAllUsers3);
+        userId.setText("jTextField1");
+        jPanel2.add(userId);
 
-        getAllUsers4.setText("getAllUsers");
-        getAllUsers4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getAllUsers4ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(getAllUsers4);
-
-        getAllUsers5.setText("getAllUsers");
-        getAllUsers5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getAllUsers5ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(getAllUsers5);
-
-        getAllUsers6.setText("getAllUsers");
-        getAllUsers6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getAllUsers6ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(getAllUsers6);
-
-        getAllUsers7.setText("getAllUsers");
-        getAllUsers7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getAllUsers7ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(getAllUsers7);
-
-        getAllUsers8.setText("getAllUsers");
-        getAllUsers8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getAllUsers8ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(getAllUsers8);
-
-        getAllUsers9.setText("getAllUsers");
-        getAllUsers9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getAllUsers9ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(getAllUsers9);
-
-        getAllUsers10.setText("getAllUsers");
-        getAllUsers10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getAllUsers10ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(getAllUsers10);
-
-        getAllUsers11.setText("getAllUsers");
-        getAllUsers11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getAllUsers11ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(getAllUsers11);
-
-        getAllUsers12.setText("getAllUsers");
-        getAllUsers12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getAllUsers12ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(getAllUsers12);
-
-        getAllUsers13.setText("getAllUsers");
-        getAllUsers13.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getAllUsers13ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(getAllUsers13);
-
-        getAllUsers14.setText("getAllUsers");
-        getAllUsers14.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getAllUsers14ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(getAllUsers14);
-
-        getAllUsers15.setText("getAllUsers");
-        getAllUsers15.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getAllUsers15ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(getAllUsers15);
+        jPanel1.add(jPanel2);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
@@ -219,65 +103,9 @@ public class MainTest extends javax.swing.JFrame {
         messages.setText(users.toString());
     }//GEN-LAST:event_getAllUsersActionPerformed
 
-    private void getAllUsers1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllUsers1ActionPerformed
+    private void getUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getUserActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_getAllUsers1ActionPerformed
-
-    private void getAllUsers2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllUsers2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_getAllUsers2ActionPerformed
-
-    private void getAllUsers3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllUsers3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_getAllUsers3ActionPerformed
-
-    private void getAllUsers4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllUsers4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_getAllUsers4ActionPerformed
-
-    private void getAllUsers5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllUsers5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_getAllUsers5ActionPerformed
-
-    private void getAllUsers6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllUsers6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_getAllUsers6ActionPerformed
-
-    private void getAllUsers7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllUsers7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_getAllUsers7ActionPerformed
-
-    private void getAllUsers8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllUsers8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_getAllUsers8ActionPerformed
-
-    private void getAllUsers9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllUsers9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_getAllUsers9ActionPerformed
-
-    private void getAllUsers10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllUsers10ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_getAllUsers10ActionPerformed
-
-    private void getAllUsers11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllUsers11ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_getAllUsers11ActionPerformed
-
-    private void getAllUsers12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllUsers12ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_getAllUsers12ActionPerformed
-
-    private void getAllUsers13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllUsers13ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_getAllUsers13ActionPerformed
-
-    private void getAllUsers14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllUsers14ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_getAllUsers14ActionPerformed
-
-    private void getAllUsers15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllUsers15ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_getAllUsers15ActionPerformed
+    }//GEN-LAST:event_getUserActionPerformed
 
     /**
      * @param args the command line arguments
@@ -316,23 +144,11 @@ public class MainTest extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton getAllUsers;
-    private javax.swing.JButton getAllUsers1;
-    private javax.swing.JButton getAllUsers10;
-    private javax.swing.JButton getAllUsers11;
-    private javax.swing.JButton getAllUsers12;
-    private javax.swing.JButton getAllUsers13;
-    private javax.swing.JButton getAllUsers14;
-    private javax.swing.JButton getAllUsers15;
-    private javax.swing.JButton getAllUsers2;
-    private javax.swing.JButton getAllUsers3;
-    private javax.swing.JButton getAllUsers4;
-    private javax.swing.JButton getAllUsers5;
-    private javax.swing.JButton getAllUsers6;
-    private javax.swing.JButton getAllUsers7;
-    private javax.swing.JButton getAllUsers8;
-    private javax.swing.JButton getAllUsers9;
+    private javax.swing.JButton getUser;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea messages;
+    private javax.swing.JTextField userId;
     // End of variables declaration//GEN-END:variables
 }
