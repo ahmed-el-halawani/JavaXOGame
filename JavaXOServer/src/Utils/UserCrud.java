@@ -30,113 +30,70 @@ import org.json.JSONObject;
  */
 
 
-public class UserCrud implements ICrud<User>{
+public class UserCrud{
     DataOutputStream out;
     DataInputStream in;
+    Connection con;
 
-    public UserCrud( DataInputStream in,DataOutputStream out) {
+    public UserCrud( DataInputStream in,DataOutputStream out,Connection con) {
         this.out = out;
         this.in = in;
+        this.con= con;
     }
     
-    @Override
-    public void add(User entity) throws JSONException, IOException {
+    public void add(User entity) throws JSONException, IOException, SQLException{
         System.out.print(entity);
-        Connection con = null;
-         try {
-                con = DriverManager.getConnection("jdbc:derby://localhost:1527/javaOXDatabase","javaProject","javaProject");
-                String id = UUID.randomUUID().toString();
-                PreparedStatement query = con.prepareStatement("INSERT INTO USERDATA VALUES(?,?,?,?,?)");
-                query.setString(1,id);
-                query.setString(2,entity.getName());
-                query.setString(3,entity.getUserName());
-                query.setString(4,entity.getPassword());
-                query.setString(5,entity.getUserType().name());
-                
-                out.writeInt(query.executeUpdate());
-            } catch (IOException ex) {
-                Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-            }finally{
-                try {
-                    con.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+         
+        String id = UUID.randomUUID().toString();
+        PreparedStatement query = con.prepareStatement("INSERT INTO USERDATA VALUES(?,?,?,?,?)");
+        query.setString(1,id);
+        query.setString(2,entity.getName());
+        query.setString(3,entity.getUserName());
+        query.setString(4,entity.getPassword());
+        query.setString(5,entity.getUserType().name());
+
+        out.writeInt(query.executeUpdate());
+            
     }
 
-    @Override
-    public void update(String idParam, User entity) throws JSONException, IOException {
+    public void update(String idParam, User entity) throws JSONException, IOException, SQLException {
         JSONObject jsonObject = new JSONObject(idParam);
         final String id = jsonObject.getString("id");
-        Connection con = null;
-         try {
-                con = DriverManager.getConnection("jdbc:derby://localhost:1527/javaOXDatabase","javaProject","javaProject");
-                PreparedStatement query = con.prepareStatement(
-                        "UPDATE USERDATA "
-                        + "SET "
-                        + "NAME = ?,"
-                        + "USERNAME = ?,"
-                        + "PASSWORD = ?,"
-                        + "USERTYPE = ? "
-                        + "WHERE ID=?"
-                );
-                
-                query.setString(1,entity.getName());
-                query.setString(2,entity.getUserName());
-                query.setString(3,entity.getPassword());
-                query.setString(4,entity.getUserType().name());
-                query.setString(5,id);
-
-                out.writeInt(query.executeUpdate());
-            } catch (IOException ex) {
-                Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-            }finally{
-             try {
-                   con.close();
-               } catch (SQLException ex) {
-                   Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-               }
-         }
-            
-            
         
+        PreparedStatement query = con.prepareStatement(
+                "UPDATE USERDATA "
+                + "SET "
+                + "NAME = ?,"
+                + "USERNAME = ?,"
+                + "PASSWORD = ?,"
+                + "USERTYPE = ? "
+                + "WHERE ID=?"
+        );
+
+        query.setString(1,entity.getName());
+        query.setString(2,entity.getUserName());
+        query.setString(3,entity.getPassword());
+        query.setString(4,entity.getUserType().name());
+        query.setString(5,id);
+
+        out.writeInt(query.executeUpdate());
+           
     }
 
-    @Override
-    public void delete(String idParam)throws JSONException, IOException {
+    public void delete(String idParam)throws JSONException, IOException, SQLException {
            JSONObject jsonObject = new JSONObject(idParam);
         final String id = jsonObject.getString("id");
-        
-            Connection con = null;
-         try {
-                con = DriverManager.getConnection("jdbc:derby://localhost:1527/javaOXDatabase","javaProject","javaProject");
-                PreparedStatement query = con.prepareStatement(
-                        "DELETE FROM  USERDATA WHERE ID =?"
-                );
-                
-                query.setString(1,id);
+        PreparedStatement query = con.prepareStatement(
+                "DELETE FROM  USERDATA WHERE ID =?"
+        );
 
-                out.writeInt(query.executeUpdate());
-            } catch (IOException ex) {
-                Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-            }finally{
-               try {
-                   con.close();
-               } catch (SQLException ex) {
-                   Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-               }
-         }
+        query.setString(1,id);
+
+        out.writeInt(query.executeUpdate());
       
     }
     
-    public User getWithId(Connection con,String id) throws SQLException{
+    public User getWithId(Connection con,String id) throws JSONException, IOException, SQLException{
             final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
             final ObjectMapper mapper = new ObjectMapper();
 
@@ -152,43 +109,28 @@ public class UserCrud implements ICrud<User>{
 
 }
 
-    @Override
-    public void get(String idParam)throws JSONException, IOException  {
-          final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
-            final ObjectMapper mapper = new ObjectMapper();
-
-             JSONObject jsonObject = new JSONObject(idParam);
-            final String id = jsonObject.getString("id");
-        
-            
-            
-            Connection con = null;
-            
-            try {
-                con = DriverManager.getConnection("jdbc:derby://localhost:1527/javaOXDatabase","javaProject","javaProject");
-               User u = getWithId(con, id);
-                if(u !=null){
-                    out.writeUTF(u.toJson());
-                }else{
-                    out.writeUTF("null");
-                }
-
-            } catch (IOException ex) {
-                Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-            }
-    }
-
-    @Override
-    public void getAll() {
+    public void get(String idParam)throws JSONException, IOException, SQLException {
         final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
         final ObjectMapper mapper = new ObjectMapper();
 
-        Connection con = null;
+        JSONObject jsonObject = new JSONObject(idParam);
+        final String id = jsonObject.getString("id");
 
-        try {
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/javaOXDatabase","javaProject","javaProject");
+
+        User u = getWithId(con, id);
+        if(u !=null){
+            out.writeUTF(u.toJson());
+        }else{
+            out.writeUTF("null");
+        }
+    }
+
+    public void getAll()throws JSONException, IOException, SQLException {
+        final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
+        final ObjectMapper mapper = new ObjectMapper();
+
+
+     
             ArrayList<User> users = new ArrayList<>();
             String id = UUID.randomUUID().toString();
             PreparedStatement query = con.prepareStatement("SELECT * FROM USERDATA");
@@ -204,10 +146,6 @@ public class UserCrud implements ICrud<User>{
             System.out.println(new String(data));
 
             out.writeUTF(new String(data));
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
     }
 }
