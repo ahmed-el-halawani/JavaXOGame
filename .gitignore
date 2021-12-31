@@ -7,5 +7,6 @@ JavaXOServer/build/classes/javaxoserver/RequestHandler.class
 *.class
 /JavaXOServer/dist/
 /JavaXOGame/build/
-/JavaXOServer/nbproject/private/
-JavaXOGame/nbproject/private
+
+JavaXOServer/nbproject/private/private.properties
+JavaXOGame/nbproject/private/private.properties
