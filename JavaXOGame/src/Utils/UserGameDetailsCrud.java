@@ -5,6 +5,7 @@
  */
 package Utils;
 
+import Entities.Responce;
 import Entities.UserGameDetails;
 import Interfaces.ICrud;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -26,7 +27,7 @@ import java.util.logging.Logger;
  * @author A H M E D
  */
 public 
-class UserGameDetailsCrud implements ICrud<Entities.UserGameDetails>{
+class UserGameDetailsCrud implements ICrud<UserGameDetails>{
         private final ObjectMapper obm = new ObjectMapper();
 
 DataOutputStream out;
@@ -37,9 +38,9 @@ DataOutputStream out;
         this.in = in;
     }
     @Override
-    public int add(UserGameDetails entity) {
+    public int add(UserGameDetails entity) throws JsonProcessingException, IOException{
       System.out.println(entity);
-        try {
+       
             JsonAction jsonAction = new JsonAction(
                     entity.toJson(),
                     JsonAction.Types.Add,
@@ -48,21 +49,23 @@ DataOutputStream out;
             );
             System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
-            return in.readInt();
-        } catch (JsonProcessingException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return -1;
+            Responce res = obm.readValue(in.readUTF(), Responce.class);
+                        System.out.println(res);
+
+            if(res.getStatusCode() == 200){
+                return obm.readValue(res.getObject(), Integer.class);
+            }else{
+                throw new IOException(res.getObject());
+            }
+        
     }
 
     @Override
-    public int update(String id, UserGameDetails entity) {
+    public int update(String id, UserGameDetails entity)throws JsonProcessingException, IOException {
          System.out.print(entity);
         Map<String,String> m = new HashMap();
         m.put("id",id);
-        try {
+      
             JsonAction jsonAction = new JsonAction(
                     entity.toJson(),
                     JsonAction.Types.Update,
@@ -71,20 +74,22 @@ DataOutputStream out;
             );
             System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
-            return in.readInt();
-        } catch (JsonProcessingException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return -1;
+            Responce res = obm.readValue(in.readUTF(), Responce.class);
+                        System.out.println(res);
+
+            if(res.getStatusCode() == 200){
+                return obm.readValue(res.getObject(), Integer.class);
+            }else{
+                throw new IOException(res.getObject());
+            }
+      
     }
 
     @Override
-    public int delete(String id) {
+    public int delete(String id) throws JsonProcessingException, IOException{
     Map<String,String> m = new HashMap();
         m.put("id",id);
-        try {
+       
             JsonAction jsonAction = new JsonAction(
                     "",
                     JsonAction.Types.Delete,
@@ -93,44 +98,46 @@ DataOutputStream out;
             );
             System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
-            return in.readInt();
-        } catch (JsonProcessingException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return -1;
+            Responce res = obm.readValue(in.readUTF(), Responce.class);
+                        System.out.println(res);
+
+            if(res.getStatusCode() == 200){
+                return obm.readValue(res.getObject(), Integer.class);
+            }else{
+                throw new IOException(res.getObject());
+            }
+     
     }
 
     @Override
-    public UserGameDetails get(String id) {
-       Map<String,String> m = new HashMap();
+    public UserGameDetails get(String id)throws JsonProcessingException, IOException {
+        Map<String,String> m = new HashMap();
         m.put("id",id);
-        try {
-            JsonAction jsonAction = new JsonAction(
-                    "",
-                    JsonAction.Types.Get,
-                    this.getClass(),
-                    obm.writeValueAsString(m)
-            );
-            System.out.println(obm.writeValueAsString(jsonAction));
-            out.writeUTF(obm.writeValueAsString(jsonAction));
-            String data= in.readUTF();
-            if(!data.equals("null"))
-                return obm.readValue(data, UserGameDetails.class);
+        
+        JsonAction jsonAction = new JsonAction(
+                "",
+                JsonAction.Types.Get,
+                this.getClass(),
+                obm.writeValueAsString(m)
+        );
+        System.out.println(obm.writeValueAsString(jsonAction));
+        out.writeUTF(obm.writeValueAsString(jsonAction));
+        Responce res = obm.readValue(in.readUTF(), Responce.class);
+                    System.out.println(res);
 
-        } catch (JsonProcessingException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
+        if(res.getStatusCode() == 200){
+            if(!res.getObject().equals("null"))
+                return obm.readValue(res.getObject(), UserGameDetails.class);
+            else
+                return null;
+        }else{
+            throw new IOException(res.getObject());
         }
-        return null;
     }
 
     @Override
-    public ArrayList<UserGameDetails> getAll() {
+    public ArrayList<UserGameDetails> getAll()throws JsonProcessingException, IOException  {
       Map<String,String> m = new HashMap();
-        try {
             final ObjectMapper mapper = new ObjectMapper();
             JsonAction jsonAction = new JsonAction(
                     "",
@@ -141,20 +148,22 @@ DataOutputStream out;
             System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
             CollectionType typeReference = TypeFactory.defaultInstance().constructCollectionType(List.class, UserGameDetails.class);
-            String j = in.readUTF();
-            return obm.readValue(j, typeReference);
-         } catch (JsonProcessingException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+            
+            Responce res = obm.readValue(in.readUTF(), Responce.class);
+                        System.out.println(res);
+
+            if(res.getStatusCode() == 200){
+                return obm.readValue(res.getObject(), typeReference);
+            }else{
+                throw new IOException(res.getObject());
+            }
+            
+      
     }
     
-    public ArrayList<UserGameDetails> getAllWithId(String id) {
+    public ArrayList<UserGameDetails> getAllWithId(String id)throws JsonProcessingException, IOException {
        Map<String,String> m = new HashMap();
         m.put("id",id);
-        try {
             final ObjectMapper mapper = new ObjectMapper();
             JsonAction jsonAction = new JsonAction(
                     "",
@@ -165,20 +174,21 @@ DataOutputStream out;
             System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
             CollectionType typeReference = TypeFactory.defaultInstance().constructCollectionType(List.class, UserGameDetails.class);
-            String j = in.readUTF();
-            return obm.readValue(j, typeReference);
-         } catch (JsonProcessingException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+            
+            Responce res = obm.readValue(in.readUTF(), Responce.class);
+            System.out.println(res);
+            
+            if(res.getStatusCode() == 200){
+                return obm.readValue(res.getObject(), typeReference);
+            }else{
+                throw new IOException(res.getObject());
+            }
+            
     }
     
-    public ArrayList<UserGameDetails> getAllWithUserName(String userName) {
+    public ArrayList<UserGameDetails> getAllWithUserName(String userName) throws JsonProcessingException, IOException {
        Map<String,String> m = new HashMap();
         m.put("userName",userName);
-        try {
             final ObjectMapper mapper = new ObjectMapper();
             JsonAction jsonAction = new JsonAction(
                     "",
@@ -189,14 +199,15 @@ DataOutputStream out;
             System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
             CollectionType typeReference = TypeFactory.defaultInstance().constructCollectionType(List.class, UserGameDetails.class);
-            String j = in.readUTF();
-            return obm.readValue(j, typeReference);
-         } catch (JsonProcessingException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+            Responce res = obm.readValue(in.readUTF(), Responce.class);
+                        System.out.println(res);
+
+            if(res.getStatusCode() == 200){
+                return obm.readValue(res.getObject(), typeReference);
+            }else{
+                throw new IOException(res.getObject());
+            }
+        
     }
    
 

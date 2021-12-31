@@ -5,16 +5,20 @@
  */
 package Utils;
 
+import Entities.Responce;
 import Interfaces.ICrud;
 import Entities.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +58,14 @@ public  class UserCrud implements ICrud<User>{
             );
             System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
-            return in.readInt();
+            
+            Responce res = obm.readValue(in.readUTF(), Responce.class);
+            
+            if(res.getStatusCode() == 200){
+                return obm.readValue(res.getObject(), Integer.class);
+            }else{
+                throw new IOException(res.getObject());
+            }
         } catch (JsonProcessingException ex) {
             Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -77,7 +88,14 @@ public  class UserCrud implements ICrud<User>{
             );
             System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
-            return in.readInt();
+            
+            Responce res = obm.readValue(in.readUTF(), Responce.class);
+            
+            if(res.getStatusCode() == 200){
+                return obm.readValue(res.getObject(), Integer.class);
+            }else{
+                throw new IOException(res.getObject());
+            }
         } catch (JsonProcessingException ex) {
             Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -99,7 +117,16 @@ public  class UserCrud implements ICrud<User>{
             );
             System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
-            return in.readInt();
+            
+              
+            Responce res = obm.readValue(in.readUTF(), Responce.class);
+            
+            if(res.getStatusCode() == 200){
+                return obm.readValue(res.getObject(), Integer.class);
+            }else{
+                throw new IOException(res.getObject());
+            }
+            
         } catch (JsonProcessingException ex) {
             Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -122,12 +149,20 @@ public  class UserCrud implements ICrud<User>{
             System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
             
-            String res = in.readUTF();
-            if(res.equals("null")){
-                return null;
+            
+            Responce res = obm.readValue(in.readUTF(), Responce.class);
+            
+            if(res.getStatusCode() == 200){
+                if(res.getObject().equals("null")){
+                    return null;
+                }
+            
+                return obm.readValue(res.getObject(), User.class);
+            }else{
+                throw new IOException(res.getObject());
             }
             
-            return obm.readValue(res, User.class);
+            
             
         } catch (JsonProcessingException ex) {
             Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
@@ -152,9 +187,16 @@ public  class UserCrud implements ICrud<User>{
             out.writeUTF(obm.writeValueAsString(jsonAction));
             CollectionType typeReference = TypeFactory.defaultInstance().constructCollectionType(List.class, User.class);
             String j = in.readUTF();
-            System.out.println("here1");
-             System.out.println(j);
-            return obm.readValue(j, typeReference);
+            System.out.println(j);
+            
+            Responce res = obm.readValue(j, Responce.class);
+            
+            if(res.getStatusCode() == 200){
+                return obm.readValue(res.getObject(), typeReference);
+            }else{
+                throw new IOException(res.getObject());
+            }
+            
          } catch (JsonProcessingException ex) {
             Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -162,6 +204,8 @@ public  class UserCrud implements ICrud<User>{
         }
         return null;
     }
+    
+   
 }
 
 
