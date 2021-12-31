@@ -1,7 +1,7 @@
-Thu Dec 30 17:01:53 EET 2021 : Apache Derby Network Server - 10.10.2.0 - (1582446) started and ready to accept connections on port 1527
+Fri Dec 31 09:30:17 EET 2021 : Apache Derby Network Server - 10.10.2.0 - (1582446) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Thu Dec 30 17:01:53 EET 2021:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-017e-0bdc-97fa-ffffe9d6c76d 
+Fri Dec 31 09:30:17 EET 2021:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-017e-0f65-7f2f-ffffe9d6c76d 
 on database directory F:\iti lessons\tasks\java\XOGame\database\javaOXDatabase with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
 Loaded from file:/H:/empty%20drive%20files/local%20programe%20file/glossyFish/glassfish-4.1.1/javadb/lib/derby.jar
 java.vendor=Oracle Corporation
