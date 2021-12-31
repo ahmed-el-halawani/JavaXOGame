@@ -8,6 +8,10 @@ package Entities;
 import Utils.JsonAction;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  *
@@ -21,6 +25,18 @@ public class Responce {
     
     public String toJson() throws  JsonProcessingException{
         return new ObjectMapper().writeValueAsString(this);
+    }
+    
+    public static String arrayToString(ArrayList array) throws IOException{
+        ObjectMapper mapper = new ObjectMapper();
+        final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
+        mapper.writeValue(out2,  array);
+        final byte[] data = out2.toByteArray();
+        return new String(data);
+    }
+    
+    public void sendJson(DataOutputStream out) throws JsonProcessingException, IOException{
+        out.writeUTF(this.toJson());
     }
     
      public int getStatusCode() {
