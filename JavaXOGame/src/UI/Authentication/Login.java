@@ -12,6 +12,7 @@ package UI.Authentication;
 
 import Entities.User;
 import Testing.MainTest;
+import Utils.AppManager;
 import Utils.ConnectionManager;
 import Utils.UserCrud;
 import java.awt.Color;
@@ -413,22 +414,20 @@ public class Login extends javax.swing.JFrame {
         String password = String.valueOf(jPasswordField1.getPassword());
         
            
-           User u = userCrud.getWithUserName(userName);
-           
-           if(u != null && u.getPassword().equals(password)){
-               
-               // change Menu_Form with next screen class(Main)
-               Menu_Form form = new Menu_Form();
-                form.setVisible(true);
-                form.pack();
-                form.setLocationRelativeTo(null);
-                this.dispose();
-                
-            }else{
-                JOptionPane.showMessageDialog(null,"Invalid Username / Password", "Login Error",2);
-            }
-        
-        
+        User u = userCrud.getWithUserName(userName);
+
+        if(u != null && u.getPassword().equals(password)){
+            // change Menu_Form with next screen class(Main)
+            AppManager app = AppManager.getinstance();
+            app.setUser(u);
+            Menu_Form form = new Menu_Form();
+             form.setVisible(true);
+             form.pack();
+             form.setLocationRelativeTo(null);
+             this.dispose();
+         }else{
+             JOptionPane.showMessageDialog(null,"Invalid Username / Password", "Login Error",2);
+         }
     }//GEN-LAST:event_loginBtnActionPerformed
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
