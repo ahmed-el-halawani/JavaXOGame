@@ -5,9 +5,11 @@
  */
 package javaxoserver;
 
+import Entities.GameRoom;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import Entities.*;
+import Entities.GameRoom.gameRoomResponce;
 import Utils.*;
 import java.io.*;
 import java.net.*;
@@ -62,7 +64,7 @@ class RequestHandler extends Thread {
     Socket s;
     Connection con;
 
-//    static Vector<RequestHandler> clientsVector = new Vector<RequestHandler>();
+    static Vector<PlayerDetails> availToPlay = new Vector<>();
 //    clientsVector.add(this);
 
     public RequestHandler(Socket s) throws IOException {
@@ -81,7 +83,7 @@ class RequestHandler extends Thread {
     public void run() {
         UserCrud userCrud = new UserCrud(in,out,con);
         PlayerDetailsCrud playerDetailsCrud = new PlayerDetailsCrud(in,out,con);
-        UserGameDetailsCrud userGameDetailsCrud = new UserGameDetailsCrud(in,out,con,playerDetailsCrud);
+        UserGameDetailsCrud userGameDetailsCrud = new UserGameDetailsCrud(con,playerDetailsCrud);
 
         while (true) {
             try {
@@ -149,6 +151,62 @@ class RequestHandler extends Thread {
                             new Responce(200, Responce.arrayToString(arrayWithUserName)).sendJson(out);
                         break;
                      }
+                }else if(action.getCt() == GameRoom.class){
+                    GameRoom gameRoom;
+                    gameRoomResponce res = null;
+                 
+                    switch(action.getType()){
+                        case createGameRoom:
+                            gameRoom = new GameRoom(new ObjectMapper().readValue(action.getObject(), PlayerDetails.class));
+                            new Responce(200, gameRoom.getCode()).sendJson(out);
+                            break;
+                        case findGameRoom:
+                            if(availToPlay.isEmpty()){
+                                availToPlay.add(new ObjectMapper().readValue(action.getObject(), PlayerDetails.class));
+                                new Responce(300, gameRoomResponce.FindingGame.name()).sendJson(out);
+                            }else{
+                                gameRoom = new GameRoom(availToPlay.get(0),new ObjectMapper().readValue(action.getObject(), PlayerDetails.class));
+                                GameRoom.gameRooms.add(gameRoom);
+                                new Responce(200, gameRoom.toJson()).sendJson(out);
+                            }
+                            break;
+                        case findGameRoomWithCode:
+                            if(GameRoom.gameRooms.isEmpty())
+                                new Responce(300, gameRoomResponce.NoGameRoomRightNow.name()).sendJson(out);
+                            else{
+                                gameRoom = GameRoom.getGameRoom(action.getParams());
+                                if(gameRoom==null)
+                                     new Responce(300, gameRoomResponce.NoGameRoomWithThisCode.name()).sendJson(out);
+                                else
+                                    if(gameRoom.setPlayerTwo(new ObjectMapper().readValue(action.getObject(), PlayerDetails.class))!=null)
+                                        new Responce(300, gameRoomResponce.GameRoomIsFull.name()).sendJson(out);
+                                    else
+                                        new Responce(200, gameRoom.toJson()).sendJson(out);
+                            }
+                            break;
+                            
+                        case setMove:
+                            if(GameRoom.gameRooms.isEmpty())
+                            {
+                                new Responce(300, gameRoomResponce.NoGameRoomRightNow.name()).sendJson(out);
+                                break;
+                            }
+                            else{
+                                gameRoom = GameRoom.getGameRoom(action.getParams());
+                                if(gameRoom==null)
+                                {
+                                    new Responce(300, gameRoomResponce.NoGameRoomWithThisCode.name()).sendJson(out);
+                                    break;
+                                }
+                                
+                                res = gameRoom.setMove(new ObjectMapper().readValue(action.getObject(), Integer.class));
+                                if(res!=null)
+                                    new Responce(300, res.name()).sendJson(out);
+                                else
+                                    new Responce(200, gameRoom.toJson()).sendJson(out);
+                            }
+                            break;
+                    }
                 }
                 
             } 
@@ -176,5 +234,4 @@ class RequestHandler extends Thread {
             } 
         }
     }
-
 }

@@ -97,6 +97,7 @@ public class UserGameDetails extends BaseEntity {
     
     
     public UserGameDetails() {
+        gameBord = new HashMap();
     }
     
    

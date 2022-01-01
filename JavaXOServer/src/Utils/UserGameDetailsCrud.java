@@ -165,18 +165,15 @@ class UserGameDetailsCrud{
 
     }
     
-    public UserGameDetailsCrud(DataInputStream in,DataOutputStream out, Connection con,PlayerDetailsCrud playerDetailsCrud) {
-        this.out = out;
-        this.in = in;
+    public UserGameDetailsCrud(Connection con,PlayerDetailsCrud playerDetailsCrud) {
         this.con = con;
         this.playerDetailsCrud = playerDetailsCrud;
     }
    
+    private final  Connection con;
+    private final PlayerDetailsCrud playerDetailsCrud;
     private final ObjectMapper obm = new ObjectMapper();
-    private DataOutputStream out;
-    private DataInputStream in;
-    private  Connection con;
-    private PlayerDetailsCrud playerDetailsCrud;
+
 
     
 }

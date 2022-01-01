@@ -235,9 +235,9 @@ public class UserGameDetails extends BaseEntity {
     
     
    
-    private GameModes gameMode;
-    private GameDifficultyLvl gameDifficultyLvl;
-    private PlayerDetails playerOneDetails;
-    private PlayerDetails playerTwoDetails;
-    private Map<Integer,PlayerSimbole> gameBord;
+    protected GameModes gameMode;
+    protected GameDifficultyLvl gameDifficultyLvl;
+    protected PlayerDetails playerOneDetails;
+    protected PlayerDetails playerTwoDetails;
+    protected Map<Integer,PlayerSimbole> gameBord;
    }

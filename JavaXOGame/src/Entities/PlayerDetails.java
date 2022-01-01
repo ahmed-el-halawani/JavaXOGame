@@ -68,7 +68,7 @@ public class PlayerDetails extends BaseEntity {
         this.PlayerSimbole = PlayerSimbole;
     }
 
-    public boolean isIsRecorded() {
+    public boolean getIsRecorded() {
         return isRecorded;
     }
 

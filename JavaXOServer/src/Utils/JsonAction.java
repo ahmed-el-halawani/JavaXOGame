@@ -17,7 +17,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class JsonAction{
     
     public static enum Types{
-        Add,Get,GetAll,Update,Delete,GetAllWithId,GetAllWithUesrName
+        Add,Get,GetAll,Update,Delete,
+        GetAllWithId,GetAllWithUesrName,
+        createGameRoom,findGameRoom,findGameRoomWithCode,
+        getCurrentTurn,isMyTurn,setMove,
+        setPlayerTwo,startRecordingForUser
     }
 
     public static JsonAction fromJson(String body) throws  JsonProcessingException{
@@ -26,10 +30,8 @@ public class JsonAction{
     }
     
     
-    private String object;
-    private Types type;
-    private Class ct;
-    private String params;
+    
+    
 
     public JsonAction(String object, Types type, Class ct,String params) {
         this.object = object;
@@ -93,6 +95,9 @@ public class JsonAction{
         this.type = type;
     }
 
-    
+    private Types type;
+    private String params;
+    private String object;
+    private Class ct;
 
 }
