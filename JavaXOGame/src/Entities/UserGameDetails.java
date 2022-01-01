@@ -38,10 +38,8 @@ public class UserGameDetails extends BaseEntity {
                 GameDifficultyLvl.Medium,
                 new PlayerDetails(new User("ahmed", "mo", "123123"), PlayerSimbole.X),
                 new PlayerDetails(new User("ahmed2", "mo", "123123"), PlayerSimbole.O),
-                new HashMap(),
-                new HashMap(),
-                new HashMap(),
-                false);
+                new HashMap()
+                );
     }
 
     private static Map<Integer,PlayerSimbole> toBordMap(Map<Integer, String> map){
@@ -96,22 +94,6 @@ public class UserGameDetails extends BaseEntity {
     }
 
  
-    public Map<Integer, PlayerSimbole> getRecord() {
-        return record;
-    }
-
-    public void setRecord(Map<Integer, PlayerSimbole> record) {
-        this.record = record;
-    }
-
-    public Map<Integer, PlayerSimbole> getGameBordBeforRecording() {
-        return gameBordBeforRecording;
-    }
-
-    public void setGameBordBeforRecording(Map<Integer, PlayerSimbole> gameBordBeforRecording) {
-        this.gameBordBeforRecording = gameBordBeforRecording;
-    }
-
     public Map<Integer, PlayerSimbole> getGameBord() {
         return gameBord;
     }
@@ -172,13 +154,10 @@ public class UserGameDetails extends BaseEntity {
         return getPlayerWithUserName(userName).getPlayerState();
     }
 
-    public boolean isIsRecorded() {
-        return isRecorded;
+    public boolean isRecordedForUser(String userId) {
+        return getPlayerWithId(userId).isRecorded;
     }
 
-    public void setIsRecorded(boolean isRecorded) {
-        this.isRecorded = isRecorded;
-    }
     
     
 
@@ -188,20 +167,14 @@ public class UserGameDetails extends BaseEntity {
             GameDifficultyLvl gameDifficultyLvl, 
             PlayerDetails playerOneDetails, 
             PlayerDetails playerTwoDetails, 
-            Map<Integer, PlayerSimbole> record,
-            Map<Integer, PlayerSimbole> gameBordBeforRecording, 
-            Map<Integer, PlayerSimbole> gameBord,
-            boolean isRecorded
+            Map<Integer, PlayerSimbole> gameBord
     ) {
         super(id);
         this.gameMode = gameMode;
         this.gameDifficultyLvl = gameDifficultyLvl;
         this.playerOneDetails = playerOneDetails;
         this.playerTwoDetails = playerTwoDetails;
-        this.record = record;
-        this.gameBordBeforRecording = gameBordBeforRecording;
         this.gameBord = gameBord;
-        this.isRecorded = isRecorded;
 
     }
     
@@ -210,19 +183,13 @@ public class UserGameDetails extends BaseEntity {
             GameDifficultyLvl gameDifficultyLvl, 
             PlayerDetails playerOneDetails, 
             PlayerDetails playerTwoDetails, 
-            Map<Integer, PlayerSimbole> record,
-            Map<Integer, PlayerSimbole> gameBordBeforRecording, 
-            Map<Integer, PlayerSimbole> gameBord,
-            boolean isRecorded
+            Map<Integer, PlayerSimbole> gameBord
     ) {
         this.gameMode = gameMode;
         this.gameDifficultyLvl = gameDifficultyLvl;
         this.playerOneDetails = playerOneDetails;
         this.playerTwoDetails = playerTwoDetails;
-        this.record = record;
-        this.gameBordBeforRecording = gameBordBeforRecording;
         this.gameBord = gameBord;
-        this.isRecorded = isRecorded;
 
     }
     
@@ -236,10 +203,7 @@ public class UserGameDetails extends BaseEntity {
         this.gameDifficultyLvl = gameDifficultyLvl;
         this.playerOneDetails = playerOneDetails;
         this.playerTwoDetails = playerTwoDetails;
-        this.record = new HashMap();
-        this.gameBordBeforRecording = new HashMap();
         this.gameBord = new HashMap();
-        this.isRecorded = false;
 
     }
 
@@ -247,14 +211,11 @@ public class UserGameDetails extends BaseEntity {
             GameModes gameMode,
             GameDifficultyLvl gameDifficultyLvl,
             PlayerDetails playerOneDetails, 
-            Map<Integer, PlayerSimbole> gameBord,
-            boolean isRecorded
+            Map<Integer, PlayerSimbole> gameBord
     ) {
         this.gameMode = gameMode;
         this.gameDifficultyLvl = gameDifficultyLvl;
         this.gameBord = gameBord;
-        this.record = new HashMap();
-        this.isRecorded = isRecorded;
         this.playerOneDetails = playerOneDetails;
         PlayerSimbole x =  playerOneDetails.getPlayerSample();
         this.playerTwoDetails = 
@@ -265,20 +226,18 @@ public class UserGameDetails extends BaseEntity {
                             PlayerSimbole.X
                 );
     }
-    
-    
-    
+
     @Override
     public String toString() {
-        return "UserGameDetails{\n" + "id=" + id+ ",\n gameMode=" + gameMode + ",\n gameDifficultyLvl=" + gameDifficultyLvl + ",\n playerOneDetails=" + playerOneDetails + ",\n playerTwoDetails=" + playerTwoDetails + ",\n record=" + record + ",\n gameBordBeforRecording=" + gameBordBeforRecording + ",\n gameBord=" + gameBord + ",\n isRecorded=" + isRecorded + "\n}";
+        return "UserGameDetails{" + "gameMode=" + gameMode + ", gameDifficultyLvl=" + gameDifficultyLvl + ", playerOneDetails=" + playerOneDetails + ", playerTwoDetails=" + playerTwoDetails + ", gameBord=" + gameBord + '}';
     }
     
+    
+    
+   
     private GameModes gameMode;
     private GameDifficultyLvl gameDifficultyLvl;
     private PlayerDetails playerOneDetails;
     private PlayerDetails playerTwoDetails;
-    private Map<Integer,PlayerSimbole> record;
-    private Map<Integer,PlayerSimbole> gameBordBeforRecording;
     private Map<Integer,PlayerSimbole> gameBord;
-    private boolean isRecorded;
    }

@@ -39,6 +39,7 @@ Connection con;
                 query.setString(2,entity.getPlayerSample().name());
                 query.setString(3,entity.getPlayer().getId());
                 query.setString(4,entity.getId());
+                query.setBoolean(5,entity.getIsRecorded());
 
                 if(query.executeUpdate()!=0){
                     return entity;
