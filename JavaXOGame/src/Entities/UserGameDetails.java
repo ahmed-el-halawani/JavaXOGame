@@ -7,16 +7,9 @@ package Entities;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  *
@@ -280,9 +273,6 @@ public class UserGameDetails extends BaseEntity {
         return "UserGameDetails{\n" + "id=" + id+ ",\n gameMode=" + gameMode + ",\n gameDifficultyLvl=" + gameDifficultyLvl + ",\n playerOneDetails=" + playerOneDetails + ",\n playerTwoDetails=" + playerTwoDetails + ",\n record=" + record + ",\n gameBordBeforRecording=" + gameBordBeforRecording + ",\n gameBord=" + gameBord + ",\n isRecorded=" + isRecorded + "\n}";
     }
     
-    
-    
-    
     private GameModes gameMode;
     private GameDifficultyLvl gameDifficultyLvl;
     private PlayerDetails playerOneDetails;
@@ -291,6 +281,4 @@ public class UserGameDetails extends BaseEntity {
     private Map<Integer,PlayerSimbole> gameBordBeforRecording;
     private Map<Integer,PlayerSimbole> gameBord;
     private boolean isRecorded;
-
-    
    }
