@@ -207,7 +207,7 @@ public class UserGameDetails extends BaseEntity {
         this.gameDifficultyLvl = gameDifficultyLvl;
         this.gameBord = gameBord;
         this.playerOneDetails = playerOneDetails;
-        PlayerSimbole x =  playerOneDetails.getPlayerSample();
+        PlayerSimbole x =  playerOneDetails.getPlayerSimbole();
         this.playerTwoDetails = 
                 new PlayerDetails(
                     new User(),
