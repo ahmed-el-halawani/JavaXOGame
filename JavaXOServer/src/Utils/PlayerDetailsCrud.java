@@ -36,7 +36,7 @@ Connection con;
                 entity.setId(id);
                 PreparedStatement query = con.prepareStatement("INSERT INTO PLAYERDETAILS VALUES(?,?,?,?)");
                 query.setString(1,entity.getPlayerState().name());
-                query.setString(2,entity.getPlayerSample().name());
+                query.setString(2,entity.getPlayerSimbole().name());
                 query.setString(3,entity.getPlayer().getId());
                 query.setString(4,entity.getId());
                 query.setBoolean(5,entity.getIsRecorded());
@@ -62,7 +62,7 @@ Connection con;
         );
 
         query.setString(1,entity.getPlayerState().name());
-        query.setString(2,entity.getPlayerSample().name());
+        query.setString(2,entity.getPlayerSimbole().name());
         query.setString(3,entity.getPlayer().getId());
         query.setString(4,entity.getId());
         if(query.executeUpdate()!=0){
