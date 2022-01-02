@@ -7,16 +7,9 @@ package Entities;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  *
@@ -38,14 +31,13 @@ public class UserGameDetails extends BaseEntity {
     public static enum GameDifficultyLvl{
         Easy,Medium,Intermediate
     }
-
     
-       public static UserGameDetails dumyObject(){
+    public static UserGameDetails dumyObject(){
         return new UserGameDetails(
                 GameModes.Single,
                 GameDifficultyLvl.Medium,
                 new PlayerDetails(new User("ahmed", "mo", "123123"), PlayerSimbole.X),
-                 new PlayerDetails(new User("ahmed2", "mo", "123123"), PlayerSimbole.O),
+                new PlayerDetails(new User("ahmed2", "mo", "123123"), PlayerSimbole.O),
                 new HashMap(),
                 new HashMap(),
                 new HashMap(),
@@ -143,6 +135,52 @@ public class UserGameDetails extends BaseEntity {
     public void setPlayerTwoDetails(PlayerDetails playerTwoDetails) {
         this.playerTwoDetails = playerTwoDetails;
     }
+    
+    public boolean isPlayerPartWithId(String id){
+         return this.getPlayerOneDetails().getPlayer().getId().equals(id)||
+                this.getPlayerTwoDetails().getPlayer().getId().equals(id);
+    }
+    
+    public boolean isPlayerPartWithUserName(String userName){
+        return this.getPlayerOneDetails().getPlayer().getUserName().equals(userName)||
+                this.getPlayerTwoDetails().getPlayer().getUserName().equals(userName);
+    }
+    
+    public PlayerDetails getPlayerWithId(String id){
+        if(this.getPlayerOneDetails().getPlayer().getId().equals(id)){
+                return this.getPlayerOneDetails();
+        }else if (this.getPlayerTwoDetails().getPlayer().getId().equals(id)){
+            return this.getPlayerTwoDetails();
+        }
+        return null;
+    }
+    
+    public PlayerDetails getPlayerWithUserName(String userName){
+        if(this.getPlayerOneDetails().getPlayer().getUserName().equals(userName)){
+                return this.getPlayerOneDetails();
+        }else if (this.getPlayerTwoDetails().getPlayer().getUserName().equals(userName)){
+            return this.getPlayerTwoDetails();
+        }
+        return null;
+    }
+    
+    public PlayerState getPlayerStateWithId(String id){
+        return getPlayerWithId(id).getPlayerState();
+    }
+    
+    public PlayerState getPlayerStateWithUserName(String userName){
+        return getPlayerWithUserName(userName).getPlayerState();
+    }
+
+    public boolean isIsRecorded() {
+        return isRecorded;
+    }
+
+    public void setIsRecorded(boolean isRecorded) {
+        this.isRecorded = isRecorded;
+    }
+    
+    
 
     public UserGameDetails(
             String id,
@@ -187,6 +225,23 @@ public class UserGameDetails extends BaseEntity {
         this.isRecorded = isRecorded;
 
     }
+    
+    public UserGameDetails(
+            GameModes gameMode, 
+            GameDifficultyLvl gameDifficultyLvl, 
+            PlayerDetails playerOneDetails, 
+            PlayerDetails playerTwoDetails
+    ) {
+        this.gameMode = gameMode;
+        this.gameDifficultyLvl = gameDifficultyLvl;
+        this.playerOneDetails = playerOneDetails;
+        this.playerTwoDetails = playerTwoDetails;
+        this.record = new HashMap();
+        this.gameBordBeforRecording = new HashMap();
+        this.gameBord = new HashMap();
+        this.isRecorded = false;
+
+    }
 
     public UserGameDetails(
             GameModes gameMode,
@@ -215,11 +270,8 @@ public class UserGameDetails extends BaseEntity {
     
     @Override
     public String toString() {
-        return "UserGameDetails{" + "gameMode=" + gameMode + ", gameDifficultyLvl=" + gameDifficultyLvl + ", playerOneDetails=" + playerOneDetails + ", playerTwoDetails=" + playerTwoDetails + ", record=" + record + ", gameBordBeforRecording=" + gameBordBeforRecording + ", gameBord=" + gameBord + ", isRecorded=" + isRecorded + '}';
+        return "UserGameDetails{\n" + "id=" + id+ ",\n gameMode=" + gameMode + ",\n gameDifficultyLvl=" + gameDifficultyLvl + ",\n playerOneDetails=" + playerOneDetails + ",\n playerTwoDetails=" + playerTwoDetails + ",\n record=" + record + ",\n gameBordBeforRecording=" + gameBordBeforRecording + ",\n gameBord=" + gameBord + ",\n isRecorded=" + isRecorded + "\n}";
     }
-    
-    
-    
     
     private GameModes gameMode;
     private GameDifficultyLvl gameDifficultyLvl;
@@ -229,6 +281,4 @@ public class UserGameDetails extends BaseEntity {
     private Map<Integer,PlayerSimbole> gameBordBeforRecording;
     private Map<Integer,PlayerSimbole> gameBord;
     private boolean isRecorded;
-
-    
    }

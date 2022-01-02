@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class JsonAction{
     
     public static enum Types{
-        Add,Get,GetAll,Update,Delete
+        Add,Get,GetAll,Update,Delete,GetAllWithId,GetAllWithUesrName
     }
 
     public static JsonAction fromJson(String body) throws  JsonProcessingException{

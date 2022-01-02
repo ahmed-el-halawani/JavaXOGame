@@ -5,114 +5,181 @@
  */
 package Utils;
 
-import Entities.User;
-import Entities.UserGameDetails;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.json.JSONException;
-import org.json.JSONObject;
+import Entities.*;
+import java.io.*;
+import java.sql.*;
+import java.util.*;
+import org.json.*;
+
 
 /**
  *
  * @author A H M E D
  */
 public 
-class UserGameDetailsCrud implements ICrud<UserGameDetails>{
-DataOutputStream out;
-    DataInputStream in;
+class UserGameDetailsCrud{
+    
+    public int add(UserGameDetails entity) throws JSONException, IOException, SQLException{
+        System.out.print(entity);
+        
+        PlayerDetails playerOne = playerDetailsCrud.add(entity.getPlayerOneDetails());
+        if(playerOne==null){
+            return -1;
+        }
+        PlayerDetails playerTwo = playerDetailsCrud.add(entity.getPlayerTwoDetails());
+        if(playerTwo==null){
+            return -1;
+        }
 
-    public UserGameDetailsCrud(DataInputStream in,DataOutputStream out) {
+        String id = UUID.randomUUID().toString();
+        PreparedStatement query = con.prepareStatement("INSERT INTO USERGAMEDETAILS VALUES(?,?,?,?,?,?,?,?,?)");
+        query.setString(1,id);
+        query.setString(2,entity.getGameMode().name());
+        query.setString(3,entity.getGameDifficultyLvl().name());
+        query.setString(4,playerOne.getId());
+        query.setString(5,playerTwo.getId());
+        query.setString(6,obm.writeValueAsString(entity.getRecord()));
+        query.setString(7,obm.writeValueAsString(entity.getGameBordBeforRecording()));
+        query.setString(8,obm.writeValueAsString(entity.getGameBord()));
+        query.setBoolean(9,entity.isIsRecorded());
+        int index = query.executeUpdate();
+        if(index==0){
+            return -1;
+        }
+
+        return index;
+    }
+
+    public int update(String id, Entities.UserGameDetails entity) throws JSONException, IOException, SQLException {
+        JSONObject params = new JSONObject(id);
+        
+
+        String id2 = params.getString("id");
+        System.out.print("id: "+id2+"entity: "+entity);
+
+        return 1;
+    }
+
+    public int delete(String id) throws JSONException, IOException, SQLException{
+        JSONObject params = new JSONObject(id);
+
+        System.out.println(params.getString("id"));
+
+        return 1;
+    }
+
+    public UserGameDetails get(String idParam)throws JSONException, IOException, SQLException{
+        JSONObject params = new JSONObject(idParam);
+        String id = params.getString("id");
+
+        PreparedStatement query = con.prepareStatement("SELECT * FROM USERGAMEDETAILS WHERE ID=?");
+        query.setString(1,id);
+
+        ResultSet rs = query.executeQuery();
+
+        if(rs.next()){
+            return UserGameDetails.fromResultSet(
+                    rs,
+                    playerDetailsCrud.get(rs.getString("PLAYERONEDETAILS")),
+                    playerDetailsCrud.get(rs.getString("PLAYERTWODETAILS"))
+                 );
+        }else{
+            return null;
+        }
+    }
+
+    public ArrayList<UserGameDetails> getAll() throws JSONException, IOException, SQLException{
+        ArrayList<UserGameDetails> userGamesDetails = new ArrayList<>();
+        PreparedStatement query = con.prepareStatement("SELECT * FROM USERGAMEDETAILS");
+        ResultSet rs = query.executeQuery();
+
+        while(rs.next()){
+            userGamesDetails.add(
+                UserGameDetails.fromResultSet(
+                   rs,
+                   playerDetailsCrud.get(rs.getString("PLAYERONEDETAILS")),
+                   playerDetailsCrud.get(rs.getString("PLAYERTWODETAILS"))
+                )
+            );
+        }
+
+        return userGamesDetails;
+        
+    }
+    
+    
+    public ArrayList<UserGameDetails>  getAllWithId(String idParams) throws JSONException, IOException, SQLException {
+        JSONObject params = new JSONObject(idParams);
+
+        String id = params.getString("id");
+        
+            ArrayList<UserGameDetails> userGamesDetails = new ArrayList<>();
+            PreparedStatement query = con.prepareStatement(
+                "SELECT UGD.* FROM "
+                + "USERGAMEDETAILS AS UGD,PLAYERDETAILS AS PD  "
+                + "WHERE "
+                + "(UGD.PLAYERONEDETAILS=PD.ID OR UGD.PLAYERTWODETAILS=PD.ID) AND PD.USER_ID=?"
+            );
+            query.setString(1,id);
+            
+            ResultSet rs = query.executeQuery();
+            while(rs.next()){
+                userGamesDetails.add(
+                    UserGameDetails.fromResultSet(
+                       rs,
+                       playerDetailsCrud.get(rs.getString("PLAYERONEDETAILS")),
+                       playerDetailsCrud.get(rs.getString("PLAYERTWODETAILS"))
+                    )
+                );
+            }
+            return userGamesDetails;
+        
+    }
+    
+    
+    public ArrayList<UserGameDetails> getAllWithUserName(String userNameParam) throws JSONException, IOException, SQLException {
+        JSONObject params = new JSONObject(userNameParam);
+
+        String userName = params.getString("userName");
+        
+            ArrayList<UserGameDetails> userGamesDetails = new ArrayList<>();
+            PreparedStatement query = con.prepareStatement(
+                "SELECT UGD.* FROM "
+                + "USERGAMEDETAILS AS UGD,PLAYERDETAILS AS PD,USERDATA AS UD  "
+                + "WHERE "
+                + "(UGD.PLAYERONEDETAILS=PD.ID OR UGD.PLAYERTWODETAILS=PD.ID) AND PD.USER_ID=UD.ID AND UD.USERNAME=?"
+            );
+            query.setString(1,userName);
+            
+            ResultSet rs = query.executeQuery();
+            while(rs.next()){
+                userGamesDetails.add(
+                    UserGameDetails.fromResultSet(
+                       rs,
+                       playerDetailsCrud.get(rs.getString("PLAYERONEDETAILS")),
+                       playerDetailsCrud.get(rs.getString("PLAYERTWODETAILS"))
+                    )
+                );
+            }
+            
+            return userGamesDetails;
+            
+
+    }
+    
+    public UserGameDetailsCrud(DataInputStream in,DataOutputStream out, Connection con,PlayerDetailsCrud playerDetailsCrud) {
         this.out = out;
         this.in = in;
-    }
-    @Override
-    public int add(UserGameDetails entity) {
-        System.out.print(entity);
-        try {
-            out.writeInt(1);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return -1;
-    }
-
-    @Override
-    public int update(String id, Entities.UserGameDetails entity) {
-       try {
-            JSONObject jsonObject = new JSONObject(id);
-            String id2 = jsonObject.getString("id");
-            System.out.print("id: "+id2+"entity: "+entity);
-        
-            out.writeInt(1);
-        } catch (JsonProcessingException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JSONException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return -1;  
-    }
-
-    @Override
-    public int delete(String id) {
-         try {
-            JSONObject jsonObject = new JSONObject(id);
-            System.out.println(jsonObject.getString("id"));
-            out.writeInt(1);
-        } catch (JSONException ex) { 
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return -1;
-    }
-
-    @Override
-    public UserGameDetails get(String id) {
-         System.out.print("id: "+id);
-         try {
-            JSONObject jsonObject = new JSONObject(id);
-            System.out.println(jsonObject.getString("id"));
-            
-            out.writeUTF(UserGameDetails.dumyObject().toJson());
-        } catch (JsonProcessingException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JSONException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
-    @Override
-    public ArrayList<Entities.UserGameDetails> getAll() {
-      try {
-            final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
-            final ObjectMapper mapper = new ObjectMapper();
-
-            mapper.writeValue(out2,  new ArrayList(Arrays.asList(new UserGameDetails[]{UserGameDetails.dumyObject(),UserGameDetails.dumyObject()})));
-
-            final byte[] data = out2.toByteArray();
-            System.out.println(new String(data));
-    
-            out.writeUTF(new String(data));
-         } catch (JsonProcessingException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+        this.con = con;
+        this.playerDetailsCrud = playerDetailsCrud;
     }
    
+    private final ObjectMapper obm = new ObjectMapper();
+    private DataOutputStream out;
+    private DataInputStream in;
+    private  Connection con;
+    private PlayerDetailsCrud playerDetailsCrud;
 
+    
 }

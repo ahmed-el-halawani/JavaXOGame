@@ -5,6 +5,8 @@
  */
 package Utils;
 
+import Entities.Responce;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -22,18 +24,28 @@ public class ConnectionManager {
     public DataOutputStream out;
     public DataInputStream in;
     
-    private ConnectionManager(){
-        try {
-            soc = new Socket("127.0.0.1",5005);
-            in = new DataInputStream(soc.getInputStream());
-            out = new DataOutputStream(soc.getOutputStream());
-        } catch (IOException ex) {
-            Logger.getLogger(ConnectionManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public enum socketType{
+     game,data
     }
     
-    public static ConnectionManager getInstance(){
-       return cm==null?new ConnectionManager():cm;
+    private ConnectionManager(socketType type) throws IOException{
+        soc = new Socket("127.0.0.1",5005);
+        in = new DataInputStream(soc.getInputStream());
+        out = new DataOutputStream(soc.getOutputStream());
+        ObjectMapper om = new ObjectMapper();
+        Responce res = om.readValue(in.readUTF(), Responce.class);
+        if(res.getStatusCode()!=200){
+            throw new IOException(res.getObject());
+        }
+    }
+   
+    
+    public static ConnectionManager getInstance() throws IOException{
+       return cm==null?new ConnectionManager(socketType.data):cm;
+    }
+    
+    public static ConnectionManager createGameSocet() throws IOException{
+       return new ConnectionManager(socketType.game);
     }
     
     public void dispose(){

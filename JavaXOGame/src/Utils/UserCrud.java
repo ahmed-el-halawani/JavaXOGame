@@ -5,6 +5,7 @@
  */
 package Utils;
 
+import Entities.Responce;
 import Interfaces.ICrud;
 import Entities.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,7 +31,7 @@ import java.util.logging.Logger;
  */
 
 
-public class UserCrud implements ICrud<User>{
+public  class UserCrud implements ICrud<User>{
     private ObjectMapper obm = new ObjectMapper();
     DataOutputStream out;
     DataInputStream in;
@@ -40,19 +41,31 @@ public class UserCrud implements ICrud<User>{
         this.in = in;
     }
     
+    public UserCrud( ConnectionManager cm) {
+        this.out = cm.out;
+        this.in = cm.in;
+    }
+    
     @Override
-    public int add(User entity) {
+    public synchronized int add(User entity) {
         System.out.println(entity);
         try {
             JsonAction jsonAction = new JsonAction(
                     entity.toJson(),
                     JsonAction.Types.Add,
-                    entity.getClass(),
+                    this.getClass(),
                     ""
             );
             System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
-            return in.readInt();
+            
+            Responce res = obm.readValue(in.readUTF(), Responce.class);
+            
+            if(res.getStatusCode() == 200){
+                return obm.readValue(res.getObject(), Integer.class);
+            }else{
+                throw new IOException(res.getObject());
+            }
         } catch (JsonProcessingException ex) {
             Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -62,7 +75,7 @@ public class UserCrud implements ICrud<User>{
     }
 
     @Override
-    public int update(String id, User entity) {
+    public synchronized int update(String id, User entity) {
         System.out.print(entity);
         Map<String,String> m = new HashMap();
         m.put("id",id);
@@ -70,12 +83,19 @@ public class UserCrud implements ICrud<User>{
             JsonAction jsonAction = new JsonAction(
                     entity.toJson(),
                     JsonAction.Types.Update,
-                    entity.getClass(),
+                    this.getClass(),
                     obm.writeValueAsString(m)
             );
             System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
-            return in.readInt();
+            
+            Responce res = obm.readValue(in.readUTF(), Responce.class);
+            
+            if(res.getStatusCode() == 200){
+                return obm.readValue(res.getObject(), Integer.class);
+            }else{
+                throw new IOException(res.getObject());
+            }
         } catch (JsonProcessingException ex) {
             Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -85,19 +105,28 @@ public class UserCrud implements ICrud<User>{
     }
 
     @Override
-    public int delete(String id) {
+    public synchronized int delete(String id) {
         Map<String,String> m = new HashMap();
         m.put("id",id);
         try {
             JsonAction jsonAction = new JsonAction(
                     "",
                     JsonAction.Types.Delete,
-                    User.class,
+                    this.getClass(),
                     obm.writeValueAsString(m)
             );
             System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
-            return in.readInt();
+            
+              
+            Responce res = obm.readValue(in.readUTF(), Responce.class);
+            
+            if(res.getStatusCode() == 200){
+                return obm.readValue(res.getObject(), Integer.class);
+            }else{
+                throw new IOException(res.getObject());
+            }
+            
         } catch (JsonProcessingException ex) {
             Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -107,19 +136,34 @@ public class UserCrud implements ICrud<User>{
     }
 
     @Override
-    public User get(String id) {
+    public synchronized User get(String id) {
         Map<String,String> m = new HashMap();
         m.put("id",id);
         try {
             JsonAction jsonAction = new JsonAction(
                     "",
                     JsonAction.Types.Get,
-                    User.class,
+                    this.getClass(),
                     obm.writeValueAsString(m)
             );
             System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
-            return obm.readValue(in.readUTF(), User.class);
+            
+            
+            Responce res = obm.readValue(in.readUTF(), Responce.class);
+            
+            if(res.getStatusCode() == 200){
+                if(res.getObject().equals("null")){
+                    return null;
+                }
+            
+                return obm.readValue(res.getObject(), User.class);
+            }else{
+                throw new IOException(res.getObject());
+            }
+            
+            
+            
         } catch (JsonProcessingException ex) {
             Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -128,22 +172,67 @@ public class UserCrud implements ICrud<User>{
         return null;
     }
 
+    public User getWithUserName(String userName) {
+        Map<String,String> m = new HashMap();
+        m.put("userName",userName);
+        try {
+            JsonAction jsonAction = new JsonAction(
+                    "",
+                    JsonAction.Types.GetAllWithUesrName,
+                    this.getClass(),
+                    obm.writeValueAsString(m)
+            );
+            System.out.println(obm.writeValueAsString(jsonAction));
+            out.writeUTF(obm.writeValueAsString(jsonAction));
+            
+            
+            Responce res = obm.readValue(in.readUTF(), Responce.class);
+            
+            if(res.getStatusCode() == 200){
+                if(res.getObject().equals("null")){
+                    return null;
+                }
+            
+                return obm.readValue(res.getObject(), User.class);
+            }else{
+                throw new IOException(res.getObject());
+            }
+            
+            
+            
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
     @Override
-    public ArrayList<User> getAll() {
+    public synchronized ArrayList<User> getAll() {
          Map<String,String> m = new HashMap();
         try {
             final ObjectMapper mapper = new ObjectMapper();
             JsonAction jsonAction = new JsonAction(
                     "",
                     JsonAction.Types.GetAll,
-                    User.class,
+                    this.getClass(),
                     ""
             );
             System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
             CollectionType typeReference = TypeFactory.defaultInstance().constructCollectionType(List.class, User.class);
             String j = in.readUTF();
-            return obm.readValue(j, typeReference);
+            System.out.println(j);
+            
+            Responce res = obm.readValue(j, Responce.class);
+            
+            if(res.getStatusCode() == 200){
+                return obm.readValue(res.getObject(), typeReference);
+            }else{
+                throw new IOException(res.getObject());
+            }
+            
          } catch (JsonProcessingException ex) {
             Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -154,3 +243,5 @@ public class UserCrud implements ICrud<User>{
     
    
 }
+
+

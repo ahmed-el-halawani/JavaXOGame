@@ -5,24 +5,16 @@
  */
 package javaxoserver;
 
-import Entities.User;
-import Entities.UserGameDetails;
-import Utils.JsonAction;
-import Utils.UserCrud;
-import Utils.UserGameDetailsCrud;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import static java.lang.System.in;
-import static java.lang.System.out;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Vector;
+import org.json.JSONException;
+import Entities.*;
+import Utils.*;
+import java.io.*;
+import java.net.*;
+import java.sql.*;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.json.JSONException;
-import org.json.*;
 
 /**
  *
@@ -31,7 +23,7 @@ import org.json.*;
 public class JavaXOServer {
  ServerSocket serverSocket;
 
-    public JavaXOServer() throws IOException {
+    public JavaXOServer() throws IOException, SQLException {
         serverSocket = new ServerSocket(5005);
         System.out.println("wiating client...");
         while (true) {
@@ -45,87 +37,142 @@ public class JavaXOServer {
 
     public static void main(String[] args) {
         try {
+            DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
             new JavaXOServer();
-        } catch (IOException ex) {
+        } catch (SQLException ex) {
+            Logger.getLogger(JavaXOServer.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (IOException ex) {
             Logger.getLogger(JavaXOServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+}
 
+class Room{
+    String roomId;
+    Vector<RequestHandler> clientsVector = new Vector<RequestHandler>();
+    
+    public void run(JsonAction ja){
+        
+    }
 }
 
 class RequestHandler extends Thread {
-    DataInputStream dis;
-    DataOutputStream ps;
-    static Vector<RequestHandler> clientsVector = new Vector<RequestHandler>();
+    DataInputStream in;
+    DataOutputStream out;
+    Socket s;
+    Connection con;
 
-    public RequestHandler(Socket cs) throws IOException {
-        dis = new DataInputStream(cs.getInputStream());
-        ps = new DataOutputStream(cs.getOutputStream());
-        clientsVector.add(this);
-        start();
+//    static Vector<RequestHandler> clientsVector = new Vector<RequestHandler>();
+//    clientsVector.add(this);
+
+    public RequestHandler(Socket s) throws IOException {
+        try {
+            this.in = new DataInputStream(s.getInputStream());
+            this.out = new DataOutputStream(s.getOutputStream());
+            this.s = s;
+            con = DriverManager.getConnection("jdbc:derby://localhost:1527/javaOXDatabase","javaProject","javaProject");
+            new Responce(200, "Done").sendJson(out);
+            start();
+        } catch (SQLException ex) {
+            Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void run() {
+        UserCrud userCrud = new UserCrud(in,out,con);
+        PlayerDetailsCrud playerDetailsCrud = new PlayerDetailsCrud(in,out,con);
+        UserGameDetailsCrud userGameDetailsCrud = new UserGameDetailsCrud(in,out,con,playerDetailsCrud);
+
         while (true) {
             try {
-                String str = dis.readUTF();
+                String str = in.readUTF();
                 System.out.println(str);
                 JsonAction action = JsonAction.fromJson(str);
                 
-                if(action.getCt() == User.class){
-                    System.out.println("here we are again");
-                }
+                System.out.println("action: "+action);
           
-                if(action.getCt() == User.class){
-
+                if(action.getCt() == UserCrud.class){
                     switch(action.getType()){
                         case Add:
-                            (new UserCrud(dis,ps)).add(new ObjectMapper().readValue(action.getObject(), User.class));
+                            Integer res = userCrud.add(new ObjectMapper().readValue(action.getObject(), User.class));
+                            new Responce(200, res.toString()).sendJson(out);
                         break;
                         case GetAll:
-                         (new UserCrud(dis,ps)).getAll();
+                            ArrayList<User> users = userCrud.getAll();
+                            new Responce(200, Responce.arrayToString(users)).sendJson(out);
                         break;
                         case Get:
-                         (new UserCrud(dis,ps)).get(action.getParams());
+                            User user = userCrud.get(action.getParams());
+                            new Responce(200, user!=null?user.toJson():"null").sendJson(out);
+                        break;
+                        case GetAllWithUesrName:
+                            User userWithUserName = userCrud.getWithUserName(action.getParams());
+                            new Responce(200, userWithUserName!=null?userWithUserName.toJson():"null").sendJson(out);
                         break;
                         case Update:
-                            
-                         (new UserCrud(dis,ps)).update(action.getParams(),new ObjectMapper().readValue(action.getObject(), User.class));
+                            Integer updatedRow = userCrud.update(action.getParams(),new ObjectMapper().readValue(action.getObject(), User.class));
+                            new Responce(200, updatedRow.toString()).sendJson(out);
                         break;
                         case Delete:
-                         (new UserCrud(dis,ps)).delete(action.getParams());
+                            Integer deletedRow= userCrud.delete(action.getParams());
+                            new Responce(200, deletedRow.toString()).sendJson(out);
                         break;
                     }
-                }else if(action.getCt() == UserGameDetails.class){
+                }else if(action.getCt() == UserGameDetailsCrud.class){
                      switch(action.getType()){
                         case Add:
-                           (new UserGameDetailsCrud(dis,ps)).add(new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
+                            Integer addedRow = userGameDetailsCrud.add(new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
+                            new Responce(200, addedRow.toString()).sendJson(out);
                         break;
                         case GetAll:
-                        (new UserGameDetailsCrud(dis,ps)).getAll();
+                            ArrayList<UserGameDetails> array = userGameDetailsCrud.getAll();
+                            new Responce(200, Responce.arrayToString(array)).sendJson(out);
                         break;
                         case Get:
-                        (new UserGameDetailsCrud(dis,ps)).get(action.getParams());
+                            UserGameDetails userGameDetails = userGameDetailsCrud.get(action.getParams());
+                            new Responce(200, userGameDetails!=null?userGameDetails.toJson():"null").sendJson(out);
                         break;
                         case Update:
-                        (new UserGameDetailsCrud(dis,ps)).update(action.getParams(),new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
-                        break;
+                            Integer updatedRow = userGameDetailsCrud.update(action.getParams(),new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
+                            new Responce(200, updatedRow.toString()).sendJson(out);
+                            break;
                         case Delete:
-                        (new UserGameDetailsCrud(dis,ps)).delete(action.getParams());
+                            Integer deletedRow =userGameDetailsCrud.delete(action.getParams());
+                            new Responce(200, deletedRow.toString()).sendJson(out);
                         break;
-                    }
+                        case GetAllWithId:
+                            ArrayList<UserGameDetails> arrayWithId =userGameDetailsCrud.getAllWithId(action.getParams());
+                            new Responce(200, Responce.arrayToString(arrayWithId)).sendJson(out);
+                        break;
+                        case GetAllWithUesrName:
+                           ArrayList<UserGameDetails> arrayWithUserName = userGameDetailsCrud.getAllWithUserName(action.getParams());
+                            new Responce(200, Responce.arrayToString(arrayWithUserName)).sendJson(out);
+                        break;
+                     }
                 }
                 
-                
-                System.out.println(action);
             } 
             
-            catch (java.net.SocketException ex) {
-                clientsVector.remove(this);
+        
+            
+            catch ( IOException ex) {
+                try {
+                    new Responce(404, ex.toString()).sendJson(out);
+                    con.close();
+                    s.close();
+                    System.out.print("User quit");
+                } catch (IOException|SQLException ex1) {
+                    System.out.print("User quit");
+                    Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex1);
+                } 
                 break;
-            }catch (IOException ex) {
+            } catch (JSONException |SQLException ex) {
                 Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
-                
+                try {
+                    new Responce(404, ex.toString()).sendJson(out);
+                } catch (IOException ex1) {
+                    Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex1);
+                }
             } 
         }
     }

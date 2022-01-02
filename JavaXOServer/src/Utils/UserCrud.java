@@ -6,18 +6,11 @@
 package Utils;
 
 import Entities.User;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.io.*;
+import java.sql.*;
+import java.util.*;
+import org.json.*;
 
 /**
  *
@@ -25,96 +18,139 @@ import org.json.JSONObject;
  */
 
 
-public class UserCrud implements ICrud<User>{
-    DataOutputStream out;
-    DataInputStream in;
+public class UserCrud{
+    
+    public int add(User entity) throws JSONException, IOException, SQLException{
+        System.out.print(entity);
+         
+        String id = UUID.randomUUID().toString();
+        PreparedStatement query = con.prepareStatement("INSERT INTO USERDATA VALUES(?,?,?,?,?)");
+        query.setString(1,id);
+        query.setString(2,entity.getName());
+        query.setString(3,entity.getUserName());
+        query.setString(4,entity.getPassword());
+        query.setString(5,entity.getUserType().name());
 
-    public UserCrud( DataInputStream in,DataOutputStream out) {
-        this.out = out;
-        this.in = in;
+//        out.writeInt();
+        return query.executeUpdate();
+            
+    }
+
+    public int update(String idParam, User entity) throws JSONException, IOException, SQLException {
+        JSONObject jsonObject = new JSONObject(idParam);
+        final String id = jsonObject.getString("id");
+        
+        PreparedStatement query = con.prepareStatement(
+                "UPDATE USERDATA "
+                + "SET "
+                + "NAME = ?,"
+                + "USERNAME = ?,"
+                + "PASSWORD = ?,"
+                + "USERTYPE = ? "
+                + "WHERE ID=?"
+        );
+
+        query.setString(1,entity.getName());
+        query.setString(2,entity.getUserName());
+        query.setString(3,entity.getPassword());
+        query.setString(4,entity.getUserType().name());
+        query.setString(5,id);
+
+//        out.writeInt(query.executeUpdate());
+        return query.executeUpdate();
+           
+    }
+
+    public int delete(String idParam)throws JSONException, IOException, SQLException {
+           JSONObject jsonObject = new JSONObject(idParam);
+        final String id = jsonObject.getString("id");
+        PreparedStatement query = con.prepareStatement(
+                "DELETE FROM  USERDATA WHERE ID =?"
+        );
+
+        query.setString(1,id);
+
+//        out.writeInt(query.executeUpdate());
+        return query.executeUpdate();
+      
     }
     
-    @Override
-    public int add(User entity) {
-        System.out.print(entity);
-        try {
-            out.writeInt(1);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return -1;
-    }
-
-    @Override
-    public int update(String id, User entity) {
-        
-        try {
-            JSONObject jsonObject = new JSONObject(id);
-            System.out.println(jsonObject.getString("id"));
-            System.out.print("id: "+id+"entity: "+entity);
-        
-            out.writeInt(1);
-        } catch (JsonProcessingException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JSONException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return -1;
-    }
-
-    @Override
-    public int delete(String id) {
-        try {
-            JSONObject jsonObject = new JSONObject(id);
-            System.out.println(jsonObject.getString("id"));
-            out.writeInt(1);
-        } catch (JSONException ex) { 
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return -1;
-    }
-
-    @Override
-    public User get(String id) {
-        System.out.print("id: "+id);
-         try {
-            JSONObject jsonObject = new JSONObject(id);
-            System.out.println(jsonObject.getString("id"));
-            
-            out.writeUTF(new User("ahmed","ahmed","gomaa").toJson());
-        } catch (JsonProcessingException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JSONException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
-    @Override
-    public ArrayList<User> getAll() {
-         try {
+    public User getWithId(Connection con,String id) throws JSONException, IOException, SQLException{
             final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
             final ObjectMapper mapper = new ObjectMapper();
 
-            mapper.writeValue(out2,  new ArrayList(Arrays.asList(new User[]{new User("ahmed","ahmed","gomaa"),new User("ahmed2","ahmed2","gomaa2")})));
+            ArrayList<User> users = new ArrayList<>();
+            PreparedStatement query = con.prepareStatement("SELECT * FROM USERDATA WHERE ID=?");
+            query.setString(1,id);
+            ResultSet rs = query.executeQuery();
+            if(rs.next()){
+                return User.fromResultSet(rs);
+            }else{
+                 return null;
+            }
 
-            final byte[] data = out2.toByteArray();
-            System.out.println(new String(data));
-    
-            out.writeUTF(new String(data));
-         } catch (JsonProcessingException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
+}
+
+    public User get(String params)throws JSONException, IOException, SQLException {
+        final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
+        final ArrayList<User> users = new ArrayList<>();
+        final ObjectMapper mapper = new ObjectMapper();
+        final JSONObject jsonObject = new JSONObject(params);
+        final String id = jsonObject.getString("id");
+
+        PreparedStatement query = con.prepareStatement("SELECT * FROM USERDATA WHERE ID=?");
+        query.setString(1,id);
+        ResultSet rs = query.executeQuery();
+        if(rs.next()){
+            return User.fromResultSet(rs);
+        }else{
+             return null;
         }
-        return null;
     }
     
-   
+    public User getWithUserName(String params)throws JSONException, IOException, SQLException {
+        final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
+        final ArrayList<User> users = new ArrayList<>();
+        final ObjectMapper mapper = new ObjectMapper();
+        final JSONObject jsonObject = new JSONObject(params);
+        final String userName = jsonObject.getString("userName");
+
+        PreparedStatement query = con.prepareStatement("SELECT * FROM USERDATA WHERE USERNAME=?");
+        query.setString(1,userName);
+        ResultSet rs = query.executeQuery();
+        if(rs.next()){
+            return User.fromResultSet(rs);
+        }else{
+             return null;
+        }
+    }
+
+    public ArrayList<User> getAll()throws JSONException, IOException, SQLException {
+        final ArrayList<User> users = new ArrayList<>();
+        
+        PreparedStatement query = null;
+        ResultSet rs = null;
+     
+        query = con.prepareStatement("SELECT * FROM USERDATA");
+        rs = query.executeQuery();
+
+        while(rs.next()){
+           users.add(User.fromResultSet(rs));
+        }
+        return users;
+    }
+    
+    
+    public UserCrud( DataInputStream in,DataOutputStream out,Connection con) {
+        this.out = out;
+        this.in = in;
+        this.con= con;
+        this.mapper = new ObjectMapper();
+    }
+    
+    final private DataOutputStream out;
+    final private DataInputStream in;
+    final private Connection con;
+    final private ObjectMapper mapper;
+
 }
