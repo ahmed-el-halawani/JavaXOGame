@@ -74,7 +74,6 @@ public class Home extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(800, 552));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 552));
@@ -195,7 +194,7 @@ public class Home extends javax.swing.JFrame {
         jLayeredPane1.add(jPanel5, "card2");
 
         singlBT1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        singlBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/easy.png"))); // NOI18N
+        singlBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/easy_1.png"))); // NOI18N
         singlBT1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 singlBT1MouseEntered(evt);
@@ -206,7 +205,7 @@ public class Home extends javax.swing.JFrame {
         });
 
         localBT1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        localBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/difficult.png"))); // NOI18N
+        localBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/difficult_1.png"))); // NOI18N
         localBT1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 localBT1MouseEntered(evt);
@@ -217,7 +216,7 @@ public class Home extends javax.swing.JFrame {
         });
 
         multiBT1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        multiBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/medium.png"))); // NOI18N
+        multiBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/meduim.png"))); // NOI18N
         multiBT1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 multiBT1MouseEntered(evt);
@@ -319,7 +318,7 @@ public class Home extends javax.swing.JFrame {
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/homee.jpg"))); // NOI18N
         jLabel5.setText("jLabel5");
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(10, 0, 810, 550);
+        jLabel5.setBounds(0, 0, 800, 550);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -388,27 +387,34 @@ localBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/l
     }//GEN-LAST:event_jLabel2MouseExited
 
     private void singlBT1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_singlBT1MouseEntered
+        singlBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/easy2.png"))); // NOI18N
+
         // TODO add your handling code here:
     }//GEN-LAST:event_singlBT1MouseEntered
 
     private void singlBT1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_singlBT1MouseExited
-        // TODO add your handling code here:
+  singlBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/easy_1.png"))); // NOI18N
+
     }//GEN-LAST:event_singlBT1MouseExited
 
     private void localBT1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_localBT1MouseEntered
-        // TODO add your handling code here:
+        localBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/difficult2.png"))); // NOI18N
+       
     }//GEN-LAST:event_localBT1MouseEntered
 
     private void localBT1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_localBT1MouseExited
-        // TODO add your handling code here:
+               localBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/difficult_1.png"))); // NOI18N
+
     }//GEN-LAST:event_localBT1MouseExited
 
     private void multiBT1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_multiBT1MouseEntered
-        // TODO add your handling code here:
+             multiBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/meduim2.png"))); // NOI18N
+
     }//GEN-LAST:event_multiBT1MouseEntered
 
     private void multiBT1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_multiBT1MouseExited
-        // TODO add your handling code here:
+              multiBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/meduim.png"))); // NOI18N
+
     }//GEN-LAST:event_multiBT1MouseExited
 
     private void singlBTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_singlBTMouseClicked
