@@ -49,22 +49,13 @@ public class JavaXOServer {
     }
 }
 
-class Room{
-    String roomId;
-    Vector<RequestHandler> clientsVector = new Vector<RequestHandler>();
-    
-    public void run(JsonAction ja){
-        
-    }
-}
-
 class RequestHandler extends Thread {
     DataInputStream in;
     DataOutputStream out;
     Socket s;
     Connection con;
 
-    static Vector<PlayerDetails> availToPlay = new Vector<>();
+    static Vector<Player> availToPlay = new Vector<>();
 //    clientsVector.add(this);
 
     public RequestHandler(Socket s) throws IOException {
@@ -157,53 +148,62 @@ class RequestHandler extends Thread {
                  
                     switch(action.getType()){
                         case createGameRoom:
-                            gameRoom = new GameRoom(new ObjectMapper().readValue(action.getObject(), PlayerDetails.class));
-                            new Responce(200, gameRoom.getCode()).sendJson(out);
+                            
+                            gameRoom = new GameRoom(new Player(new ObjectMapper().readValue(action.getObject(), User.class),s));
+                            new Responce(Responce.createGameRoom, gameRoom.getCode()).sendJson(out);
                             break;
                         case findGameRoom:
                             if(availToPlay.isEmpty()){
-                                availToPlay.add(new ObjectMapper().readValue(action.getObject(), PlayerDetails.class));
-                                new Responce(300, gameRoomResponce.FindingGame.name()).sendJson(out);
+                                availToPlay.add(new Player(new ObjectMapper().readValue(action.getObject(), User.class),s));
+                                new Responce(Responce.findGameError, gameRoomResponce.FindingGame.name()).sendJson(out);
                             }else{
-                                gameRoom = new GameRoom(availToPlay.get(0),new ObjectMapper().readValue(action.getObject(), PlayerDetails.class));
+                                gameRoom = new GameRoom(availToPlay.get(0),new Player(new ObjectMapper().readValue(action.getObject(), User.class),s));
                                 GameRoom.gameRooms.add(gameRoom);
-                                new Responce(200, gameRoom.toJson()).sendJson(out);
+                                availToPlay.remove(0);
+                                gameRoom.notifySockets(Responce.findGame,gameRoom.toJson());
+//                                new Responce(200, gameRoom.toJson()).sendJson(out);
                             }
                             break;
                         case findGameRoomWithCode:
                             if(GameRoom.gameRooms.isEmpty())
-                                new Responce(300, gameRoomResponce.NoGameRoomRightNow.name()).sendJson(out);
-                            else{
-                                gameRoom = GameRoom.getGameRoom(action.getParams());
-                                if(gameRoom==null)
-                                     new Responce(300, gameRoomResponce.NoGameRoomWithThisCode.name()).sendJson(out);
-                                else
-                                    if(gameRoom.setPlayerTwo(new ObjectMapper().readValue(action.getObject(), PlayerDetails.class))!=null)
-                                        new Responce(300, gameRoomResponce.GameRoomIsFull.name()).sendJson(out);
-                                    else
-                                        new Responce(200, gameRoom.toJson()).sendJson(out);
+                            {
+                                new Responce(Responce.findGameWithCodeError, gameRoomResponce.NoGameRoomRightNow.name()).sendJson(out);
+                                break;
+                            }
+                            gameRoom = GameRoom.getGameRoom(action.getParams());
+                            if(gameRoom==null)
+                            {
+                                new Responce(Responce.findGameWithCodeError, gameRoomResponce.NoGameRoomWithThisCode.name()).sendJson(out);
+                                break;
+                            }
+                            if(gameRoom.setPlayerTwo(new Player(new ObjectMapper().readValue(action.getObject(), User.class),s))!=null)
+                                new Responce(Responce.findGameWithCodeError, gameRoomResponce.GameRoomIsFull.name()).sendJson(out);
+                            else
+                            {
+//                                gameRoom.notifySockets(Responce.findGameWithCode,gameRoom.toJson());
+                                gameRoom.notifySockets(Responce.startGame,gameRoom.toJson());
                             }
                             break;
                             
                         case setMove:
                             if(GameRoom.gameRooms.isEmpty())
                             {
-                                new Responce(300, gameRoomResponce.NoGameRoomRightNow.name()).sendJson(out);
+                                new Responce(Responce.setMoveError, gameRoomResponce.NoGameRoomRightNow.name()).sendJson(out);
                                 break;
                             }
                             else{
                                 gameRoom = GameRoom.getGameRoom(action.getParams());
                                 if(gameRoom==null)
                                 {
-                                    new Responce(300, gameRoomResponce.NoGameRoomWithThisCode.name()).sendJson(out);
+                                    new Responce(Responce.setMoveError, gameRoomResponce.NoGameRoomWithThisCode.name()).sendJson(out);
                                     break;
                                 }
                                 
                                 res = gameRoom.setMove(new ObjectMapper().readValue(action.getObject(), Integer.class));
                                 if(res!=null)
-                                    new Responce(300, res.name()).sendJson(out);
+                                    new Responce(Responce.setMoveError, res.name()).sendJson(out);
                                 else
-                                    new Responce(200, gameRoom.toJson()).sendJson(out);
+                                    gameRoom.notifySockets(Responce.setMove,gameRoom.toJson());
                             }
                             break;
                     }
