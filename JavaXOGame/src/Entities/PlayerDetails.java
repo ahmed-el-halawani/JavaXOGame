@@ -52,14 +52,6 @@ public class PlayerDetails extends BaseEntity {
         this.playerState = playerState;
     }
 
-    public UserGameDetails.PlayerSimbole getPlayerSample() {
-        return PlayerSimbole;
-    }
-
-    public void setPlayerSample(UserGameDetails.PlayerSimbole playerSample) {
-        this.PlayerSimbole = playerSample;
-    }
-
     public UserGameDetails.PlayerSimbole getPlayerSimbole() {
         return PlayerSimbole;
     }
@@ -83,7 +75,6 @@ public class PlayerDetails extends BaseEntity {
         this.PlayerSimbole = PlayerSimbole;
         this.isRecorded = isRecorded;
     }
-        
         
     public PlayerDetails(User player, UserGameDetails.PlayerSimbole playerSample) {
         this.player = player;

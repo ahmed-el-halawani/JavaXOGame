@@ -71,14 +71,6 @@ public class PlayerDetails extends BaseEntity {
         this.playerState = playerState;
     }
 
-    public UserGameDetails.PlayerSimbole getPlayerSample() {
-        return PlayerSimbole;
-    }
-
-    public void setPlayerSample(UserGameDetails.PlayerSimbole playerSample) {
-        this.PlayerSimbole = playerSample;
-    }
-
     public PlayerDetails(String id,User player, PlayerState playerState, UserGameDetails.PlayerSimbole PlayerSimbole, boolean isRecorded) {
         super(id);
         this.player = player;
