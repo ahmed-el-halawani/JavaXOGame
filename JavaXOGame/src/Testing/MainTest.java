@@ -7,10 +7,13 @@ package Testing;
 
 import Entities.*;
 import Utils.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import java.awt.EventQueue;
 import java.util.*;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
 
 /**
  *
@@ -22,11 +25,21 @@ public final class MainTest extends javax.swing.JFrame {
     ConnectionManager cm;
     UserCrud userCrud;
     UserGameDetailsCrud userGameDetailsCrud;
+    JButton[] buttons;
+    GameRoomCrud gamebord;
+
     public MainTest() {
+
         initComponents();
+        
+
+        buttons = new JButton[]{b1,b2,b3,b4,b5,b6,b7,b8,b9};
+        
         setTitle("Main Test");
         try {
             cm = ConnectionManager.getInstance();
+                gamebord = new GameRoomCrud(cm.in,cm.out);
+
             userGameDetailsCrud = new UserGameDetailsCrud(cm.in,cm.out);
             userCrud = new UserCrud(cm.in,cm.out);
         } catch (IOException ex) {
@@ -41,7 +54,6 @@ public final class MainTest extends javax.swing.JFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
-        jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         getAllUsers = new javax.swing.JButton();
         getAllUsers1 = new javax.swing.JButton();
@@ -58,13 +70,19 @@ public final class MainTest extends javax.swing.JFrame {
         userWithId = new javax.swing.JRadioButton();
         userWithName = new javax.swing.JRadioButton();
         createRoom = new javax.swing.JButton();
-        setMove = new javax.swing.JButton();
+        findGame = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        b1 = new javax.swing.JButton();
+        b2 = new javax.swing.JButton();
+        b3 = new javax.swing.JButton();
+        b4 = new javax.swing.JButton();
+        b5 = new javax.swing.JButton();
+        b6 = new javax.swing.JButton();
+        b7 = new javax.swing.JButton();
+        b8 = new javax.swing.JButton();
+        b9 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
-        getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
         jPanel3.setMinimumSize(new java.awt.Dimension(200, 200));
         jPanel3.setPreferredSize(new java.awt.Dimension(200, 150));
@@ -141,40 +159,130 @@ public final class MainTest extends javax.swing.JFrame {
             }
         });
 
-        setMove.setText("setMove");
-        setMove.addActionListener(new java.awt.event.ActionListener() {
+        findGame.setText("findGame");
+        findGame.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setMoveActionPerformed(evt);
+                findGameActionPerformed(evt);
             }
         });
+
+        jPanel2.setLayout(new java.awt.GridLayout(3, 3));
+
+        b1.setFont(new java.awt.Font("Tekton Pro Cond", 0, 120)); // NOI18N
+        b1.setName("1"); // NOI18N
+        b1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(b1);
+        b1.getAccessibleContext().setAccessibleName("b1");
+
+        b2.setFont(new java.awt.Font("Tekton Pro Cond", 0, 120)); // NOI18N
+        b2.setName("2"); // NOI18N
+        b2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(b2);
+        b2.getAccessibleContext().setAccessibleName("b2");
+
+        b3.setFont(new java.awt.Font("Tekton Pro Cond", 0, 120)); // NOI18N
+        b3.setName("3"); // NOI18N
+        b3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(b3);
+
+        b4.setFont(new java.awt.Font("Tekton Pro Cond", 0, 120)); // NOI18N
+        b4.setName("4"); // NOI18N
+        b4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(b4);
+
+        b5.setFont(new java.awt.Font("Tekton Pro Cond", 0, 120)); // NOI18N
+        b5.setName("5"); // NOI18N
+        b5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(b5);
+
+        b6.setFont(new java.awt.Font("Tekton Pro Cond", 0, 120)); // NOI18N
+        b6.setName("6"); // NOI18N
+        b6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(b6);
+
+        b7.setFont(new java.awt.Font("Tekton Pro Cond", 0, 120)); // NOI18N
+        b7.setName("7"); // NOI18N
+        b7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(b7);
+
+        b8.setFont(new java.awt.Font("Tekton Pro Cond", 0, 120)); // NOI18N
+        b8.setName("8"); // NOI18N
+        b8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(b8);
+
+        b9.setFont(new java.awt.Font("Tekton Pro Cond", 0, 120)); // NOI18N
+        b9.setName("9"); // NOI18N
+        b9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(b9);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(getAllUsers1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(getAllUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(createRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(setMove, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                .addComponent(getAllUsers1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(getAllUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(createRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(findGame, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 170, Short.MAX_VALUE))
+                            .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 5, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 604, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -185,7 +293,7 @@ public final class MainTest extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(getAllUsers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(createRoom)
-                        .addComponent(setMove)))
+                        .addComponent(findGame)))
                 .addContainerGap())
         );
 
@@ -247,35 +355,123 @@ public final class MainTest extends javax.swing.JFrame {
         messages.setText(users.toString());
     }//GEN-LAST:event_getAllUsersActionPerformed
 
+    User u = null;
     private void createRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createRoomActionPerformed
         try {
-            GameRoomCrud gamebord = new GameRoomCrud(cm.in,cm.out);
-           gamebord .createGameRoom(
-                new PlayerDetails(
-                    new User(
-                            "123123123",
-                            "ahmed",
-                            "ahmedgomaa",
-                            "ahmed123"
-                    ), 
-                    UserGameDetails.PlayerSimbole.X
-                )
+            u = new User(
+                    "123123123456",
+                    "ahmed",
+                    "ahmedgomaa",
+                    "ahmed123"
+                );
+            
+            gamebord .createGameRoom(
+                u,
+                (String object) -> {
+                    EventQueue.invokeLater(()->{
+                        messages.setText("create game with code "+object);
+                    });
+                },
+                (String object) -> {}
             );
-            messages.setText(
-                gamebord.getCode()
-            );
-            
-            
-            gamebord.setMove(2);
-            
+            setStartGame();
+           
         } catch (IOException ex) {
             Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_createRoomActionPerformed
 
-    private void setMoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setMoveActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_setMoveActionPerformed
+    public void setMovieLisener(){
+        gamebord.setMoveListenr(
+            (String object) -> {
+                EventQueue.invokeLater(()->{
+                    messages.setText(gamebord.gameRoom.currentPosition.toString());
+                    gamebord.gameRoom.getGameBord().forEach((t, u) -> {
+                        buttons[t-1].setText(u.name());
+                    });
+                });
+            },(String object) -> {
+                EventQueue.invokeLater(()->{
+                    messages.setText(object);
+                });
+            }
+        );
+    }
+    
+      public GameRoomCrud.ListenersX listener;
+    
+    public void setStartGame(){
+        if(listener !=null) return;
+        listener = new GameRoomCrud.ListenersX(
+                    new GameRoomCrud.NotifierObject[]
+                    {
+                        new GameRoomCrud.NotifierObject(
+                            (String object) -> {
+                                try {
+                                 gamebord.gameRoom = gamebord.obm.readValue(object, GameRoom.class);
+                                 
+                                 EventQueue.invokeLater(()->{
+                                    messages.setText("starting game "+gamebord.gameRoom.code);
+                                });
+                                } catch (JsonProcessingException ex) {
+                                 Logger.getLogger(GameRoomCrud.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            },
+                            Responce.startGame
+                        ),
+                        new GameRoomCrud.NotifierObject(
+                            (String object) -> {
+                                 EventQueue.invokeLater(()->{
+                                    messages.setText("starting game");
+                                });
+                            },
+                            Responce.startGameError
+                        )
+                    },
+                false
+                );
+        
+        gamebord.setListener(listener);
+        setMovieLisener();
+    }
+    private void findGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findGameActionPerformed
+         try {
+            
+            u = new User(
+                    "123123123",
+                    "mohamed",
+                    "ahmedgomaa",
+                    "ahmed123"
+                );
+            
+            gamebord.findGameRoomWithCode(
+                u, 
+                "abcd",
+                (String s)->{
+                    EventQueue.invokeLater(()->{
+                        messages.setText("enter game");
+                    });
+                },
+                (String s)->{}
+            );
+            
+            setStartGame();
+        } catch (IOException ex) {
+            Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_findGameActionPerformed
+
+    private void b2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b2ActionPerformed
+         try {
+             if(!gamebord.isReadyToPlay()) return;
+             if(u.getId().equals(gamebord.gameRoom.currentTurn.getPlayer().getId()))
+                gamebord.setMove(
+                    Integer.valueOf(((JButton)evt.getSource()).getName())
+                );
+        } catch (IOException ex) {
+            Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_b2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -313,14 +509,24 @@ public final class MainTest extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton b1;
+    private javax.swing.JButton b2;
+    private javax.swing.JButton b3;
+    private javax.swing.JButton b4;
+    private javax.swing.JButton b5;
+    private javax.swing.JButton b6;
+    private javax.swing.JButton b7;
+    private javax.swing.JButton b8;
+    private javax.swing.JButton b9;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton createRoom;
+    private javax.swing.JButton findGame;
     private javax.swing.JButton getAllUsers;
     private javax.swing.JButton getAllUsers1;
     private javax.swing.JButton getUser1;
     private javax.swing.JButton getUser2;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
@@ -328,7 +534,6 @@ public final class MainTest extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea messages;
-    private javax.swing.JButton setMove;
     private javax.swing.JRadioButton userWithId;
     private javax.swing.JRadioButton userWithName;
     private javax.swing.JTextField withUserId;
