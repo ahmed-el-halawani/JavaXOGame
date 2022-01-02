@@ -7,12 +7,16 @@ package Entities;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.MapType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.BiConsumer;
@@ -30,13 +34,16 @@ public class UserGameDetails extends BaseEntity {
 
     public static UserGameDetails fromResultSet(ResultSet rs,PlayerDetails playerOne,PlayerDetails playerTwo) throws SQLException, JsonProcessingException {
         ObjectMapper obm = new ObjectMapper();
+        
+        MapType typeReference = TypeFactory.defaultInstance().constructMapType(Map.class, Integer.class, PlayerSimbole.class);
+
         return new UserGameDetails(
             rs.getString("ID"),
             GameModes.valueOf(rs.getString("GAMEMODE")),
             GameDifficultyLvl.valueOf(rs.getString("GAMEDIFFICULTYLVL")),
             playerOne,
             playerTwo,
-            obm.readValue(rs.getString("GAMEBORD"), HashMap.class)
+            obm.readValue(rs.getString("GAMEBORD"), typeReference)
         );
     }
     public static enum PlayerState{
@@ -96,9 +103,7 @@ public class UserGameDetails extends BaseEntity {
     }
     
     
-    public UserGameDetails() {
-        gameBord = new HashMap();
-    }
+   
     
    
 
@@ -216,6 +221,36 @@ public class UserGameDetails extends BaseEntity {
                             PlayerSimbole.X
                 );
     }
+    
+    
+    
+    public UserGameDetails(
+            GameModes gameMode,
+            PlayerDetails playerOneDetails
+    ) {
+        this.gameMode = gameMode;
+        this.gameDifficultyLvl = gameDifficultyLvl.Intermediate;
+        this.playerOneDetails = playerOneDetails;
+        gameBord = new HashMap();
+    }
+    
+    
+    public UserGameDetails(
+            GameModes gameMode,
+            PlayerDetails playerOneDetails,
+            PlayerDetails playerTwoDetails
+    ) {
+        this.gameMode = gameMode;
+        this.gameDifficultyLvl = gameDifficultyLvl.Intermediate;
+        this.playerOneDetails = playerOneDetails;
+         this.playerTwoDetails = playerTwoDetails;
+        gameBord = new HashMap();
+    }
+    
+     public UserGameDetails() {
+        gameBord = new HashMap();
+    }
+    
     
     
     

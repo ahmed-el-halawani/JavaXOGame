@@ -174,7 +174,7 @@ public class GameRoomCrud {
         listener = null;
     }
     
-    public void setMoveListenr(INotifayer recive,INotifayer error){
+    public void setMoveListenr(INotifayer recive,INotifayer win,INotifayer draw,INotifayer error){
         if(listener!=null){
             return;
         }
@@ -192,6 +192,33 @@ public class GameRoomCrud {
                             },
                             Responce.setMove
                         ),
+                        
+                         new NotifierObject(
+                            (String object) -> {
+                                try {
+                                 gameRoom = obm.readValue(object, GameRoom.class);
+                                 win.notif(object);
+                                } catch (JsonProcessingException ex) {
+                                 Logger.getLogger(GameRoomCrud.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            },
+                            Responce.Winner
+                        ),
+//                        
+                        new NotifierObject(
+                            (String object) -> {
+                                try {
+                                 gameRoom = obm.readValue(object, GameRoom.class);
+                                 draw.notif(object);
+                                } catch (JsonProcessingException ex) {
+                                 Logger.getLogger(GameRoomCrud.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            },
+                            Responce.Draw
+                        ),
+                        
+                       
+//                        
                         new NotifierObject(
                             (String object) -> {
                                  error.notif(object);

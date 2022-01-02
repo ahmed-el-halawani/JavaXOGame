@@ -32,6 +32,8 @@ public class Responce {
     public static int findGameError = 215;
     public static int findGameWithCode = 216;
     public static int findGameWithCodeError = 217;
+    public static int Draw = 218;
+    public static int Winner = 219;
     
     public static Responce fromJson(String body) throws  JsonProcessingException{
         return new ObjectMapper().readValue(body, Responce.class);

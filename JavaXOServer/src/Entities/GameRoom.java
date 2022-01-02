@@ -61,7 +61,6 @@ public class GameRoom extends UserGameDetails  {
             return gameRoomResponce.WrongPlace;
         
         
-        
         gameBord.put(position, currentTurn.getPlayerSimbole());
         currentPosition = position;
         
@@ -73,17 +72,32 @@ public class GameRoom extends UserGameDetails  {
     }
     
     public GameRoom(Player p){
-        this.players.add(p);
-        this.playerOneDetails = new PlayerDetails(
-            p.user,
-            PlayerSimbole.X
+        super(
+            GameModes.Multi, 
+            new PlayerDetails(
+                p.user,
+                PlayerSimbole.X
+            )
         );
+        
+        this.players.add(p);
         this.code = "abcd";
         gameRooms.add(this);
         this.currentTurn = playerOneDetails;
     }
     
     public  GameRoom(Player p1,Player p2){
+        super(
+            GameModes.Multi, 
+            new PlayerDetails(
+                p1.user,
+                PlayerSimbole.X
+            ),
+            new PlayerDetails(
+                p2.user,
+                PlayerSimbole.O
+            )
+        );
         this.players.add(p1);
         this.players.add(p2);
         
@@ -164,10 +178,54 @@ public class GameRoom extends UserGameDetails  {
         this.currentPosition = currentPosition;
     }
     
+    public GameState _getGameSate(){
+        for(int i =1;i<=6;i+=3)
+            if(gameBord.get(i)!=null && gameBord.get(i).equals(gameBord.get(i+1)) &&gameBord.get(i+1).equals(gameBord.get(i+2)))
+            {
+                setWinnerWithSimbole(gameBord.get(i));
+                return GameState.winner;
+            }
+        
+        for(int i =1;i<=6;i++)
+            if(gameBord.get(i)!=null && gameBord.get(i).equals(gameBord.get(i+3)) &&gameBord.get(i+3) .equals(gameBord.get(i+6)))
+            {
+                setWinnerWithSimbole(gameBord.get(i));
+                return GameState.winner;
+            }
+        
+        if(gameBord.get(1)!=null && gameBord.get(1).equals(gameBord.get(5)) &&gameBord.get(5).equals(gameBord.get(9)))
+            {
+                setWinnerWithSimbole(gameBord.get(1));
+                return GameState.winner;
+            }
+        
+        if(gameBord.get(3)!=null && gameBord.get(3).equals(gameBord.get(5)) &&gameBord.get(5).equals(gameBord.get(7)))
+            {
+                setWinnerWithSimbole(gameBord.get(3));
+                return GameState.winner;
+            }
+        
+        if(gameBord.size() == 9)
+            return GameState.draw;
+        
+        return GameState.playing;
+    }
     
     
+     private void setWinnerWithSimbole(PlayerSimbole playerSimbole){
+         if(playerOneDetails.getPlayerSimbole().equals(playerSimbole)){
+             playerOneDetails.setPlayerState(PlayerState.Winner);
+             playerTwoDetails.setPlayerState(PlayerState.Loser);
+         }else{
+            playerOneDetails.setPlayerState(PlayerState.Loser);
+            playerTwoDetails.setPlayerState(PlayerState.Winner);
+         }
+    }
     
-    
+    public static enum GameState{
+        playing,draw,winner
+    }
+
     private Vector<Player> players = new Vector<>();
     private PlayerDetails currentTurn;
     private PlayerDetails nextTurn;

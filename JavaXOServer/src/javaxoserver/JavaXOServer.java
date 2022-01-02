@@ -203,7 +203,19 @@ class RequestHandler extends Thread {
                                 if(res!=null)
                                     new Responce(Responce.setMoveError, res.name()).sendJson(out);
                                 else
-                                    gameRoom.notifySockets(Responce.setMove,gameRoom.toJson());
+                                    switch(gameRoom._getGameSate()){
+                                        case playing:
+                                            gameRoom.notifySockets(Responce.setMove,gameRoom.toJson());
+                                        break;
+                                        case draw:
+                                            gameRoom.notifySockets(Responce.Draw,gameRoom.toJson());
+                                            userGameDetailsCrud.add(gameRoom);
+                                        break;
+                                        case winner:
+                                            gameRoom.notifySockets(Responce.Winner,gameRoom.toJson());
+                                            userGameDetailsCrud.add(gameRoom);
+                                        break;
+                                    }
                             }
                             break;
                     }
@@ -215,6 +227,7 @@ class RequestHandler extends Thread {
             
             catch ( IOException ex) {
                 try {
+                    Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
                     new Responce(404, ex.toString()).sendJson(out);
                     con.close();
                     s.close();

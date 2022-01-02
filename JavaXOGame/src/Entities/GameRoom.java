@@ -140,9 +140,54 @@ public class GameRoom extends UserGameDetails  {
     public void setCurrentPosition(Integer currentPosition) {
         this.currentPosition = currentPosition;
     }
-
+    
+    public GameState _getGameSate(){
+        for(int i =1;i<=6;i+=3)
+            if(gameBord.get(i)!=null && gameBord.get(i).equals(gameBord.get(i+1)) &&gameBord.get(i+1).equals(gameBord.get(i+2)))
+            {
+                setWinnerWithSimbole(gameBord.get(i));
+                return GameState.winner;
+            }
+        
+        for(int i =1;i<=6;i++)
+            if(gameBord.get(i)!=null && gameBord.get(i).equals(gameBord.get(i+3)) &&gameBord.get(i+3) .equals(gameBord.get(i+6)))
+            {
+                setWinnerWithSimbole(gameBord.get(i));
+                return GameState.winner;
+            }
+        
+        if(gameBord.get(1)!=null && gameBord.get(1).equals(gameBord.get(5)) &&gameBord.get(5).equals(gameBord.get(9)))
+            {
+                setWinnerWithSimbole(gameBord.get(1));
+                return GameState.winner;
+            }
+        
+        if(gameBord.get(3)!=null && gameBord.get(3).equals(gameBord.get(5)) &&gameBord.get(5).equals(gameBord.get(7)))
+            {
+                setWinnerWithSimbole(gameBord.get(3));
+                return GameState.winner;
+            }
+        
+        if(gameBord.size() == 9)
+            return GameState.draw;
+        
+        return GameState.playing;
+    }
     
     
+      private void setWinnerWithSimbole(PlayerSimbole playerSimbole){
+         if(playerOneDetails.getPlayerSimbole().equals(playerSimbole)){
+             playerOneDetails.setPlayerState(PlayerState.Winner);
+             playerTwoDetails.setPlayerState(PlayerState.Loser);
+         }else{
+            playerOneDetails.setPlayerState(PlayerState.Loser);
+            playerTwoDetails.setPlayerState(PlayerState.Winner);
+         }
+    }
+    
+    public static enum GameState{
+        playing,draw,winner
+    }
     
     public PlayerDetails currentTurn;
     public PlayerDetails nextTurn;

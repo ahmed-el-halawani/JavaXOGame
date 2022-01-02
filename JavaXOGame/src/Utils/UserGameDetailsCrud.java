@@ -149,6 +149,8 @@ DataOutputStream out;
             
             Responce res = obm.readValue(in.readUTF(), Responce.class);
                         System.out.println(res);
+                        
+            System.out.println(res);
 
             if(res.getStatusCode() == 200){
                 return obm.readValue(res.getObject(), typeReference);

@@ -23,6 +23,7 @@ public final class MainTest extends javax.swing.JFrame {
     
     
     ConnectionManager cm;
+    ConnectionManager cm2;
     UserCrud userCrud;
     UserGameDetailsCrud userGameDetailsCrud;
     JButton[] buttons;
@@ -32,14 +33,13 @@ public final class MainTest extends javax.swing.JFrame {
 
         initComponents();
         
-
         buttons = new JButton[]{b1,b2,b3,b4,b5,b6,b7,b8,b9};
         
         setTitle("Main Test");
         try {
             cm = ConnectionManager.getInstance();
-                gamebord = new GameRoomCrud(cm.in,cm.out);
-
+            cm2 = ConnectionManager.createGameSocet();
+            gamebord = new GameRoomCrud(cm2.in,cm2.out);
             userGameDetailsCrud = new UserGameDetailsCrud(cm.in,cm.out);
             userCrud = new UserCrud(cm.in,cm.out);
         } catch (IOException ex) {
@@ -359,11 +359,13 @@ public final class MainTest extends javax.swing.JFrame {
     private void createRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createRoomActionPerformed
         try {
             u = new User(
-                    "123123123456",
-                    "ahmed",
-                    "ahmedgomaa",
-                    "ahmed123"
+                    "12475136-e31f-4ace-9a31-a8f2f445653f",
+                    "ahmed34",
+                    "ahmedGomaa24334",
+                    "123123123",
+                    User.UserType.Account
                 );
+            
             
             gamebord .createGameRoom(
                 u,
@@ -390,10 +392,27 @@ public final class MainTest extends javax.swing.JFrame {
                         buttons[t-1].setText(u.name());
                     });
                 });
-            },(String object) -> {
+            },
+                (String object) -> {
                 EventQueue.invokeLater(()->{
-                    messages.setText(object);
+                    messages.setText(gamebord.gameRoom.getPlayerStateWithId(u.getId()).name());
+                    gamebord.gameRoom.getGameBord().forEach((t, u) -> {
+                        buttons[t-1].setText(u.name());
+                    });
                 });
+            },
+                (String object) -> {
+                EventQueue.invokeLater(()->{
+                    messages.setText("Draw");
+                    gamebord.gameRoom.getGameBord().forEach((t, u) -> {
+                        buttons[t-1].setText(u.name());
+                    });
+                });
+            },
+            (String object) -> {
+            EventQueue.invokeLater(()->{
+                messages.setText(object);
+            });
             }
         );
     }
@@ -438,10 +457,11 @@ public final class MainTest extends javax.swing.JFrame {
          try {
             
             u = new User(
+                    "2033e557-fb4d-4297-a48b-0a971140593e",
+                    "ahmed34",
+                    "ahmedGomaa244",
                     "123123123",
-                    "mohamed",
-                    "ahmedgomaa",
-                    "ahmed123"
+                    User.UserType.Account
                 );
             
             gamebord.findGameRoomWithCode(
@@ -464,6 +484,7 @@ public final class MainTest extends javax.swing.JFrame {
     private void b2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b2ActionPerformed
          try {
              if(!gamebord.isReadyToPlay()) return;
+             if(gamebord.gameRoom._getGameSate()==GameRoom.GameState.draw||gamebord.gameRoom._getGameSate()==GameRoom.GameState.winner) return;
              if(u.getId().equals(gamebord.gameRoom.currentTurn.getPlayer().getId()))
                 gamebord.setMove(
                     Integer.valueOf(((JButton)evt.getSource()).getName())
