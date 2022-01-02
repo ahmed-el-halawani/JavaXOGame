@@ -51,7 +51,7 @@ public class GameRoom extends UserGameDetails  {
         if(gameBord.keySet().contains(position))
             return gameRoomResponce.WrongPlace;
         
-        gameBord.put(position, currentTurn.getPlayerSample());
+        gameBord.put(position, currentTurn.getPlayerSimbole());
         currentPosition = position;
         
         PlayerDetails temp = currentTurn; 
@@ -119,9 +119,33 @@ public class GameRoom extends UserGameDetails  {
         this.getPlayerWithId(userId).setIsRecorded(true);
         return null;
     }
+
+    @Override
+    public String toString() {
+        return super.toString()+"\nGameRoom{" + "currentTurn=" + currentTurn + ", nextTurn=" + nextTurn + ", code=" + code + ", currentPosition=" + currentPosition + '}';
+    }
+
+    public PlayerDetails getNextTurn() {
+        return nextTurn;
+    }
+
+    public void setNextTurn(PlayerDetails nextTurn) {
+        this.nextTurn = nextTurn;
+    }
+
+    public Integer getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public void setCurrentPosition(Integer currentPosition) {
+        this.currentPosition = currentPosition;
+    }
+
     
-    private PlayerDetails currentTurn;
-    private PlayerDetails nextTurn;
-    private String code = "";
-    private Integer currentPosition;
+    
+    
+    public PlayerDetails currentTurn;
+    public PlayerDetails nextTurn;
+    public String code = "";
+    public Integer currentPosition;
 }
