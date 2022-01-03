@@ -5,7 +5,7 @@
  */
 package Entities;
 
-import Entities.GameRoom.gameRoomResponce;
+import Entities.Responce.responceCodes;
 import Utils.JsonAction;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,37 +35,16 @@ public class GameRoomCrud {
         this.in = in;
     }
     
-    public void createGameRoom(User user,INotifayer recive,INotifayer error) throws JsonProcessingException, IOException {
+    public void createGameRoom(User user) throws JsonProcessingException, IOException {
           System.out.println(user);
        
             JsonAction jsonAction = new JsonAction(
                     user.toJson(),
                     JsonAction.Types.createGameRoom,
-                    GameRoom.class,
                     ""
             );
             System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
-            
-            setListener(
-                    new ListenersX(new NotifierObject[]{
-                        new NotifierObject(
-                            (String object) -> {
-                                 this.code = object;
-                                 recive.notif(object);
-                            },
-                            Responce.createGameRoom
-                        ),
-                        new NotifierObject(
-                            (String object) -> {
-                                 error.notif(object);
-                            },
-                            Responce.createGameRoomError
-                        )
-                    }
-                )
-            );
-                    
     }
 
     public void findGameRoom(User user,INotifayer recive,INotifayer error) throws JsonProcessingException, IOException {
@@ -75,7 +53,7 @@ public class GameRoomCrud {
         JsonAction jsonAction = new JsonAction(
             user.toJson(),
             JsonAction.Types.findGameRoom,
-            GameRoom.class,
+            
             ""
         );
         System.out.println(obm.writeValueAsString(jsonAction));
@@ -93,25 +71,24 @@ public class GameRoomCrud {
                              Logger.getLogger(GameRoomCrud.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         },
-                        Responce.findGame
+                        responceCodes.findGame
                     ),
                     new NotifierObject(
                         (String object) -> {
                              error.notif(object);
                         },
-                        Responce.findGameError
+                        responceCodes.findGameError
                     )
                 }
             )
         );
     }
     
-    public void findGameRoomWithCode(User user,String code,INotifayer recive,INotifayer error) throws JsonProcessingException, IOException {
+    public void findGameRoomWithCode(User user,String code) throws JsonProcessingException, IOException {
         System.out.println(user);
         JsonAction jsonAction = new JsonAction(
                 user.toJson(),
                 JsonAction.Types.findGameRoomWithCode,
-                GameRoom.class,
                 code
         );
         System.out.println(obm.writeValueAsString(jsonAction));
@@ -158,7 +135,6 @@ public class GameRoomCrud {
             JsonAction jsonAction = new JsonAction(
                     position.toString(),
                     JsonAction.Types.setMove,
-                    GameRoom.class,
                     gameRoom.code
             );
             out.writeUTF(obm.writeValueAsString(jsonAction));
@@ -190,7 +166,7 @@ public class GameRoomCrud {
                                  Logger.getLogger(GameRoomCrud.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             },
-                            Responce.setMove
+                            responceCodes.setMove
                         ),
                         
                          new NotifierObject(
@@ -202,7 +178,7 @@ public class GameRoomCrud {
                                  Logger.getLogger(GameRoomCrud.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             },
-                            Responce.Winner
+                            responceCodes.Winner
                         ),
 //                        
                         new NotifierObject(
@@ -214,7 +190,7 @@ public class GameRoomCrud {
                                  Logger.getLogger(GameRoomCrud.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             },
-                            Responce.Draw
+                            responceCodes.Draw
                         ),
                         
                        
@@ -223,7 +199,7 @@ public class GameRoomCrud {
                             (String object) -> {
                                  error.notif(object);
                             },
-                            Responce.setMoveError
+                            responceCodes.setMoveError
                         )
                     },
                 false
@@ -252,13 +228,15 @@ public class GameRoomCrud {
         if(th==null){
              th = new Thread(()->{
                 while(running){
+                    Vector<ListenersX> iterator2 = new Vector(Arrays.asList(listeners.toArray()));
+                   
                     try {
                         String r = in.readUTF();
                         System.out.println("setListener");
                         System.out.println(r);
                         Responce res = obm.readValue(r, Responce.class);
                         
-                        for (Iterator<ListenersX> iterator = listeners.iterator(); iterator.hasNext();) {
+                        for (Iterator<ListenersX> iterator = iterator2.iterator(); iterator.hasNext();) {
                             ListenersX next = iterator.next();
                             next.doIt(res.getObject(),res.getStatusCode());
 //                            if(next.isFinish){
@@ -280,9 +258,9 @@ public class GameRoomCrud {
     
     public static class NotifierObject{
         public INotifayer action;
-        public int code;
+        public responceCodes code;
         
-        public NotifierObject(INotifayer action,int code){
+        public NotifierObject(INotifayer action,responceCodes code){
             this.action = action;
             this.code = code;
         }
@@ -319,7 +297,7 @@ public class GameRoomCrud {
         }
         
         
-        public NotifierObject containsCode(int code){
+        public NotifierObject containsCode(responceCodes code){
             for (NotifierObject notifier : notifiers) {
                 if(notifier.code == code)
                     return notifier;
@@ -328,7 +306,7 @@ public class GameRoomCrud {
         }
         
         
-        public void doIt(String object,int code) {
+        public void doIt(String object,responceCodes code) {
             NotifierObject notifi = containsCode(code);
             if(notifi!=null)
             {

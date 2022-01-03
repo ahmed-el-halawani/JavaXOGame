@@ -10,7 +10,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import Entities.*;
 import Entities.GameRoom.gameRoomResponce;
+import Entities.Responce.responceCodes;
 import Utils.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.*;
 import java.net.*;
 import java.sql.*;
@@ -22,9 +24,15 @@ import java.util.logging.Logger;
  *
  * @author A H M E D
  */
+
+
+
+
+
 public class JavaXOServer {
  ServerSocket serverSocket;
-
+ 
+    
     public JavaXOServer() throws IOException, SQLException {
         serverSocket = new ServerSocket(5005);
         System.out.println("wiating client...");
@@ -33,7 +41,6 @@ public class JavaXOServer {
             System.out.println("hi Client how r u?");
             System.out.println("garsone handle him but him in ur eaise");
             new RequestHandler(s);
-            
         }
     }
 
@@ -54,197 +61,276 @@ class RequestHandler extends Thread {
     DataOutputStream out;
     Socket s;
     Connection con;
-
+    UserCrud userCrud;
+    PlayerDetailsCrud playerDetailsCrud;
+    UserGameDetailsCrud userGameDetailsCrud;
+ 
+    GameRoom gameRoom;
+    
     static Vector<Player> availToPlay = new Vector<>();
-//    clientsVector.add(this);
 
-    public RequestHandler(Socket s) throws IOException {
+    public RequestHandler(Socket s){
+        Integer updatedRow;
+        Integer deletedRow;
         try {
             this.in = new DataInputStream(s.getInputStream());
             this.out = new DataOutputStream(s.getOutputStream());
             this.s = s;
             con = DriverManager.getConnection("jdbc:derby://localhost:1527/javaOXDatabase","javaProject","javaProject");
-            new Responce(200, "Done").sendJson(out);
+            
+            
+            userCrud = new UserCrud(in,out,con);
+            playerDetailsCrud = new PlayerDetailsCrud(in,out,con);
+            userGameDetailsCrud = new UserGameDetailsCrud(con,playerDetailsCrud);
+            
+            new Responce(responceCodes.ConnectionApproved, "Done").sendJson(out);
+            
             start();
         } catch (SQLException ex) {
+            try {
+                new Responce(responceCodes.SQLConnectionError, ex.getMessage()).sendJson(out);
+            } catch (IOException ex1) {
+                try {
+                    s.close();
+                } catch (IOException ex2) {
+                    Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex2);
+                }
+                
+                Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (IOException ex) {
+            try {
+                s.close();
+            } catch (IOException ex1) {
+                Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            
+            try {
+                con.close();
+            } catch (SQLException ex1) {
+                Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            
             Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void run() {
-        UserCrud userCrud = new UserCrud(in,out,con);
-        PlayerDetailsCrud playerDetailsCrud = new PlayerDetailsCrud(in,out,con);
-        UserGameDetailsCrud userGameDetailsCrud = new UserGameDetailsCrud(con,playerDetailsCrud);
-
         while (true) {
             try {
                 String str = in.readUTF();
-                System.out.println(str);
                 JsonAction action = JsonAction.fromJson(str);
-                
                 System.out.println("action: "+action);
-          
-                if(action.getCt() == UserCrud.class){
-                    switch(action.getType()){
-                        case Add:
-                            Integer res = userCrud.add(new ObjectMapper().readValue(action.getObject(), User.class));
-                            new Responce(200, res.toString()).sendJson(out);
-                        break;
-                        case GetAll:
-                            ArrayList<User> users = userCrud.getAll();
-                            new Responce(200, Responce.arrayToString(users)).sendJson(out);
-                        break;
-                        case Get:
-                            User user = userCrud.get(action.getParams());
-                            new Responce(200, user!=null?user.toJson():"null").sendJson(out);
-                        break;
-                        case GetAllWithUesrName:
-                            User userWithUserName = userCrud.getWithUserName(action.getParams());
-                            new Responce(200, userWithUserName!=null?userWithUserName.toJson():"null").sendJson(out);
-                        break;
-                        case Update:
-                            Integer updatedRow = userCrud.update(action.getParams(),new ObjectMapper().readValue(action.getObject(), User.class));
-                            new Responce(200, updatedRow.toString()).sendJson(out);
-                        break;
-                        case Delete:
-                            Integer deletedRow= userCrud.delete(action.getParams());
-                            new Responce(200, deletedRow.toString()).sendJson(out);
-                        break;
-                    }
-                }else if(action.getCt() == UserGameDetailsCrud.class){
-                     switch(action.getType()){
-                        case Add:
-                            Integer addedRow = userGameDetailsCrud.add(new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
-                            new Responce(200, addedRow.toString()).sendJson(out);
-                        break;
-                        case GetAll:
-                            ArrayList<UserGameDetails> array = userGameDetailsCrud.getAll();
-                            new Responce(200, Responce.arrayToString(array)).sendJson(out);
-                        break;
-                        case Get:
-                            UserGameDetails userGameDetails = userGameDetailsCrud.get(action.getParams());
-                            new Responce(200, userGameDetails!=null?userGameDetails.toJson():"null").sendJson(out);
-                        break;
-                        case Update:
-                            Integer updatedRow = userGameDetailsCrud.update(action.getParams(),new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
-                            new Responce(200, updatedRow.toString()).sendJson(out);
-                            break;
-                        case Delete:
-                            Integer deletedRow =userGameDetailsCrud.delete(action.getParams());
-                            new Responce(200, deletedRow.toString()).sendJson(out);
-                        break;
-                        case GetAllWithId:
-                            ArrayList<UserGameDetails> arrayWithId =userGameDetailsCrud.getAllWithId(action.getParams());
-                            new Responce(200, Responce.arrayToString(arrayWithId)).sendJson(out);
-                        break;
-                        case GetAllWithUesrName:
-                           ArrayList<UserGameDetails> arrayWithUserName = userGameDetailsCrud.getAllWithUserName(action.getParams());
-                            new Responce(200, Responce.arrayToString(arrayWithUserName)).sendJson(out);
-                        break;
-                     }
-                }else if(action.getCt() == GameRoom.class){
-                    GameRoom gameRoom;
-                    gameRoomResponce res = null;
-                 
-                    switch(action.getType()){
-                        case createGameRoom:
-                            
-                            gameRoom = new GameRoom(new Player(new ObjectMapper().readValue(action.getObject(), User.class),s));
-                            new Responce(Responce.createGameRoom, gameRoom.getCode()).sendJson(out);
-                            break;
-                        case findGameRoom:
-                            if(availToPlay.isEmpty()){
-                                availToPlay.add(new Player(new ObjectMapper().readValue(action.getObject(), User.class),s));
-                                new Responce(Responce.findGameError, gameRoomResponce.FindingGame.name()).sendJson(out);
-                            }else{
-                                gameRoom = new GameRoom(availToPlay.get(0),new Player(new ObjectMapper().readValue(action.getObject(), User.class),s));
-                                GameRoom.gameRooms.add(gameRoom);
-                                availToPlay.remove(0);
-                                gameRoom.notifySockets(Responce.findGame,gameRoom.toJson());
-//                                new Responce(200, gameRoom.toJson()).sendJson(out);
-                            }
-                            break;
-                        case findGameRoomWithCode:
-                            if(GameRoom.gameRooms.isEmpty())
-                            {
-                                new Responce(Responce.findGameWithCodeError, gameRoomResponce.NoGameRoomRightNow.name()).sendJson(out);
-                                break;
-                            }
-                            gameRoom = GameRoom.getGameRoom(action.getParams());
-                            if(gameRoom==null)
-                            {
-                                new Responce(Responce.findGameWithCodeError, gameRoomResponce.NoGameRoomWithThisCode.name()).sendJson(out);
-                                break;
-                            }
-                            if(gameRoom.setPlayerTwo(new Player(new ObjectMapper().readValue(action.getObject(), User.class),s))!=null)
-                                new Responce(Responce.findGameWithCodeError, gameRoomResponce.GameRoomIsFull.name()).sendJson(out);
-                            else
-                            {
-//                                gameRoom.notifySockets(Responce.findGameWithCode,gameRoom.toJson());
-                                gameRoom.notifySockets(Responce.startGame,gameRoom.toJson());
-                            }
-                            break;
-                            
-                        case setMove:
-                            if(GameRoom.gameRooms.isEmpty())
-                            {
-                                new Responce(Responce.setMoveError, gameRoomResponce.NoGameRoomRightNow.name()).sendJson(out);
-                                break;
-                            }
-                            else{
-                                gameRoom = GameRoom.getGameRoom(action.getParams());
-                                if(gameRoom==null)
-                                {
-                                    new Responce(Responce.setMoveError, gameRoomResponce.NoGameRoomWithThisCode.name()).sendJson(out);
-                                    break;
-                                }
-                                
-                                res = gameRoom.setMove(new ObjectMapper().readValue(action.getObject(), Integer.class));
-                                if(res!=null)
-                                    new Responce(Responce.setMoveError, res.name()).sendJson(out);
-                                else
-                                    switch(gameRoom._getGameSate()){
-                                        case playing:
-                                            gameRoom.notifySockets(Responce.setMove,gameRoom.toJson());
-                                        break;
-                                        case draw:
-                                            gameRoom.notifySockets(Responce.Draw,gameRoom.toJson());
-                                            userGameDetailsCrud.add(gameRoom);
-                                        break;
-                                        case winner:
-                                            gameRoom.notifySockets(Responce.Winner,gameRoom.toJson());
-                                            userGameDetailsCrud.add(gameRoom);
-                                        break;
-                                    }
-                            }
-                            break;
-                    }
-                }
                 
-            } 
-            
-        
-            
-            catch ( IOException ex) {
-                try {
-                    Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
-                    new Responce(404, ex.toString()).sendJson(out);
-                    con.close();
-                    s.close();
-                    System.out.print("User quit");
-                } catch (IOException|SQLException ex1) {
-                    System.out.print("User quit");
-                    Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex1);
-                } 
-                break;
-            } catch (JSONException |SQLException ex) {
+                if(usersRoute(action))
+                    continue;
+                
+                if(userGameDetailsRouts(action))
+                    continue;
+                
+                if(GameRoomRouts(action))
+                    continue;
+                
+            } catch (JSONException ex) {
                 Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
                 try {
-                    new Responce(404, ex.toString()).sendJson(out);
+                    s.close();
                 } catch (IOException ex1) {
                     Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex1);
                 }
-            } 
-        }
+                try {
+                    in.close();
+                } catch (IOException ex1) {
+                    Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+                try {
+                    out.close();
+                } catch (IOException ex1) {
+                    Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+                try {
+                    con.close();
+                } catch (SQLException ex1) {
+                    Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+                System.out.println("user quit");
+                return;
+            }
+        } 
+            
     }
+    
+    
+    private boolean usersRoute(JsonAction action) throws JsonProcessingException, JSONException, IOException, SQLException{
+        Integer updatedRow;
+        Integer deletedRow;
+        switch(action.getType()){
+            case AddUser:
+                Integer code = userCrud.add(new ObjectMapper().readValue(action.getObject(), User.class));
+                new Responce(responceCodes.Done, code.toString()).sendJson(out);
+            break;
+
+            case GetAllUsers:
+                ArrayList<User> users = userCrud.getAll();
+                new Responce(responceCodes.Done, Responce.arrayToString(users)).sendJson(out);
+            break;
+
+            case GetUser:
+                User user = userCrud.get(action.getParams());
+                new Responce(responceCodes.Done, user!=null?user.toJson():"null").sendJson(out);
+            break;
+
+            case GetUserWithUesrName:
+                User userWithUserName = userCrud.getWithUserName(action.getParams());
+                new Responce(responceCodes.Done, userWithUserName!=null?userWithUserName.toJson():"null").sendJson(out);
+            break;
+
+            case UpdateUser:
+                updatedRow = userCrud.update(action.getParams(),new ObjectMapper().readValue(action.getObject(), User.class));
+                new Responce(responceCodes.Done, updatedRow.toString()).sendJson(out);
+            break;
+
+            case DeleteUser:
+                 deletedRow= userCrud.delete(action.getParams());
+                new Responce(responceCodes.Done, deletedRow.toString()).sendJson(out);
+            break;
+            default:
+                return false;
+                
+        }
+        return true;
+    }
+    
+    private boolean userGameDetailsRouts(JsonAction action) throws  JsonProcessingException, JSONException, IOException, SQLException{
+        Integer updatedRow;
+        Integer deletedRow;
+        switch(action.getType()){
+                   
+
+                    case Add:
+                        Integer addedRow = userGameDetailsCrud.add(new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
+                        new Responce(responceCodes.Done, addedRow.toString()).sendJson(out);
+                    break;
+                    
+                    case GetAll:
+                        ArrayList<UserGameDetails> array = userGameDetailsCrud.getAll();
+                        new Responce(responceCodes.Done, Responce.arrayToString(array)).sendJson(out);
+                    break;
+                    
+                    case Get:
+                        UserGameDetails userGameDetails = userGameDetailsCrud.get(action.getParams());
+                        new Responce(responceCodes.Done, userGameDetails!=null?userGameDetails.toJson():"null").sendJson(out);
+                    break;
+                    
+                    case Update:
+                         updatedRow = userGameDetailsCrud.update(action.getParams(),new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
+                        new Responce(responceCodes.Done, updatedRow.toString()).sendJson(out);
+                    break;
+                    
+                    case Delete:
+                         deletedRow =userGameDetailsCrud.delete(action.getParams());
+                        new Responce(responceCodes.Done, deletedRow.toString()).sendJson(out);
+                    break;
+                    
+                    case GetAllWithId:
+                        ArrayList<UserGameDetails> arrayWithId =userGameDetailsCrud.getAllWithId(action.getParams());
+                        new Responce(responceCodes.Done, Responce.arrayToString(arrayWithId)).sendJson(out);
+                    break;
+                    
+                    case GetAllWithUesrName:
+                       ArrayList<UserGameDetails> arrayWithUserName = userGameDetailsCrud.getAllWithUserName(action.getParams());
+                        new Responce(responceCodes.Done, Responce.arrayToString(arrayWithUserName)).sendJson(out);
+                    break;
+                    
+                    // GAME ROOM Routs
+                    default:
+                        return false;
+                }
+    return true;
+    }
+    
+    private boolean GameRoomRouts(JsonAction action) throws JsonProcessingException, JsonProcessingException, IOException, JSONException, SQLException{
+        gameRoomResponce gemeRoomResponce = null;
+        
+        switch(action.getType()){
+            case createGameRoom:
+                gameRoom = new GameRoom(new Player(new ObjectMapper().readValue(action.getObject(), User.class),s));
+                new Responce(responceCodes.createGameRoom, gameRoom.getCode()).sendJson(out);
+            break;
+                        
+            case findGameRoom:
+                if(availToPlay.isEmpty()){
+                    availToPlay.add(new Player(new ObjectMapper().readValue(action.getObject(), User.class),s));
+                    new Responce(responceCodes.findGameError, gameRoomResponce.FindingGame.name()).sendJson(out);
+                }else{
+                    gameRoom = new GameRoom(availToPlay.get(0),new Player(new ObjectMapper().readValue(action.getObject(), User.class),s));
+                    availToPlay.remove(0);
+                    gameRoom.notifySockets(responceCodes.findGame,gameRoom.toJson());
+                }
+            break;
+
+            case findGameRoomWithCode:
+                if(GameRoom.gameRooms.isEmpty())
+                {
+                    new Responce(responceCodes.findGameWithCodeError, gameRoomResponce.NoGameRoomRightNow.name()).sendJson(out);
+                    break;
+                }
+
+                gameRoom = GameRoom.getGameRoom(action.getParams());
+                if(gameRoom==null)
+                {
+                    new Responce(responceCodes.findGameWithCodeError, gameRoomResponce.NoGameRoomWithThisCode.name()).sendJson(out);
+                    break;
+                }
+                gameRoomResponce RoomResponce = gameRoom.setPlayerTwo(new Player(new ObjectMapper().readValue(action.getObject(), User.class),s));
+                if(RoomResponce!=null)
+                    new Responce(responceCodes.findGameWithCodeError, RoomResponce.name()).sendJson(out);
+                else{
+                    new Responce(responceCodes.findGameWithCode, responceCodes.Done.name()).sendJson(out);
+                    gameRoom.notifySockets(responceCodes.startGame,gameRoom.toJson());
+                }
+                break;
+
+            case setMove:
+                gameRoom = GameRoom.getGameRoom(action.getParams());
+                if(GameRoom.gameRooms.isEmpty())
+                {
+                    new Responce(responceCodes.setMoveError, gameRoomResponce.NoGameRoomRightNow.name()).sendJson(out);
+                    break;
+                }
+                
+                if(gameRoom==null)
+                {
+                    new Responce(responceCodes.setMoveError, gameRoomResponce.NoGameRoomWithThisCode.name()).sendJson(out);
+                    break;
+                }
+                
+                gemeRoomResponce = gameRoom.setMove(new ObjectMapper().readValue(action.getObject(), Integer.class));
+                if(gemeRoomResponce!=null)
+                    new Responce(responceCodes.setMoveError, gemeRoomResponce.name()).sendJson(out);
+                else
+                    switch(gameRoom._getGameSate())
+                    {
+                        case playing:
+                            gameRoom.notifySockets(responceCodes.setMove,gameRoom.toJson());
+                        break;
+                        case draw:
+                            gameRoom.notifySockets(responceCodes.Draw,gameRoom.toJson());
+                            userGameDetailsCrud.add(gameRoom);
+                        break;
+                        case winner:
+                            gameRoom.notifySockets(responceCodes.Winner,gameRoom.toJson());
+                            userGameDetailsCrud.add(gameRoom);
+                        break;
+                    }
+            break;
+            default:
+                return false;
+        }
+        return true;
+    }
+    
 }

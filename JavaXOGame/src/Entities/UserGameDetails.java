@@ -8,6 +8,7 @@ package Entities;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import org.json.JSONException;
 
@@ -38,12 +39,12 @@ public class UserGameDetails extends BaseEntity {
                 GameDifficultyLvl.Medium,
                 new PlayerDetails(new User("ahmed", "mo", "123123"), PlayerSimbole.X),
                 new PlayerDetails(new User("ahmed2", "mo", "123123"), PlayerSimbole.O),
-                new HashMap()
+                new LinkedHashMap()
                 );
     }
 
-    private static Map<Integer,PlayerSimbole> toBordMap(Map<Integer, String> map){
-        Map<Integer,PlayerSimbole> m = new HashMap();
+    private static LinkedHashMap<Integer,PlayerSimbole> toBordMap(Map<Integer, String> map){
+        LinkedHashMap<Integer,PlayerSimbole> m = new LinkedHashMap();
         if(map == null) return m;
         map.forEach((Integer key,String value)->{
             m.put(key, PlayerSimbole.valueOf(value));
@@ -98,7 +99,7 @@ public class UserGameDetails extends BaseEntity {
         return gameBord;
     }
 
-    public void setGameBord(Map<Integer, PlayerSimbole> gameBord) {
+    public void setGameBord(LinkedHashMap<Integer, PlayerSimbole> gameBord) {
         this.gameBord = gameBord;
     }
     
@@ -167,7 +168,7 @@ public class UserGameDetails extends BaseEntity {
             GameDifficultyLvl gameDifficultyLvl, 
             PlayerDetails playerOneDetails, 
             PlayerDetails playerTwoDetails, 
-            Map<Integer, PlayerSimbole> gameBord
+            LinkedHashMap<Integer, PlayerSimbole> gameBord
     ) {
         super(id);
         this.gameMode = gameMode;
@@ -183,7 +184,7 @@ public class UserGameDetails extends BaseEntity {
             GameDifficultyLvl gameDifficultyLvl, 
             PlayerDetails playerOneDetails, 
             PlayerDetails playerTwoDetails, 
-            Map<Integer, PlayerSimbole> gameBord
+            LinkedHashMap<Integer, PlayerSimbole> gameBord
     ) {
         this.gameMode = gameMode;
         this.gameDifficultyLvl = gameDifficultyLvl;
@@ -203,7 +204,7 @@ public class UserGameDetails extends BaseEntity {
         this.gameDifficultyLvl = gameDifficultyLvl;
         this.playerOneDetails = playerOneDetails;
         this.playerTwoDetails = playerTwoDetails;
-        this.gameBord = new HashMap();
+        this.gameBord = new LinkedHashMap();
 
     }
 
@@ -211,7 +212,7 @@ public class UserGameDetails extends BaseEntity {
             GameModes gameMode,
             GameDifficultyLvl gameDifficultyLvl,
             PlayerDetails playerOneDetails, 
-            Map<Integer, PlayerSimbole> gameBord
+            LinkedHashMap<Integer, PlayerSimbole> gameBord
     ) {
         this.gameMode = gameMode;
         this.gameDifficultyLvl = gameDifficultyLvl;
@@ -239,5 +240,5 @@ public class UserGameDetails extends BaseEntity {
     protected GameDifficultyLvl gameDifficultyLvl;
     protected PlayerDetails playerOneDetails;
     protected PlayerDetails playerTwoDetails;
-    protected Map<Integer,PlayerSimbole> gameBord;
+    protected LinkedHashMap<Integer,PlayerSimbole> gameBord;
    }

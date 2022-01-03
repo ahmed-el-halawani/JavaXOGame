@@ -6,9 +6,12 @@
             <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOServer/src/Entities/Responce.java</file>
             <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOServer/src/javaxoserver/JavaXOServer.java</file>
             <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOServer/src/Entities/PlayerDetails.java</file>
+            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOServer/src/Utils/JsonAction.java</file>
+            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOServer/src/Entities/Player.java</file>
             <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOServer/src/Entities/UserGameDetails.java</file>
             <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOServer/src/Utils/UserGameDetailsCrud.java</file>
             <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOServer/src/Utils/PlayerDetailsCrud.java</file>
+            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOServer/src/Entities/GameRoom.java</file>
         </group>
     </open-files>
 </project-private>

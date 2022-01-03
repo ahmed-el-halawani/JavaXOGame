@@ -9,21 +9,36 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.Vector;
 
 /**
  *
  * @author A H M E D
  */
-public class GameRoom extends UserGameDetails  {
+public final class GameRoom extends UserGameDetails  {
     
     public static Vector<GameRoom> gameRooms = new Vector<>();
 
     public static enum gameRoomResponce{
         StartGame,FindingGame,WaitingPlayerTwo,
-        WrongPlace,
+        WrongPlace,youAreAlreadyIn,
         NoGameRoomRightNow,NoGameRoomWithThisCode,GameRoomIsFull,PlayerLeave
     }
+    
+    public static enum GameState{
+        playing,draw,winner
+    }
+    
+    public static String generateRandomPassword(int len) {
+		String chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijk"
+          +"lmnopqrstuvwxyz!@#$%&";
+		Random rnd = new Random();
+		StringBuilder sb = new StringBuilder(len);
+		for (int i = 0; i < len; i++)
+			sb.append(chars.charAt(rnd.nextInt(chars.length())));
+		return sb.toString();
+	}
     
     public String toJson() throws JsonProcessingException {
         ObjectMapper obm = new ObjectMapper();
@@ -42,7 +57,32 @@ public class GameRoom extends UserGameDetails  {
         return null;
     }
     
+    private boolean isContainsCode(String code){
+        for (GameRoom gameRoom : gameRooms) {
+            if(gameRoom.code.equals(code))
+                return true;
+        }
+        return false;
+    }
+    
+    private void addCode(){
+        String mcode;
+            while(true){
+                mcode= generateRandomPassword(5);
+                if(!isContainsCode(mcode))
+                    break;
+            }
+            
+        this.code = mcode;
+    }
+    
     public gameRoomResponce setPlayerTwo(Player p){
+        System.out.println("getPlayerOneDetails().getId()");
+        System.out.println(getPlayerOneDetails().getId());
+        System.out.println(p.user.getId());
+        if(getPlayerOneDetails().getPlayer().getId().equals(p.user.getId())){
+            return gameRoomResponce.youAreAlreadyIn;
+        }
         if(canJoin()){
             this.players.add(p);
             this.playerTwoDetails = new PlayerDetails(
@@ -50,7 +90,6 @@ public class GameRoom extends UserGameDetails  {
                 PlayerSimbole.O
             );
             nextTurn = this.playerTwoDetails;
-            this.code = "abcd";
             return null;
         }
         return gameRoomResponce.GameRoomIsFull;
@@ -59,7 +98,6 @@ public class GameRoom extends UserGameDetails  {
     public gameRoomResponce setMove(Integer position){
         if(gameBord.keySet().contains(position))
             return gameRoomResponce.WrongPlace;
-        
         
         gameBord.put(position, currentTurn.getPlayerSimbole());
         currentPosition = position;
@@ -81,9 +119,10 @@ public class GameRoom extends UserGameDetails  {
         );
         
         this.players.add(p);
-        this.code = "abcd";
-        gameRooms.add(this);
+        
+        addCode();
         this.currentTurn = playerOneDetails;
+        gameRooms.add(this);
     }
     
     public  GameRoom(Player p1,Player p2){
@@ -98,25 +137,18 @@ public class GameRoom extends UserGameDetails  {
                 PlayerSimbole.O
             )
         );
+        
         this.players.add(p1);
         this.players.add(p2);
         
-        this.playerOneDetails = new PlayerDetails(
-            p1.user,
-            PlayerSimbole.X
-        );
-        this.playerTwoDetails = new PlayerDetails(
-            p2.user,
-            PlayerSimbole.O
-        );
+        addCode();
         currentTurn = this.playerOneDetails;
         nextTurn = this.playerTwoDetails;
+        gameRooms.add(this);
     }
     
-    public void createGameRoom(){}
-    
     public void randomGameRoom(PlayerDetails playerOneDetails){
-        this.playerOneDetails = this.playerOneDetails;
+        this.playerOneDetails = playerOneDetails;
     }
     
     public PlayerDetails getCurrentTurn() {
@@ -155,7 +187,7 @@ public class GameRoom extends UserGameDetails  {
     }
     
     
-    public void notifySockets(int code,String object) throws IOException{
+    public void notifySockets(Responce.responceCodes code,String object) throws IOException{
         for (Iterator<Player> iterator = players.iterator(); iterator.hasNext();) {
             Player next = iterator.next();
             new Responce(code, object).sendJson(next.out);
@@ -221,10 +253,8 @@ public class GameRoom extends UserGameDetails  {
             playerTwoDetails.setPlayerState(PlayerState.Winner);
          }
     }
-    
-    public static enum GameState{
-        playing,draw,winner
-    }
+     
+	
 
     private Vector<Player> players = new Vector<>();
     private PlayerDetails currentTurn;

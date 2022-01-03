@@ -42,7 +42,7 @@ DataOutputStream out;
             JsonAction jsonAction = new JsonAction(
                     entity.toJson(),
                     JsonAction.Types.Add,
-                    this.getClass(),
+                    
                     ""
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -50,7 +50,7 @@ DataOutputStream out;
             Responce res = obm.readValue(in.readUTF(), Responce.class);
                         System.out.println(res);
 
-            if(res.getStatusCode() == 200){
+            if(res.getStatusCode() == Responce.responceCodes.Done){
                 return obm.readValue(res.getObject(), Integer.class);
             }else{
                 throw new IOException(res.getObject());
@@ -67,7 +67,7 @@ DataOutputStream out;
             JsonAction jsonAction = new JsonAction(
                     entity.toJson(),
                     JsonAction.Types.Update,
-                    this.getClass(),
+                    
                     obm.writeValueAsString(m)
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -75,7 +75,7 @@ DataOutputStream out;
             Responce res = obm.readValue(in.readUTF(), Responce.class);
                         System.out.println(res);
 
-            if(res.getStatusCode() == 200){
+            if(res.getStatusCode() == Responce.responceCodes.Done){
                 return obm.readValue(res.getObject(), Integer.class);
             }else{
                 throw new IOException(res.getObject());
@@ -91,7 +91,7 @@ DataOutputStream out;
             JsonAction jsonAction = new JsonAction(
                     "",
                     JsonAction.Types.Delete,
-                    this.getClass(),
+                    
                     obm.writeValueAsString(m)
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -99,7 +99,7 @@ DataOutputStream out;
             Responce res = obm.readValue(in.readUTF(), Responce.class);
                         System.out.println(res);
 
-            if(res.getStatusCode() == 200){
+            if(res.getStatusCode() == Responce.responceCodes.Done){
                 return obm.readValue(res.getObject(), Integer.class);
             }else{
                 throw new IOException(res.getObject());
@@ -115,7 +115,7 @@ DataOutputStream out;
         JsonAction jsonAction = new JsonAction(
                 "",
                 JsonAction.Types.Get,
-                this.getClass(),
+               
                 obm.writeValueAsString(m)
         );
         System.out.println(obm.writeValueAsString(jsonAction));
@@ -123,7 +123,7 @@ DataOutputStream out;
         Responce res = obm.readValue(in.readUTF(), Responce.class);
                     System.out.println(res);
 
-        if(res.getStatusCode() == 200){
+        if(res.getStatusCode() == Responce.responceCodes.Done){
             if(!res.getObject().equals("null"))
                 return obm.readValue(res.getObject(), UserGameDetails.class);
             else
@@ -140,7 +140,7 @@ DataOutputStream out;
             JsonAction jsonAction = new JsonAction(
                     "",
                     JsonAction.Types.GetAll,
-                    this.getClass(),
+                   
                     ""
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -152,7 +152,7 @@ DataOutputStream out;
                         
             System.out.println(res);
 
-            if(res.getStatusCode() == 200){
+            if(res.getStatusCode() == Responce.responceCodes.Done){
                 return obm.readValue(res.getObject(), typeReference);
             }else{
                 throw new IOException(res.getObject());
@@ -168,7 +168,7 @@ DataOutputStream out;
             JsonAction jsonAction = new JsonAction(
                     "",
                     JsonAction.Types.GetAllWithId,
-                    this.getClass(),
+                    
                     obm.writeValueAsString(m)
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -178,7 +178,7 @@ DataOutputStream out;
             Responce res = obm.readValue(in.readUTF(), Responce.class);
             System.out.println(res);
             
-            if(res.getStatusCode() == 200){
+            if(res.getStatusCode() == Responce.responceCodes.Done){
                 return obm.readValue(res.getObject(), typeReference);
             }else{
                 throw new IOException(res.getObject());
@@ -193,7 +193,7 @@ DataOutputStream out;
             JsonAction jsonAction = new JsonAction(
                     "",
                     JsonAction.Types.GetAllWithUesrName,
-                    this.getClass(),
+                    
                     obm.writeValueAsString(m)
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -202,7 +202,7 @@ DataOutputStream out;
             Responce res = obm.readValue(in.readUTF(), Responce.class);
                         System.out.println(res);
 
-            if(res.getStatusCode() == 200){
+            if(res.getStatusCode() == Responce.responceCodes.Done){
                 return obm.readValue(res.getObject(), typeReference);
             }else{
                 throw new IOException(res.getObject());

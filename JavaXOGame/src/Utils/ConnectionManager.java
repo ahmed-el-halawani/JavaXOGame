@@ -6,11 +6,13 @@
 package Utils;
 
 import Entities.Responce;
+import Entities.Responce.responceCodes;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,8 +36,15 @@ public class ConnectionManager {
         out = new DataOutputStream(soc.getOutputStream());
         ObjectMapper om = new ObjectMapper();
         Responce res = om.readValue(in.readUTF(), Responce.class);
-        if(res.getStatusCode()!=200){
-            throw new IOException(res.getObject());
+        if(res.getStatusCode()!=responceCodes.ConnectionApproved){
+            switch(res.getStatusCode()){
+                case SQLConnectionError:
+                    try {
+                        throw new SQLException(res.getObject());
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ConnectionManager.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+            }
         }
     }
    

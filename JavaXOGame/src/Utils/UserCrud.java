@@ -52,8 +52,7 @@ public  class UserCrud implements ICrud<User>{
         try {
             JsonAction jsonAction = new JsonAction(
                     entity.toJson(),
-                    JsonAction.Types.Add,
-                    this.getClass(),
+                    JsonAction.Types.AddUser,
                     ""
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -61,7 +60,7 @@ public  class UserCrud implements ICrud<User>{
             
             Responce res = obm.readValue(in.readUTF(), Responce.class);
             
-            if(res.getStatusCode() == 200){
+            if(res.getStatusCode() == Responce.responceCodes.Done){
                 return obm.readValue(res.getObject(), Integer.class);
             }else{
                 throw new IOException(res.getObject());
@@ -82,8 +81,7 @@ public  class UserCrud implements ICrud<User>{
         try {
             JsonAction jsonAction = new JsonAction(
                     entity.toJson(),
-                    JsonAction.Types.Update,
-                    this.getClass(),
+                    JsonAction.Types.UpdateUser,
                     obm.writeValueAsString(m)
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -91,7 +89,7 @@ public  class UserCrud implements ICrud<User>{
             
             Responce res = obm.readValue(in.readUTF(), Responce.class);
             
-            if(res.getStatusCode() == 200){
+            if(res.getStatusCode() == Responce.responceCodes.Done){
                 return obm.readValue(res.getObject(), Integer.class);
             }else{
                 throw new IOException(res.getObject());
@@ -111,8 +109,7 @@ public  class UserCrud implements ICrud<User>{
         try {
             JsonAction jsonAction = new JsonAction(
                     "",
-                    JsonAction.Types.Delete,
-                    this.getClass(),
+                    JsonAction.Types.DeleteUser,
                     obm.writeValueAsString(m)
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -121,7 +118,7 @@ public  class UserCrud implements ICrud<User>{
               
             Responce res = obm.readValue(in.readUTF(), Responce.class);
             
-            if(res.getStatusCode() == 200){
+            if(res.getStatusCode() == Responce.responceCodes.Done){
                 return obm.readValue(res.getObject(), Integer.class);
             }else{
                 throw new IOException(res.getObject());
@@ -142,8 +139,7 @@ public  class UserCrud implements ICrud<User>{
         try {
             JsonAction jsonAction = new JsonAction(
                     "",
-                    JsonAction.Types.Get,
-                    this.getClass(),
+                    JsonAction.Types.GetUser,
                     obm.writeValueAsString(m)
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -152,7 +148,7 @@ public  class UserCrud implements ICrud<User>{
             
             Responce res = obm.readValue(in.readUTF(), Responce.class);
             
-            if(res.getStatusCode() == 200){
+            if(res.getStatusCode() == Responce.responceCodes.Done){
                 if(res.getObject().equals("null")){
                     return null;
                 }
@@ -178,8 +174,7 @@ public  class UserCrud implements ICrud<User>{
         try {
             JsonAction jsonAction = new JsonAction(
                     "",
-                    JsonAction.Types.GetAllWithUesrName,
-                    this.getClass(),
+                    JsonAction.Types.GetUserWithUesrName,
                     obm.writeValueAsString(m)
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -188,7 +183,7 @@ public  class UserCrud implements ICrud<User>{
             
             Responce res = obm.readValue(in.readUTF(), Responce.class);
             
-            if(res.getStatusCode() == 200){
+            if(res.getStatusCode() == Responce.responceCodes.Done){
                 if(res.getObject().equals("null")){
                     return null;
                 }
@@ -215,8 +210,7 @@ public  class UserCrud implements ICrud<User>{
             final ObjectMapper mapper = new ObjectMapper();
             JsonAction jsonAction = new JsonAction(
                     "",
-                    JsonAction.Types.GetAll,
-                    this.getClass(),
+                    JsonAction.Types.GetAllUsers,
                     ""
             );
             System.out.println(obm.writeValueAsString(jsonAction));
@@ -227,7 +221,7 @@ public  class UserCrud implements ICrud<User>{
             
             Responce res = obm.readValue(j, Responce.class);
             
-            if(res.getStatusCode() == 200){
+            if(res.getStatusCode() == Responce.responceCodes.Done){
                 return obm.readValue(res.getObject(), typeReference);
             }else{
                 throw new IOException(res.getObject());

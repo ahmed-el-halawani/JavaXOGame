@@ -18,24 +18,19 @@ import java.util.ArrayList;
  * @author A H M E D
  */
 public class Responce {
-    public static int message = 300;
-    public static int sendObject = 202;
-    public static int refreshGame = 204;
-    public static int error = 206;
-    public static int startGame = 208;
-    public static int setMove = 210;
-    public static int setMoveError = 211;
-    public static int createGameRoom = 212;
-    public static int createGameRoomError = 213;
-    public static int findGame = 214;
-    public static int findGameError = 215;
-    public static int findGameWithCode = 216;
-    public static int findGameWithCodeError = 217;
-    public static int Draw = 218;
-    public static int Winner = 219;
+    
+    public static enum responceCodes{
+        Done,
+        ConnectionApproved,SQLConnectionError,message,sendObject,refreshGame,startGame,setMove,
+        createGameRoom,findGame,findGameWithCode,Draw,Winner,
+        error,setMoveError,createGameRoomError,findGameError,findGameWithCodeError,startGameError
+    }
+    
+    
     
     public static Responce fromJson(String body) throws  JsonProcessingException{
         return new ObjectMapper().readValue(body, Responce.class);
+        
     }
     
     public String toJson() throws  JsonProcessingException{
@@ -54,11 +49,11 @@ public class Responce {
         out.writeUTF(this.toJson());
     }
     
-     public int getStatusCode() {
+     public responceCodes getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(int statusCode) {
+    public void setStatusCode(responceCodes statusCode) {
         this.statusCode = statusCode;
     }
 
@@ -70,7 +65,7 @@ public class Responce {
     public Responce() {
     }
 
-    public Responce(int statusCode, String object) {
+    public Responce(responceCodes statusCode, String object) {
         this.statusCode = statusCode;
         this.object = object;
     }
@@ -83,7 +78,7 @@ public class Responce {
         this.object = object;
     }
 
-    private int statusCode;
+    private responceCodes statusCode;
     private String object;
 
 }

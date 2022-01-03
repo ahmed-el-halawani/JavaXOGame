@@ -28,6 +28,13 @@ public class AppManager {
     private AppManager(){
         
     }
+
+    @Override
+    public String toString() {
+        return "AppManager{" + "user=" + user + '}';
+    }
+    
+    
     
     private static AppManager appManager;
     private User user;
