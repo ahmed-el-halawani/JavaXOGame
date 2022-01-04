@@ -12,14 +12,13 @@ package UI.Authentication;
 
 import Entities.User;
 import Testing.MainTest;
+import UI.Home;
 import Utils.AppManager;
 import Utils.ConnectionManager;
 import Utils.UserCrud;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -420,11 +419,17 @@ public class Login extends javax.swing.JFrame {
             // change Menu_Form with next screen class(Main)
             AppManager app = AppManager.getinstance();
             app.setUser(u);
-            Menu_Form form = new Menu_Form();
-             form.setVisible(true);
-             form.pack();
-             form.setLocationRelativeTo(null);
-             this.dispose();
+            Home form;
+            try {
+                form = new Home();
+                form.setVisible(true);
+                form.pack();
+                form.setLocationRelativeTo(null);
+                this.dispose();
+            } catch (IOException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+             
          }else{
              JOptionPane.showMessageDialog(null,"Invalid Username / Password", "Login Error",2);
          }

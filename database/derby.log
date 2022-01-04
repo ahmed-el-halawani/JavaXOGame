@@ -1,14 +1,14 @@
-Sat Jan 01 14:57:06 EET 2022 : Apache Derby Network Server - 10.10.2.0 - (1582446) started and ready to accept connections on port 1527
+Tue Jan 04 13:17:32 EET 2022 : Apache Derby Network Server - 10.10.2.0 - (1582446) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Sat Jan 01 14:57:06 EET 2022:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-017e-15b7-11a8-ffffe9d6c76d 
-on database directory F:\iti lessons\tasks\java\XOGame\database\javaOXDatabase with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
-Loaded from file:/H:/empty%20drive%20files/local%20programe%20file/glossyFish/glassfish-4.1.1/javadb/lib/derby.jar
+Tue Jan 04 13:17:32 EET 2022:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-017e-24ce-d2b9-00000fee5634 
+on database directory C:\Users\hossa\OneDrive\Documents\GitHub\JavaXOGame\database\javaOXDatabase with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+Loaded from file:/C:/Program%20Files/glassfish-4.1.1/javadb/lib/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_201-b09
-user.dir=H:\empty drive files\local programe file\glossyFish\glassfish-4.1.1\javadb
+java.runtime.version=1.8.0_191-b12
+user.dir=C:\Program Files\glassfish-4.1.1\javadb
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0
-derby.system.home=F:\iti lessons\tasks\java\XOGame\database
+derby.system.home=C:\Users\hossa\OneDrive\Documents\GitHub\JavaXOGame\database
 Database Class Loader started - derby.database.classpath=''

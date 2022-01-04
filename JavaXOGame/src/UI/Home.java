@@ -9,6 +9,9 @@ import Entities.UserGameDetails;
 import Utils.ConnectionManager;
 import Utils.UserGameDetailsCrud;
 import java.awt.Color;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 /**
@@ -22,7 +25,7 @@ public class Home extends javax.swing.JFrame {
     /**
      * Creates new form Home
      */
-    public Home() {
+    public Home() throws IOException {
         initComponents();
         setLocationRelativeTo(null);
         ConnectionManager connection = ConnectionManager.getInstance();
@@ -454,7 +457,7 @@ if (back == 1) {
         jLayeredPane1.repaint();
         jLayeredPane1.revalidate();
     }
-    public int getResult(int typ, ConnectionManager connection, String name) {
+    public int getResult(int typ, ConnectionManager connection, String name) throws IOException {
         int wins = 0;
         int lose = 0;
 
@@ -512,7 +515,11 @@ if (back == 1) {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Home().setVisible(true);
+                try {
+                    new Home().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
