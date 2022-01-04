@@ -18,16 +18,27 @@ import java.util.ArrayList;
  * @author A H M E D
  */
 public class Responce {
-
+    
+    public static enum responceCodes{
+        Done,
+        ConnectionApproved,SQLConnectionError,message,sendObject,refreshGame,startGame,setMove,
+        createGameRoom,findGame,findGameWithCode,Draw,Winner,
+        error,setMoveError,createGameRoomError,findGameError,findGameWithCodeError,startGameError,
+        LeaveGameRoom,LeaveGameRoomError
+    }
+    
+    
+    
     public static Responce fromJson(String body) throws  JsonProcessingException{
         return new ObjectMapper().readValue(body, Responce.class);
+        
     }
     
     public String toJson() throws  JsonProcessingException{
         return new ObjectMapper().writeValueAsString(this);
     }
     
-    public static String arrayToString(ArrayList array) throws IOException{
+    public static <T> String arrayToString(ArrayList<T> array) throws IOException{
         ObjectMapper mapper = new ObjectMapper();
         final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
         mapper.writeValue(out2,  array);
@@ -39,11 +50,11 @@ public class Responce {
         out.writeUTF(this.toJson());
     }
     
-     public int getStatusCode() {
+     public responceCodes getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(int statusCode) {
+    public void setStatusCode(responceCodes statusCode) {
         this.statusCode = statusCode;
     }
 
@@ -55,7 +66,7 @@ public class Responce {
     public Responce() {
     }
 
-    public Responce(int statusCode, String object) {
+    public Responce(responceCodes statusCode, String object) {
         this.statusCode = statusCode;
         this.object = object;
     }
@@ -68,7 +79,7 @@ public class Responce {
         this.object = object;
     }
 
-    private int statusCode;
+    private responceCodes statusCode;
     private String object;
 
 }

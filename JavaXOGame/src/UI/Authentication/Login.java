@@ -55,6 +55,7 @@ public class Login extends javax.swing.JFrame {
         font = font.deriveFont(Font.BOLD);
         textField.setFont(font);
         textField.setForeground(Color.LIGHT_GRAY);
+        
     }
     
     public void removePlaceHolderStyle(JTextField textField){
@@ -416,20 +417,14 @@ public class Login extends javax.swing.JFrame {
         User u = userCrud.getWithUserName(userName);
 
         if(u != null && u.getPassword().equals(password)){
-            // change Menu_Form with next screen class(Main)
             AppManager app = AppManager.getinstance();
             app.setUser(u);
-            Home form;
-            try {
-                form = new Home();
-                form.setVisible(true);
-                form.pack();
-                form.setLocationRelativeTo(null);
-                this.dispose();
-            } catch (IOException ex) {
-                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            }
-             
+            
+            JFrame form = new Home();
+            form.setVisible(true);
+            form.pack();
+            form.setLocationRelativeTo(null);
+            this.dispose();
          }else{
              JOptionPane.showMessageDialog(null,"Invalid Username / Password", "Login Error",2);
          }

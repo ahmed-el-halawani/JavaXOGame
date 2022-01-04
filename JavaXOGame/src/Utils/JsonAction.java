@@ -16,9 +16,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonAction{
     
-    public static enum Types{
-        Add,Get,GetAll,Update,Delete,GetAllWithId,GetAllWithUesrName
-    }
+     public static enum Types{
+        Add,Get,GetAll,Update,Delete,GetAllWithId,GetAllWithUesrName,
+        
+        createGameRoom,findGameRoom,findGameRoomWithCode,
+        
+        getCurrentTurn,isMyTurn,setMove,setPlayerTwo,startRecordingForUser,
+        
+        AddUser,GetAllUsers,GetUser,GetUserWithUesrName,UpdateUser,DeleteUser,
+        
+        LeaveGameRoom,QuitApp
+     }
 
     public static JsonAction fromJson(String body) throws  JsonProcessingException{
            ObjectMapper obm = new ObjectMapper();
@@ -28,13 +36,11 @@ public class JsonAction{
     
     private String object;
     private Types type;
-    private Class ct;
     private String params;
 
-    public JsonAction(String object, Types type, Class ct,String params) {
+    public JsonAction(String object, Types type, String params) {
         this.object = object;
         this.type = type;
-        this.ct = ct;
         this.params = params;
     }
 
@@ -55,21 +61,9 @@ public class JsonAction{
 
     @Override
     public String toString() {
-        return "JsonAction{" + "object=" + object + ", type=" + type + ", ct=" + ct + '}';
+        return "JsonAction{" + "object=" + object + ", type=" + type + '}';
     }
 
-    public Class getCt() {
-        return ct;
-    }
-
-    public void setCt(Class ct) {
-        this.ct = ct;
-    }
-    
-    
-
-  
-    
 
     public JsonAction() {
     }
@@ -81,8 +75,6 @@ public class JsonAction{
     public void setObject(String object) {
         this.object = object;
     }
-
-   
 
 
     public Types getType() {
