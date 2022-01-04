@@ -1,2 +1,0 @@
-javaxoserver.JavaXOServer
-javaxoserver.RequestHandler
