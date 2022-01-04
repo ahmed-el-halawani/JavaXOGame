@@ -173,6 +173,9 @@ public class Home extends javax.swing.JFrame {
         multiBT.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         multiBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/multi player.png"))); // NOI18N
         multiBT.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                multiBTMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 multiBTMouseEntered(evt);
             }
@@ -272,7 +275,7 @@ public class Home extends javax.swing.JFrame {
         win.setForeground(new java.awt.Color(255, 255, 255));
         win.setText("win : 3");
         jPanel1.add(win);
-        win.setBounds(390, 140, 80, 25);
+        win.setBounds(390, 140, 80, 24);
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/tic.png"))); // NOI18N
         jPanel1.add(jLabel9);
@@ -323,7 +326,7 @@ public class Home extends javax.swing.JFrame {
         lose.setForeground(new java.awt.Color(255, 255, 255));
         lose.setText("lose : 4");
         jPanel1.add(lose);
-        lose.setBounds(390, 180, 100, 25);
+        lose.setBounds(390, 180, 100, 24);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/scorePane (1).png"))); // NOI18N
         jPanel1.add(jLabel3);
@@ -462,6 +465,10 @@ if (back == 1) {
 
         }        // TODO add your handling code here:
     }//GEN-LAST:event_jLabel7MouseClicked
+
+    private void multiBTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_multiBTMouseClicked
+       
+    }//GEN-LAST:event_multiBTMouseClicked
     public void getPanal(JPanel jp) {
         jLayeredPane1.removeAll();
         jLayeredPane1.add(jp);
