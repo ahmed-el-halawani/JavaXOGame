@@ -6,28 +6,45 @@
 package UI;
 
 import Entities.UserGameDetails;
+import Utils.AppManager;
 import Utils.ConnectionManager;
 import Utils.UserGameDetailsCrud;
 import java.awt.Color;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
  *
- * @author El-Hoda
+ * @author Tarek
  */
 public class Home extends javax.swing.JFrame {
 
     int x;
     int y;
+    String id;
+    
     /**
      * Creates new form Home
      */
     public Home() {
         initComponents();
         setLocationRelativeTo(null);
-        ConnectionManager connection = ConnectionManager.getInstance();
-       win.setText("win : " + getResult(0, connection, "mo"));
-        lose.setText("lose : " + getResult(1, connection, "mo"));
+        ConnectionManager connection;
+        try {
+            connection = ConnectionManager.getInstance();
+            AppManager app = AppManager.getinstance();
+            UserGameDetailsCrud userg = new UserGameDetailsCrud(connection.in,connection.out);
+           // id = app.getUser().getId();
+            
+            win.setText("win : " + getResult(0, connection,id));
+        lose.setText("lose : " + getResult(1, connection, id));
+        } catch (IOException ex) {
+            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
         this.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
         jPanel6.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
         jPanel5.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
@@ -60,6 +77,7 @@ public class Home extends javax.swing.JFrame {
         multiBT1 = new javax.swing.JLabel();
         win = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -100,6 +118,9 @@ public class Home extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button (12).png"))); // NOI18N
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jLabel2MouseEntered(evt);
             }
@@ -263,6 +284,19 @@ public class Home extends javax.swing.JFrame {
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/tic.png"))); // NOI18N
         jPanel1.add(jLabel9);
         jLabel9.setBounds(260, 0, 100, 90);
+
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 60)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel13.setText("-");
+        jLabel13.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel13MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel13);
+        jLabel13.setBounds(700, -20, 40, 50);
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/tac.png"))); // NOI18N
         jPanel1.add(jLabel10);
@@ -448,38 +482,53 @@ if (back == 1) {
 
         }        // TODO add your handling code here:
     }//GEN-LAST:event_jLabel7MouseClicked
+
+    private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
+        setState(JFrame.ICONIFIED);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel13MouseClicked
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+new History().setVisible(true);
+        setVisible(false);// TODO add your handling code here:
+    }//GEN-LAST:event_jLabel2MouseClicked
     public void getPanal(JPanel jp) {
         jLayeredPane1.removeAll();
         jLayeredPane1.add(jp);
         jLayeredPane1.repaint();
         jLayeredPane1.revalidate();
     }
-    public int getResult(int typ, ConnectionManager connection, String name) {
-        int wins = 0;
-        int lose = 0;
-
-        for (UserGameDetails ugd : (new UserGameDetailsCrud(connection.in, connection.out)).getAll()) {
-            if (ugd.getPlayerOneDetails().getPlayer().getUserName().equals(name)) {
-                if (ugd.getPlayerOneDetails().getPlayerState().equals(UserGameDetails.PlayerState.Winner)) {
-                    wins++;
-                } else {
-                    lose++;
-                }
-
-            } else if (ugd.getPlayerTwoDetails().getPlayer().getUserName().equals(name)) {
-                if (ugd.getPlayerTwoDetails().getPlayerState().equals(UserGameDetails.PlayerState.Winner)) {
-                    wins++;
-                } else {
-                    lose++;
+    public int getResult(int typ, ConnectionManager connection, String id) {
+        try {
+            int wins = 0;
+            int lose = 0;
+            
+            for (UserGameDetails ugd : (new UserGameDetailsCrud(connection.in, connection.out)).getAll()) {
+                if (ugd.getPlayerOneDetails().getPlayer().getId().equals(id)) {
+                    if (ugd.getPlayerOneDetails().getPlayerState().equals(UserGameDetails.PlayerState.Winner)) 
+                        wins++;
+                     if (ugd.getPlayerOneDetails().getPlayerState().equals(UserGameDetails.PlayerState.Loser))
+                        lose++;
+                    
+                    
+                } else if (ugd.getPlayerTwoDetails().getPlayer().getId().equals(id)) {
+                    if (ugd.getPlayerTwoDetails().getPlayerState().equals(UserGameDetails.PlayerState.Winner)) {
+                        wins++;
+                    } if (ugd.getPlayerTwoDetails().getPlayerState().equals(UserGameDetails.PlayerState.Loser))
+                        lose++;
+                    
                 }
             }
-        }
-        if (typ == 0) {
-            return wins;
-        } else {
-            return lose;
+            if (typ == 0) {
+                return wins;
+            } else {
+                return lose;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        return -1;
     }
 
     /**
@@ -522,6 +571,7 @@ if (back == 1) {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
