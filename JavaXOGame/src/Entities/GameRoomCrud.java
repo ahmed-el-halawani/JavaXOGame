@@ -6,12 +6,14 @@
 package Entities;
 
 import Entities.Responce.responceCodes;
+import Utils.ConnectionManager;
 import Utils.JsonAction;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -30,9 +32,10 @@ public class GameRoomCrud {
     return gameRoom!=null && gameRoom.playerOneDetails!=null && gameRoom.playerTwoDetails!=null;
     }
     
-    public GameRoomCrud(DataInputStream in,DataOutputStream out) {
+    public GameRoomCrud(DataInputStream in,DataOutputStream out,ConnectionManager connection) {
         this.out = out;
         this.in = in;
+        this.connection =connection;
     }
     
     public void createGameRoom(User user) throws JsonProcessingException, IOException {
@@ -84,6 +87,18 @@ public class GameRoomCrud {
         );
     }
     
+    public void leaveGame(User user) throws JsonProcessingException, IOException{
+        System.out.println(user);
+        JsonAction jsonAction = new JsonAction(
+                user.getId(),
+                JsonAction.Types.LeaveGameRoom,
+                gameRoom.code
+        );
+        System.out.println(obm.writeValueAsString(jsonAction));
+        out.writeUTF(obm.writeValueAsString(jsonAction));
+    }
+
+    
     public void findGameRoomWithCode(User user,String code) throws JsonProcessingException, IOException {
         System.out.println(user);
         JsonAction jsonAction = new JsonAction(
@@ -93,30 +108,7 @@ public class GameRoomCrud {
         );
         System.out.println(obm.writeValueAsString(jsonAction));
         out.writeUTF(obm.writeValueAsString(jsonAction));
-//        
-//        setListener(
-//                new ListenersX(new NotifierObject[]
-//                {
-//                    new NotifierObject(
-//                        (String object) -> {
-//                            try {
-//                             gameRoom = obm.readValue(object, GameRoom.class);
-//                             recive.notif(object);
-//                            } catch (JsonProcessingException ex) {
-//                             Logger.getLogger(GameRoomCrud.class.getName()).log(Level.SEVERE, null, ex);
-//                            }
-//                        },
-//                        Responce.findGameWithCode
-//                    ),
-//                    new NotifierObject(
-//                        (String object) -> {
-//                             error.notif(object);
-//                        },
-//                        Responce.findGameWithCodeError
-//                    )
-//                }
-//            )
-//        );
+
     }
 
     public String getCode() {
@@ -149,6 +141,7 @@ public class GameRoomCrud {
         listeners.remove(listener);
         listener = null;
     }
+    
     
     public void setMoveListenr(INotifayer recive,INotifayer win,INotifayer draw,INotifayer error){
         if(listener!=null){
@@ -227,7 +220,7 @@ public class GameRoomCrud {
         listeners.add(listener);
         if(th==null){
              th = new Thread(()->{
-                while(running){
+                while(isListing){
                     Vector<ListenersX> iterator2 = new Vector(Arrays.asList(listeners.toArray()));
                    
                     try {
@@ -245,7 +238,10 @@ public class GameRoomCrud {
                         }
                        
                     } catch (IOException ex) {
-                        Logger.getLogger(GameRoomCrud.class.getName()).log(Level.SEVERE, null, ex);
+                        if(isListing)
+                            Logger.getLogger(GameRoomCrud.class.getName()).log(Level.SEVERE, null, ex);
+                        else
+                            System.out.println("room closed successfuly");
                     }
                 }
             });
@@ -331,8 +327,10 @@ public class GameRoomCrud {
     public boolean running = true;
 
     public String code;
+    public GameRoom gameRoom = null;
+    public final DataOutputStream out;
+    public final DataInputStream in;
+    public boolean isListing = true;
+    public final ConnectionManager connection;
     public final ObjectMapper obm = new ObjectMapper();
-    public  GameRoom gameRoom = null;
-    public DataOutputStream out;
-    public DataInputStream in;
 }

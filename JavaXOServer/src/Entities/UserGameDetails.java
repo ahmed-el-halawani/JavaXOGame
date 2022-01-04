@@ -160,9 +160,9 @@ public class UserGameDetails extends BaseEntity {
     }
     
     public PlayerDetails getPlayerWithId(String id){
-        if(this.getPlayerOneDetails().getPlayer().getId().equals(id)){
+        if(this.getPlayerOneDetails()!=null &&this.getPlayerOneDetails().getPlayer().getId().equals(id)){
                 return this.getPlayerOneDetails();
-        }else if (this.getPlayerTwoDetails().getPlayer().getId().equals(id)){
+        }else if (this.getPlayerTwoDetails()!=null && this.getPlayerTwoDetails().getPlayer().getId().equals(id)){
             return this.getPlayerTwoDetails();
         }
         return null;

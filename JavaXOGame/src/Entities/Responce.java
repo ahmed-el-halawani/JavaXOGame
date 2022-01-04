@@ -21,9 +21,11 @@ public class Responce {
     
     public static enum responceCodes{
         Done,
-        ConnectionApproved,SQLConnectionError,message,sendObject,refreshGame,startGame,setMove,
-        createGameRoom,findGame,findGameWithCode,Draw,Winner,
-        error,setMoveError,createGameRoomError,findGameError,findGameWithCodeError,startGameError
+        ConnectionApproved,message,sendObject,
+        SQLConnectionError,
+        refreshGame,startGame,setMove,createGameRoom,findGame,findGameWithCode,Draw,Winner,
+        error,setMoveError,createGameRoomError,findGameError,findGameWithCodeError,startGameError,
+        LeaveGameRoom,LeaveGameRoomError
     }
     
     

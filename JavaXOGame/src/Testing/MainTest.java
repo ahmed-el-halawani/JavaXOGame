@@ -65,17 +65,15 @@ class Responder implements HelloListener {
 }
 
     public MainTest() {
-
+       
         initComponents();
-        
         
         setTitle("Main Test");
         try {
             cm = ConnectionManager.getInstance();
             userGameDetailsCrud = new UserGameDetailsCrud(cm.in,cm.out);
             userCrud = new UserCrud(cm.in,cm.out);
-            appManager = AppManager.getinstance();
-            
+             appManager = AppManager.getinstance();
              appManager.setUser(new User(
                     "2033e557-fb4d-4297-a48b-0a971140593e",
                     "ahmed34",
@@ -125,12 +123,11 @@ class Responder implements HelloListener {
         b8 = new javax.swing.JButton();
         b9 = new javax.swing.JButton();
         code = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        IAmReady = new javax.swing.JButton();
         jRadioButton3 = new javax.swing.JRadioButton();
         jRadioButton4 = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(500, 600));
 
         jPanel3.setMinimumSize(new java.awt.Dimension(200, 200));
         jPanel3.setPreferredSize(new java.awt.Dimension(500, 600));
@@ -301,7 +298,12 @@ class Responder implements HelloListener {
 
         code.setText("Code");
 
-        jButton1.setText("Ready");
+        IAmReady.setText("Ready");
+        IAmReady.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IAmReadyActionPerformed(evt);
+            }
+        });
 
         buttonGroup3.add(jRadioButton3);
         jRadioButton3.setText("user 1");
@@ -347,7 +349,7 @@ class Responder implements HelloListener {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(createRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(IAmReady, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addComponent(jRadioButton3)
                                         .addGap(18, 18, 18)
@@ -371,7 +373,7 @@ class Responder implements HelloListener {
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(getAllUsers)
                         .addComponent(createRoom)
-                        .addComponent(jButton1)))
+                        .addComponent(IAmReady)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(findGame)
@@ -443,21 +445,12 @@ class Responder implements HelloListener {
 
     User u = null;
     private void createRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createRoomActionPerformed
-        GameRoomCrud gamebord;
-        ConnectionManager cm2;
-        
         try {
-           
-            
             ConnectionManager cm4 = ConnectionManager.createGameSocet();
-            gamebord = new GameRoomCrud(cm4.in,cm4.out);
+            GameRoomCrud gamebord = new GameRoomCrud(cm4.in,cm4.out,cm4);
             gamebord.createGameRoom(appManager.getUser());
-            JFrame game = new GameBordUi(gamebord,appManager);
-            
+            JFrame game = new WaitingScrean(gamebord);
             game.setVisible(true);
-            
-           
-           
         } catch (IOException ex) {
             Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -542,13 +535,13 @@ class Responder implements HelloListener {
     private void findGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findGameActionPerformed
          try {
             ConnectionManager cm4 = ConnectionManager.createGameSocet();
-            GameRoomCrud gamebord = new GameRoomCrud(cm4.in,cm4.out);
+            GameRoomCrud gamebord = new GameRoomCrud(cm4.in,cm4.out,cm4);
             gamebord .findGameRoomWithCode(appManager.getUser(),code.getText());
             
             Initiater initiater = new Initiater();
 
         initiater.addListener(()->{
-            new GameBordUi(gamebord,appManager).setVisible(true);
+            new WaitingScrean(gamebord).setVisible(true);
         });
 
         
@@ -617,6 +610,10 @@ class Responder implements HelloListener {
                 ));
     }//GEN-LAST:event_jRadioButton4ActionPerformed
 
+    private void IAmReadyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IAmReadyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_IAmReadyActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -653,6 +650,7 @@ class Responder implements HelloListener {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton IAmReady;
     private javax.swing.JButton b1;
     private javax.swing.JButton b2;
     private javax.swing.JButton b3;
@@ -672,7 +670,6 @@ class Responder implements HelloListener {
     private javax.swing.JButton getAllUsers1;
     private javax.swing.JButton getUser1;
     private javax.swing.JButton getUser2;
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;

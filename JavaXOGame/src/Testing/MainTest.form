@@ -11,9 +11,6 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[500, 600]"/>
-    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -79,7 +76,7 @@
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Component id="createRoom" min="-2" pref="124" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jButton1" min="-2" pref="132" max="-2" attributes="0"/>
+                                          <Component id="IAmReady" min="-2" pref="132" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="jRadioButton3" min="-2" max="-2" attributes="0"/>
@@ -113,7 +110,7 @@
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="getAllUsers" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="createRoom" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="IAmReady" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -379,10 +376,13 @@
             <Property name="text" type="java.lang.String" value="Code"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="IAmReady">
           <Properties>
             <Property name="text" type="java.lang.String" value="Ready"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="IAmReadyActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JRadioButton" name="jRadioButton3">
           <Properties>

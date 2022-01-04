@@ -51,8 +51,6 @@ public final class GameRoom extends UserGameDetails  {
             System.out.println(next);
              if(next.isEqualCode(code))
                 return next;
-
-           
         }
         return null;
     }
@@ -76,24 +74,62 @@ public final class GameRoom extends UserGameDetails  {
         this.code = mcode;
     }
     
-    public gameRoomResponce setPlayerTwo(Player p){
-        System.out.println("getPlayerOneDetails().getId()");
-        System.out.println(getPlayerOneDetails().getId());
-        System.out.println(p.user.getId());
-        if(getPlayerOneDetails().getPlayer().getId().equals(p.user.getId())){
+    public gameRoomResponce setPlayerTwo(Player p){    
+        
+        if(getPlayerWithId(p.user.getId())!=null){
             return gameRoomResponce.youAreAlreadyIn;
         }
-        if(canJoin()){
-            this.players.add(p);
+        
+        if(!canJoin()){
+            return gameRoomResponce.GameRoomIsFull;
+        }
+        
+        this.players.add(p);
+
+         if(playerOneDetails==null){
+            this.playerOneDetails = new PlayerDetails(
+                p.user,
+                PlayerSimbole.X
+            );
+        }else{
             this.playerTwoDetails = new PlayerDetails(
                 p.user,
                 PlayerSimbole.O
             );
-            nextTurn = this.playerTwoDetails;
-            return null;
         }
-        return gameRoomResponce.GameRoomIsFull;
+            
+        currentTurn = this.playerOneDetails;
+        nextTurn = this.playerTwoDetails;
+        return null;
     }
+    
+    
+    
+    public gameRoomResponce Playerleave(String playerId){
+        Player p = null;
+        
+        for (Player player : players) 
+            if(player.user.getId().equals(playerId)){
+                p = player;
+                break;
+            }
+        
+        this.players.remove(p);
+        if(playerOneDetails.getPlayer().getId().equals(playerId)){
+            playerOneDetails = null;
+            currentTurn = playerTwoDetails;
+
+        }else{
+            playerTwoDetails = null;
+            currentTurn = playerOneDetails;
+        }
+        
+        nextTurn = null;
+        gameBord.clear();
+        return null;
+    }
+    
+    
     
     public gameRoomResponce setMove(Integer position){
         if(gameBord.keySet().contains(position))
@@ -172,7 +208,7 @@ public final class GameRoom extends UserGameDetails  {
     }   
 
     public boolean canJoin(){
-        return playerTwoDetails==null;
+        return playerTwoDetails==null || playerOneDetails==null;
     }
     
     public boolean isMyTurn(String userId){

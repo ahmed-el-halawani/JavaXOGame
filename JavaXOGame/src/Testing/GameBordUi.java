@@ -35,7 +35,7 @@ public class GameBordUi extends javax.swing.JFrame {
     GameRoomCrud gamebord;
    
     AppManager appManager;
-    public GameBordUi(GameRoomCrud gamebord,AppManager appManager) {
+    public GameBordUi(GameRoomCrud gamebord) {
         initComponents();
         this.gamebord = gamebord;
         buttons = new JButton[]{b1,b2,b3,b4,b5,b6,b7,b8,b9};

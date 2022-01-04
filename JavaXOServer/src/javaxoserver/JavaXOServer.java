@@ -64,7 +64,7 @@ class RequestHandler extends Thread {
     UserCrud userCrud;
     PlayerDetailsCrud playerDetailsCrud;
     UserGameDetailsCrud userGameDetailsCrud;
- 
+    boolean isRunning =true;
     GameRoom gameRoom;
     
     static Vector<Player> availToPlay = new Vector<>();
@@ -116,7 +116,7 @@ class RequestHandler extends Thread {
     }
     
     public void run() {
-        while (true) {
+        while (isRunning) {
             try {
                 String str = in.readUTF();
                 JsonAction action = JsonAction.fromJson(str);
@@ -252,6 +252,18 @@ class RequestHandler extends Thread {
     return true;
     }
     
+    private gameRoomResponce getGameRoom(String code){
+        if(GameRoom.gameRooms.isEmpty())
+            return gameRoomResponce.NoGameRoomRightNow;
+
+        gameRoom = GameRoom.getGameRoom(code);
+        if(gameRoom==null)
+        {
+           return gameRoomResponce.NoGameRoomWithThisCode;
+        }
+        return null;
+    }
+    
     private boolean GameRoomRouts(JsonAction action) throws JsonProcessingException, JsonProcessingException, IOException, JSONException, SQLException{
         gameRoomResponce gemeRoomResponce = null;
         
@@ -259,6 +271,21 @@ class RequestHandler extends Thread {
             case createGameRoom:
                 gameRoom = new GameRoom(new Player(new ObjectMapper().readValue(action.getObject(), User.class),s));
                 new Responce(responceCodes.createGameRoom, gameRoom.getCode()).sendJson(out);
+            break;
+            
+            case LeaveGameRoom:
+                gemeRoomResponce = getGameRoom(action.getParams());
+//                if(gemeRoomResponce!=null){
+//                    new Responce(responceCodes.LeaveGameRoomError, gemeRoomResponce.name()).sendJson(out);
+//                    break;
+//                }
+                
+                gameRoom.Playerleave(action.getObject());
+//                s.close();
+//                in.close();
+//                out.close();
+                isRunning = false;
+                gameRoom.notifySockets(responceCodes.LeaveGameRoom,gameRoomResponce.PlayerLeave.name());
             break;
                         
             case findGameRoom:
@@ -273,21 +300,16 @@ class RequestHandler extends Thread {
             break;
 
             case findGameRoomWithCode:
-                if(GameRoom.gameRooms.isEmpty())
-                {
-                    new Responce(responceCodes.findGameWithCodeError, gameRoomResponce.NoGameRoomRightNow.name()).sendJson(out);
+                gemeRoomResponce = getGameRoom(action.getParams());
+                
+                if(gemeRoomResponce!=null){
+                    new Responce(responceCodes.findGameWithCodeError, gemeRoomResponce.name()).sendJson(out);
                     break;
                 }
-
-                gameRoom = GameRoom.getGameRoom(action.getParams());
-                if(gameRoom==null)
-                {
-                    new Responce(responceCodes.findGameWithCodeError, gameRoomResponce.NoGameRoomWithThisCode.name()).sendJson(out);
-                    break;
-                }
-                gameRoomResponce RoomResponce = gameRoom.setPlayerTwo(new Player(new ObjectMapper().readValue(action.getObject(), User.class),s));
-                if(RoomResponce!=null)
-                    new Responce(responceCodes.findGameWithCodeError, RoomResponce.name()).sendJson(out);
+                
+                gemeRoomResponce = gameRoom.setPlayerTwo(new Player(new ObjectMapper().readValue(action.getObject(), User.class),s));
+                if(gemeRoomResponce!=null)
+                    new Responce(responceCodes.findGameWithCodeError, gemeRoomResponce.name()).sendJson(out);
                 else{
                     new Responce(responceCodes.findGameWithCode, responceCodes.Done.name()).sendJson(out);
                     gameRoom.notifySockets(responceCodes.startGame,gameRoom.toJson());
@@ -295,16 +317,10 @@ class RequestHandler extends Thread {
                 break;
 
             case setMove:
-                gameRoom = GameRoom.getGameRoom(action.getParams());
-                if(GameRoom.gameRooms.isEmpty())
-                {
-                    new Responce(responceCodes.setMoveError, gameRoomResponce.NoGameRoomRightNow.name()).sendJson(out);
-                    break;
-                }
+                gemeRoomResponce = getGameRoom(action.getParams());
                 
-                if(gameRoom==null)
-                {
-                    new Responce(responceCodes.setMoveError, gameRoomResponce.NoGameRoomWithThisCode.name()).sendJson(out);
+                if(gemeRoomResponce!=null){
+                    new Responce(responceCodes.setMoveError, gemeRoomResponce.name()).sendJson(out);
                     break;
                 }
                 
