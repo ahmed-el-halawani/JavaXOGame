@@ -31,6 +31,7 @@ public class Home extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         ConnectionManager connection;
+        AppManager appManager;
         appManager = AppManager.getinstance();
         try {
             connection = ConnectionManager.getInstance();
@@ -516,11 +517,9 @@ if (back == 1) {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                try {
+                
                     new Home().setVisible(true);
-                } catch (IOException ex) {
-                    Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                
             }
         });
     }
