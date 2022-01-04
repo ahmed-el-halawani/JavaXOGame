@@ -27,11 +27,11 @@ public class Home extends javax.swing.JFrame {
     /**
      * Creates new form Home
      */
-    AppManager appManager;
     public Home() {
         initComponents();
         setLocationRelativeTo(null);
         ConnectionManager connection;
+        AppManager appManager;
         appManager = AppManager.getinstance();
         try {
             connection = ConnectionManager.getInstance();
@@ -524,7 +524,9 @@ if (back == 1) {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Home().setVisible(true);
+                
+                    new Home().setVisible(true);
+                
             }
         });
     }

@@ -19,8 +19,6 @@ import Utils.UserCrud;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
