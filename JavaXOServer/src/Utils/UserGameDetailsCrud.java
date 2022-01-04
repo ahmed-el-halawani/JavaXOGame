@@ -33,16 +33,13 @@ class UserGameDetailsCrud{
         }
 
         String id = UUID.randomUUID().toString();
-        PreparedStatement query = con.prepareStatement("INSERT INTO USERGAMEDETAILS VALUES(?,?,?,?,?,?,?,?,?)");
+        PreparedStatement query = con.prepareStatement("INSERT INTO USERGAMEDETAILS VALUES(?,?,?,?,?,?)");
         query.setString(1,id);
         query.setString(2,entity.getGameMode().name());
         query.setString(3,entity.getGameDifficultyLvl().name());
         query.setString(4,playerOne.getId());
         query.setString(5,playerTwo.getId());
-        query.setString(6,obm.writeValueAsString(entity.getRecord()));
-        query.setString(7,obm.writeValueAsString(entity.getGameBordBeforRecording()));
-        query.setString(8,obm.writeValueAsString(entity.getGameBord()));
-        query.setBoolean(9,entity.isIsRecorded());
+        query.setString(6,obm.writeValueAsString(entity.getGameBord()));
         int index = query.executeUpdate();
         if(index==0){
             return -1;
@@ -168,18 +165,15 @@ class UserGameDetailsCrud{
 
     }
     
-    public UserGameDetailsCrud(DataInputStream in,DataOutputStream out, Connection con,PlayerDetailsCrud playerDetailsCrud) {
-        this.out = out;
-        this.in = in;
+    public UserGameDetailsCrud(Connection con,PlayerDetailsCrud playerDetailsCrud) {
         this.con = con;
         this.playerDetailsCrud = playerDetailsCrud;
     }
    
+    private final  Connection con;
+    private final PlayerDetailsCrud playerDetailsCrud;
     private final ObjectMapper obm = new ObjectMapper();
-    private DataOutputStream out;
-    private DataInputStream in;
-    private  Connection con;
-    private PlayerDetailsCrud playerDetailsCrud;
+
 
     
 }

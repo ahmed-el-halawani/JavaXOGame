@@ -22,12 +22,20 @@ public class AppManager {
     }
     
     public static AppManager getinstance(){
-        return appManager==null?new AppManager():appManager;
+        if(appManager ==null )
+            appManager = new AppManager();
+                
+        return appManager;
     }
     
-    private AppManager(){
-        
+    private AppManager(){}
+
+    @Override
+    public String toString() {
+        return "AppManager{" + "user=" + user + '}';
     }
+    
+    
     
     private static AppManager appManager;
     private User user;
