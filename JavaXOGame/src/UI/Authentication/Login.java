@@ -12,6 +12,7 @@ package UI.Authentication;
 
 import Entities.User;
 import Testing.MainTest;
+import UI.Home;
 import Utils.AppManager;
 import Utils.ConnectionManager;
 import Utils.UserCrud;
@@ -418,14 +419,14 @@ public class Login extends javax.swing.JFrame {
         User u = userCrud.getWithUserName(userName);
 
         if(u != null && u.getPassword().equals(password)){
-            // change Menu_Form with next screen class(Main)
             AppManager app = AppManager.getinstance();
             app.setUser(u);
-            Menu_Form form = new Menu_Form();
-             form.setVisible(true);
-             form.pack();
-             form.setLocationRelativeTo(null);
-             this.dispose();
+            
+            JFrame form = new Home();
+            form.setVisible(true);
+            form.pack();
+            form.setLocationRelativeTo(null);
+            this.dispose();
          }else{
              JOptionPane.showMessageDialog(null,"Invalid Username / Password", "Login Error",2);
          }

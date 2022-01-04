@@ -5,7 +5,9 @@
  */
 package UI;
 
+import Entities.GameRoom;
 import Entities.UserGameDetails;
+import Utils.AppManager;
 import Utils.ConnectionManager;
 import Utils.UserGameDetailsCrud;
 import java.awt.Color;
@@ -25,14 +27,16 @@ public class Home extends javax.swing.JFrame {
     /**
      * Creates new form Home
      */
+    AppManager appManager;
     public Home() {
         initComponents();
         setLocationRelativeTo(null);
         ConnectionManager connection;
+        appManager = AppManager.getinstance();
         try {
             connection = ConnectionManager.getInstance();
-             win.setText("win : " + getResult(0, connection, "mo"));
-            lose.setText("lose : " + getResult(1, connection, "mo"));
+            win.setText("win : " + getResult(0, connection, appManager.getUser().getUserName()));
+            lose.setText("lose : " + getResult(1, connection, appManager.getUser().getUserName()));
             this.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
             jPanel6.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
             jPanel5.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
@@ -467,29 +471,20 @@ if (back == 1) {
     public int getResult(int typ, ConnectionManager connection, String name) throws IOException {
         int wins = 0;
         int lose = 0;
-
-        for (UserGameDetails ugd : (new UserGameDetailsCrud(connection.in, connection.out)).getAll()) {
-            if (ugd.getPlayerOneDetails().getPlayer().getUserName().equals(name)) {
-                if (ugd.getPlayerOneDetails().getPlayerState().equals(UserGameDetails.PlayerState.Winner)) {
-                    wins++;
-                } else {
-                    lose++;
-                }
-
-            } else if (ugd.getPlayerTwoDetails().getPlayer().getUserName().equals(name)) {
-                if (ugd.getPlayerTwoDetails().getPlayerState().equals(UserGameDetails.PlayerState.Winner)) {
-                    wins++;
-                } else {
-                    lose++;
-                }
+    
+        for (UserGameDetails ugd : new UserGameDetailsCrud(connection.in, connection.out).getAllWithUserName(name)) {
+            if (ugd.getPlayerWithUserName(name).getPlayerState().equals(UserGameDetails.PlayerState.Winner)) {
+                wins++;
+            } else {
+                lose++;
             }
         }
+        
         if (typ == 0) {
             return wins;
         } else {
             return lose;
         }
-
     }
 
     /**
