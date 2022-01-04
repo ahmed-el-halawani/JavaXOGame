@@ -9,6 +9,9 @@ import Entities.UserGameDetails;
 import Utils.ConnectionManager;
 import Utils.UserGameDetailsCrud;
 import java.awt.Color;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 /**
@@ -25,13 +28,20 @@ public class Home extends javax.swing.JFrame {
     public Home() {
         initComponents();
         setLocationRelativeTo(null);
-        ConnectionManager connection = ConnectionManager.getInstance();
-       win.setText("win : " + getResult(0, connection, "mo"));
-        lose.setText("lose : " + getResult(1, connection, "mo"));
-        this.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
-        jPanel6.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
-        jPanel5.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
-        jPanel7.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
+        ConnectionManager connection;
+        try {
+            connection = ConnectionManager.getInstance();
+             win.setText("win : " + getResult(0, connection, "mo"));
+            lose.setText("lose : " + getResult(1, connection, "mo"));
+            this.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
+            jPanel6.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
+            jPanel5.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
+            jPanel7.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
+        
+        } catch (IOException ex) {
+            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      
 
     }
 
@@ -454,7 +464,7 @@ if (back == 1) {
         jLayeredPane1.repaint();
         jLayeredPane1.revalidate();
     }
-    public int getResult(int typ, ConnectionManager connection, String name) {
+    public int getResult(int typ, ConnectionManager connection, String name) throws IOException {
         int wins = 0;
         int lose = 0;
 
