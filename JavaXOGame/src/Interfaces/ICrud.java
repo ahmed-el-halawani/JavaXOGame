@@ -25,11 +25,11 @@ import java.util.logging.Logger;
 
 
 public interface ICrud<T>{
-    public int add(T entity);
-    public int update(String id,T entity);
-    public int delete(String id);
-    public T get(String id);
-    public ArrayList<T> getAll();
+    public int add(T entity)throws JsonProcessingException, IOException;
+    public int update(String id,T entity)throws JsonProcessingException, IOException;
+    public int delete(String id)throws JsonProcessingException, IOException;
+    public T get(String id)throws JsonProcessingException, IOException;
+    public ArrayList<T> getAll()throws JsonProcessingException, IOException;
 } 
 
 

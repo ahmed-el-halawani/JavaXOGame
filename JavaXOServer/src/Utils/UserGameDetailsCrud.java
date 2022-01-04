@@ -5,109 +5,175 @@
  */
 package Utils;
 
-import Entities.UserGameDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import org.json.JSONException;
-import org.json.JSONObject;
+import Entities.*;
+import java.io.*;
+import java.sql.*;
+import java.util.*;
+import org.json.*;
+
 
 /**
  *
  * @author A H M E D
  */
 public 
-class UserGameDetailsCrud implements ICrud<UserGameDetails>{
+class UserGameDetailsCrud{
     
-    @Override
-    public void add(UserGameDetails entity) throws JSONException, IOException{
+    public int add(UserGameDetails entity) throws JSONException, IOException, SQLException{
         System.out.print(entity);
-        out.writeInt(1);
+        
+        PlayerDetails playerOne = playerDetailsCrud.add(entity.getPlayerOneDetails());
+        if(playerOne==null){
+            return -1;
+        }
+        PlayerDetails playerTwo = playerDetailsCrud.add(entity.getPlayerTwoDetails());
+        if(playerTwo==null){
+            return -1;
+        }
+
+        String id = UUID.randomUUID().toString();
+        PreparedStatement query = con.prepareStatement("INSERT INTO USERGAMEDETAILS VALUES(?,?,?,?,?,?)");
+        query.setString(1,id);
+        query.setString(2,entity.getGameMode().name());
+        query.setString(3,entity.getGameDifficultyLvl().name());
+        query.setString(4,playerOne.getId());
+        query.setString(5,playerTwo.getId());
+        query.setString(6,obm.writeValueAsString(entity.getGameBord()));
+        int index = query.executeUpdate();
+        if(index==0){
+            return -1;
+        }
+
+        return index;
     }
 
-    @Override
-    public void update(String id, Entities.UserGameDetails entity) throws JSONException, IOException {
+    public int update(String id, Entities.UserGameDetails entity) throws JSONException, IOException, SQLException {
         JSONObject params = new JSONObject(id);
+        
 
         String id2 = params.getString("id");
         System.out.print("id: "+id2+"entity: "+entity);
 
-        out.writeInt(1);
+        return 1;
     }
 
-    @Override
-    public void delete(String id) throws JSONException, IOException{
+    public int delete(String id) throws JSONException, IOException, SQLException{
         JSONObject params = new JSONObject(id);
 
         System.out.println(params.getString("id"));
 
-        out.writeInt(1);
+        return 1;
     }
 
-    @Override
-    public void get(String id) throws JSONException, IOException{
-        JSONObject params = new JSONObject(id);
+    public UserGameDetails get(String idParam)throws JSONException, IOException, SQLException{
+        JSONObject params = new JSONObject(idParam);
+        String id = params.getString("id");
 
-        System.out.print("id: "+id);
-        System.out.println(params.getString("id"));
+        PreparedStatement query = con.prepareStatement("SELECT * FROM USERGAMEDETAILS WHERE ID=?");
+        query.setString(1,id);
 
-        out.writeUTF(UserGameDetails.dumyObject().toJson());
+        ResultSet rs = query.executeQuery();
+
+        if(rs.next()){
+            return UserGameDetails.fromResultSet(
+                    rs,
+                    playerDetailsCrud.get(rs.getString("PLAYERONEDETAILS")),
+                    playerDetailsCrud.get(rs.getString("PLAYERTWODETAILS"))
+                 );
+        }else{
+            return null;
+        }
     }
 
-    @Override
-    public void getAll() throws JSONException, IOException{
-        final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
+    public ArrayList<UserGameDetails> getAll() throws JSONException, IOException, SQLException{
+        ArrayList<UserGameDetails> userGamesDetails = new ArrayList<>();
+        PreparedStatement query = con.prepareStatement("SELECT * FROM USERGAMEDETAILS");
+        ResultSet rs = query.executeQuery();
 
+        while(rs.next()){
+            userGamesDetails.add(
+                UserGameDetails.fromResultSet(
+                   rs,
+                   playerDetailsCrud.get(rs.getString("PLAYERONEDETAILS")),
+                   playerDetailsCrud.get(rs.getString("PLAYERTWODETAILS"))
+                )
+            );
+        }
 
-        mapper.writeValue(out2,  new ArrayList(Arrays.asList(new UserGameDetails[]{UserGameDetails.dumyObject(),UserGameDetails.dumyObject()})));
-        final byte[] data = out2.toByteArray();
-        System.out.println(new String(data));
-        out.writeUTF(new String(data));
-    }
-    
-    
-    public void getAllWithId(String id) throws JSONException, IOException {
-        final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
-        JSONObject params = new JSONObject(id);
-
-        System.out.print("id: "+id);
-        System.out.println(params.getString("id"));
-
-         
+        return userGamesDetails;
         
-        mapper.writeValue(out2,  new ArrayList(Arrays.asList(new UserGameDetails[]{UserGameDetails.dumyObject(),UserGameDetails.dumyObject()})));
-        final byte[] data = out2.toByteArray();
-        System.out.println(new String(data));
-        out.writeUTF(new String(data));
     }
     
     
-    public void getAllWithUserName(String userName) throws JSONException, IOException {
-        final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
-        JSONObject jsonObject = new JSONObject(userName);
+    public ArrayList<UserGameDetails>  getAllWithId(String idParams) throws JSONException, IOException, SQLException {
+        JSONObject params = new JSONObject(idParams);
 
-        System.out.print("userName: "+userName);
-        System.out.println(jsonObject.getString("userName"));
+        String id = params.getString("id");
+        
+            ArrayList<UserGameDetails> userGamesDetails = new ArrayList<>();
+            PreparedStatement query = con.prepareStatement(
+                "SELECT UGD.* FROM "
+                + "USERGAMEDETAILS AS UGD,PLAYERDETAILS AS PD  "
+                + "WHERE "
+                + "(UGD.PLAYERONEDETAILS=PD.ID OR UGD.PLAYERTWODETAILS=PD.ID) AND PD.USER_ID=?"
+            );
+            query.setString(1,id);
+            
+            ResultSet rs = query.executeQuery();
+            while(rs.next()){
+                userGamesDetails.add(
+                    UserGameDetails.fromResultSet(
+                       rs,
+                       playerDetailsCrud.get(rs.getString("PLAYERONEDETAILS")),
+                       playerDetailsCrud.get(rs.getString("PLAYERTWODETAILS"))
+                    )
+                );
+            }
+            return userGamesDetails;
+        
+    }
+    
+    
+    public ArrayList<UserGameDetails> getAllWithUserName(String userNameParam) throws JSONException, IOException, SQLException {
+        JSONObject params = new JSONObject(userNameParam);
 
+        String userName = params.getString("userName");
         
-        
-        mapper.writeValue(out2,  new ArrayList(Arrays.asList(new UserGameDetails[]{UserGameDetails.dumyObject(),UserGameDetails.dumyObject()})));
-        final byte[] data = out2.toByteArray();
-        System.out.println(new String(data));
-        out.writeUTF(new String(data));
+            ArrayList<UserGameDetails> userGamesDetails = new ArrayList<>();
+            PreparedStatement query = con.prepareStatement(
+                "SELECT UGD.* FROM "
+                + "USERGAMEDETAILS AS UGD,PLAYERDETAILS AS PD,USERDATA AS UD  "
+                + "WHERE "
+                + "(UGD.PLAYERONEDETAILS=PD.ID OR UGD.PLAYERTWODETAILS=PD.ID) AND PD.USER_ID=UD.ID AND UD.USERNAME=?"
+            );
+            query.setString(1,userName);
+            
+            ResultSet rs = query.executeQuery();
+            while(rs.next()){
+                userGamesDetails.add(
+                    UserGameDetails.fromResultSet(
+                       rs,
+                       playerDetailsCrud.get(rs.getString("PLAYERONEDETAILS")),
+                       playerDetailsCrud.get(rs.getString("PLAYERTWODETAILS"))
+                    )
+                );
+            }
+            
+            return userGamesDetails;
+            
 
     }
     
-    public UserGameDetailsCrud(DataInputStream in,DataOutputStream out) {
-        this.out = out;
-        this.in = in;
+    public UserGameDetailsCrud(Connection con,PlayerDetailsCrud playerDetailsCrud) {
+        this.con = con;
+        this.playerDetailsCrud = playerDetailsCrud;
     }
    
-    private final ObjectMapper mapper = new ObjectMapper();
-    private DataOutputStream out;
-    private DataInputStream in;
+    private final  Connection con;
+    private final PlayerDetailsCrud playerDetailsCrud;
+    private final ObjectMapper obm = new ObjectMapper();
+
+
+    
 }

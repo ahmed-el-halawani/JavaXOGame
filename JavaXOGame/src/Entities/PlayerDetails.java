@@ -15,70 +15,78 @@ import org.json.JSONObject;
  * @author A H M E D
  */
 public class PlayerDetails extends BaseEntity {
-    public PlayerDetails() {
-    }
+   
     
-     public static PlayerDetails fromJson(String body) throws  JsonProcessingException{
+    public static PlayerDetails fromJson(String body) throws  JsonProcessingException{
            ObjectMapper obm = new ObjectMapper();
             return obm.readValue(body, PlayerDetails.class);
-        }
-
-    
-     
-     
+    }
         
     public String toJson() throws JsonProcessingException {
         ObjectMapper obm = new ObjectMapper();
         
         return obm.writeValueAsString(this);
     }
+
+    @Override
+    public String toString() {
+        return "PlayerDetails{" + "player=" + player + ", playerState=" + playerState + ", PlayerSimbole=" + PlayerSimbole + ", isRecorded=" + isRecorded + '}';
+    }
+    
+    
     
 
-        public User getPlayer() {
-            return player;
-        }
+    public User getPlayer() {
+        return player;
+    }
 
-        public void setPlayer(User player) {
-            this.player = player;
-        }
+    public void setPlayer(User player) {
+        this.player = player;
+    }
 
-        public UserGameDetails.PlayerState getPlayerState() {
-            return playerState;
-        }
+    public UserGameDetails.PlayerState getPlayerState() {
+        return playerState;
+    }
 
-        public void setPlayerState(UserGameDetails.PlayerState playerState) {
-            this.playerState = playerState;
-        }
+    public void setPlayerState(UserGameDetails.PlayerState playerState) {
+        this.playerState = playerState;
+    }
 
-        public UserGameDetails.PlayerSimbole getPlayerSample() {
-            return PlayerSimbole;
-        }
+    public UserGameDetails.PlayerSimbole getPlayerSimbole() {
+        return PlayerSimbole;
+    }
 
-        public void setPlayerSample(UserGameDetails.PlayerSimbole playerSample) {
-            this.PlayerSimbole = playerSample;
-        }
+    public void setPlayerSimbole(UserGameDetails.PlayerSimbole PlayerSimbole) {
+        this.PlayerSimbole = PlayerSimbole;
+    }
+
+    public boolean getIsRecorded() {
+        return isRecorded;
+    }
+
+    public void setIsRecorded(boolean isRecorded) {
+        this.isRecorded = isRecorded;
+    }
         
-        public PlayerDetails(String id,User player, UserGameDetails.PlayerState playerState, UserGameDetails.PlayerSimbole playerSample) {
-            super(id);
-            this.player = player;
-            this.playerState = playerState;
-            this.PlayerSimbole = playerSample;
-        }
+    public PlayerDetails(String id,User player, UserGameDetails.PlayerState playerState, UserGameDetails.PlayerSimbole PlayerSimbole, boolean isRecorded) {
+        super(id);
+        this.player = player;
+        this.playerState = playerState;
+        this.PlayerSimbole = PlayerSimbole;
+        this.isRecorded = isRecorded;
+    }
         
-        public PlayerDetails(User player, UserGameDetails.PlayerSimbole playerSample) {
-            this.player = player;
-            this.PlayerSimbole = playerSample;
-            this.playerState = UserGameDetails.PlayerState.Draw;
-        }
+    public PlayerDetails(User player, UserGameDetails.PlayerSimbole playerSample) {
+        this.player = player;
+        this.PlayerSimbole = playerSample;
+        this.playerState = UserGameDetails.PlayerState.Draw;
+    }
 
-    
-        @Override
-        public String toString() {
-            return "PlayerDetails{" + "player=" + player + ", playerState=" + playerState + ", PlayerSimbole=" + PlayerSimbole + '}';
-        }
-        
-        
-        private User player;
-        private UserGameDetails.PlayerState playerState;
-        private UserGameDetails.PlayerSimbole  PlayerSimbole;
+    public PlayerDetails() {
+    }
+
+    private User player;
+    private UserGameDetails.PlayerState playerState;
+    private UserGameDetails.PlayerSimbole  PlayerSimbole;
+    protected boolean isRecorded;
 }
