@@ -56,6 +56,7 @@ public class Login extends javax.swing.JFrame {
         font = font.deriveFont(Font.BOLD);
         textField.setFont(font);
         textField.setForeground(Color.LIGHT_GRAY);
+        
     }
     
     public void removePlaceHolderStyle(JTextField textField){
