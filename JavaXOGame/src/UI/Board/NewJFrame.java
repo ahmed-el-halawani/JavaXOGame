@@ -19,6 +19,8 @@ public class NewJFrame extends javax.swing.JFrame{
     int x_pressed = 0;
     int y_pressed = 0;
     
+    String XSimbole = "/UI/Board/xCol2.png";
+    
     boolean player1_turn;
     
     Random random = new Random();
@@ -79,7 +81,7 @@ public class NewJFrame extends javax.swing.JFrame{
         });
         jPanel1.add(btn0, new org.netbeans.lib.awtextra.AbsoluteConstraints(275, 146, 108, 93));
 
-        btn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/Board/background.png"))); // NOI18N
+        btn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/Board/xCol2.png"))); // NOI18N
         btn1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn1ActionPerformed(evt);
@@ -217,23 +219,23 @@ public class NewJFrame extends javax.swing.JFrame{
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn8ActionPerformed
-        btn8.setIcon(new ImageIcon(getClass().getResource("/board/xCol2.png")));
+        btn8.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
     }//GEN-LAST:event_btn8ActionPerformed
 
     private void btn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn2ActionPerformed
-        btn2.setIcon(new ImageIcon(getClass().getResource("/board/xWin.png")));
+        btn2.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
     }//GEN-LAST:event_btn2ActionPerformed
 
     private void btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn1ActionPerformed
-        btn1.setIcon(new ImageIcon(getClass().getResource("/board/oCol2.png")));
+        btn1.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
     }//GEN-LAST:event_btn1ActionPerformed
 
     private void btn4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn4ActionPerformed
-        btn4.setIcon(new ImageIcon(getClass().getResource("/board/xWin.png")));
+        btn4.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
     }//GEN-LAST:event_btn4ActionPerformed
 
     private void btn0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn0ActionPerformed
-        btn0.setIcon(new ImageIcon(getClass().getResource("/board/xCol2.png")));
+        btn0.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
     }//GEN-LAST:event_btn0ActionPerformed
 
     private void dragLabelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dragLabelMousePressed

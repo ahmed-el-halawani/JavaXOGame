@@ -197,8 +197,12 @@ public final class WaitingScrean extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
+        cards.setBackground(new java.awt.Color(255, 255, 255));
         cards.setLayout(new java.awt.CardLayout());
+
+        waitingWithCode.setBackground(new java.awt.Color(255, 255, 255));
 
         code.setFont(new java.awt.Font("Tekton Pro Ext", 0, 36)); // NOI18N
         code.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -257,6 +261,8 @@ public final class WaitingScrean extends javax.swing.JFrame {
 
         cards.add(waitingWithCode, "waitingWithCode");
 
+        leaver.setBackground(new java.awt.Color(255, 255, 255));
+
         jLabel5.setFont(new java.awt.Font("Tekton Pro Ext", 0, 36)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("your frind leave u alone");
@@ -308,6 +314,7 @@ public final class WaitingScrean extends javax.swing.JFrame {
 
         cards.add(leaver, "leaver");
 
+        game.setBackground(new java.awt.Color(255, 255, 255));
         game.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel4.setLayout(new java.awt.GridLayout(3, 3));
@@ -402,6 +409,8 @@ public final class WaitingScrean extends javax.swing.JFrame {
         game.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 470, 540, 150));
 
         cards.add(game, "game");
+
+        waiting.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel7.setFont(new java.awt.Font("Tekton Pro Ext", 0, 36)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
