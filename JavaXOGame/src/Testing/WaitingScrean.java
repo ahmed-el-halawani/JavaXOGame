@@ -61,7 +61,7 @@ public final class WaitingScrean extends javax.swing.JFrame {
                         "::"+
                         gamebord.gameRoom.currentTurn.getPlayerSimbole().name()+
                         ":: is My Turn :"+
-                        gamebord.gameRoom.currentTurn.getId().equals(appManager.getUser().getId())
+                        gamebord.gameRoom.currentTurn.getPlayer().getId().equals(appManager.getUser().getId())
                     );
                     gamebord.gameRoom.getGameBord().forEach((t, u) -> {
                         buttons[t-1].setText(u.name());
@@ -197,8 +197,12 @@ public final class WaitingScrean extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
+        cards.setBackground(new java.awt.Color(255, 255, 255));
         cards.setLayout(new java.awt.CardLayout());
+
+        waitingWithCode.setBackground(new java.awt.Color(255, 255, 255));
 
         code.setFont(new java.awt.Font("Tekton Pro Ext", 0, 36)); // NOI18N
         code.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -257,6 +261,8 @@ public final class WaitingScrean extends javax.swing.JFrame {
 
         cards.add(waitingWithCode, "waitingWithCode");
 
+        leaver.setBackground(new java.awt.Color(255, 255, 255));
+
         jLabel5.setFont(new java.awt.Font("Tekton Pro Ext", 0, 36)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("your frind leave u alone");
@@ -308,6 +314,7 @@ public final class WaitingScrean extends javax.swing.JFrame {
 
         cards.add(leaver, "leaver");
 
+        game.setBackground(new java.awt.Color(255, 255, 255));
         game.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel4.setLayout(new java.awt.GridLayout(3, 3));
@@ -403,6 +410,8 @@ public final class WaitingScrean extends javax.swing.JFrame {
 
         cards.add(game, "game");
 
+        waiting.setBackground(new java.awt.Color(255, 255, 255));
+
         jLabel7.setFont(new java.awt.Font("Tekton Pro Ext", 0, 36)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("Waiting");
@@ -480,10 +489,9 @@ public final class WaitingScrean extends javax.swing.JFrame {
 
     @Override
     public void dispose() {
-        super.dispose();
         try {
-            gamebord.leaveGame(appManager.getUser());
-            
+            System.out.println("from dispose");
+            gamebord.leaveGame(appManager.getUser().getId());
             gamebord.isListing=false;
              try {
                 gamebord.in.close();
@@ -500,6 +508,9 @@ public final class WaitingScrean extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(WaitingScrean.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        super.dispose();
+        
     }
 
     

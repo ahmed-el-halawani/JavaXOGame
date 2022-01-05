@@ -7,6 +7,8 @@ package UI;
 
 import Entities.GameRoom;
 import Entities.UserGameDetails;
+import UI.MultiPlayer.MultiMain;
+import UI.MultiPlayer.MultiOnlineMenu;
 import Utils.AppManager;
 import Utils.ConnectionManager;
 import Utils.UserGameDetailsCrud;
@@ -24,11 +26,20 @@ public class Home extends javax.swing.JFrame {
 
     int x;
     int y;
+    
+    private enum Screens{
+        MultiOnline
+    }
     /**
      * Creates new form Home
      */
+    MultiOnlineMenu multiOnlinePanel;
     public Home() {
         initComponents();
+        multiOnlinePanel = new MultiOnlineMenu();
+        multiOnlinePanel.setVisible(true);
+        
+        
         setLocationRelativeTo(null);
         ConnectionManager connection;
         AppManager appManager;
@@ -289,7 +300,7 @@ public class Home extends javax.swing.JFrame {
         jPanel1.add(jLabel11);
         jLabel11.setBounds(520, 20, 100, 60);
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/backWhite2.png"))); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/backWhite.png"))); // NOI18N
         jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel7MouseClicked(evt);
@@ -467,8 +478,11 @@ if (back == 1) {
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void multiBTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_multiBTMouseClicked
-       
+                    this.setVisible(false);
+    
+        new MultiMain(this).setVisible(true);
     }//GEN-LAST:event_multiBTMouseClicked
+    
     public void getPanal(JPanel jp) {
         jLayeredPane1.removeAll();
         jLayeredPane1.add(jp);

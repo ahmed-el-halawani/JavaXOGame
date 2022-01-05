@@ -7,5 +7,6 @@ JavaXOServer/build/classes/javaxoserver/RequestHandler.class
 *.class
 /JavaXOServer/dist/
 /JavaXOGame/build/
-
+/xoFiles/
 data/
+
