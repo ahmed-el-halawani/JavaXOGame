@@ -87,10 +87,10 @@ public class GameRoomCrud {
         );
     }
     
-    public void leaveGame(User user) throws JsonProcessingException, IOException{
-        System.out.println(user);
+    public void leaveGame(String id) throws JsonProcessingException, IOException{
+        System.out.println(id);
         JsonAction jsonAction = new JsonAction(
-                user.getId(),
+                id,
                 JsonAction.Types.LeaveGameRoom,
                 gameRoom.code
         );

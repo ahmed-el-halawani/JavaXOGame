@@ -74,13 +74,6 @@ class Responder implements HelloListener {
             userGameDetailsCrud = new UserGameDetailsCrud(cm.in,cm.out);
             userCrud = new UserCrud(cm.in,cm.out);
              appManager = AppManager.getinstance();
-             appManager.setUser(new User(
-                    "2033e557-fb4d-4297-a48b-0a971140593e",
-                    "ahmed34",
-                    "ahmedGomaa244",
-                    "123123123",
-                    User.UserType.Account
-                ));
             
         } catch (IOException ex) {
             Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);

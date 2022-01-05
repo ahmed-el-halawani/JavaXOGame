@@ -61,7 +61,7 @@ public final class WaitingScrean extends javax.swing.JFrame {
                         "::"+
                         gamebord.gameRoom.currentTurn.getPlayerSimbole().name()+
                         ":: is My Turn :"+
-                        gamebord.gameRoom.currentTurn.getId().equals(appManager.getUser().getId())
+                        gamebord.gameRoom.currentTurn.getPlayer().getId().equals(appManager.getUser().getId())
                     );
                     gamebord.gameRoom.getGameBord().forEach((t, u) -> {
                         buttons[t-1].setText(u.name());
@@ -489,10 +489,9 @@ public final class WaitingScrean extends javax.swing.JFrame {
 
     @Override
     public void dispose() {
-        super.dispose();
         try {
-            gamebord.leaveGame(appManager.getUser());
-            
+            System.out.println("from dispose");
+            gamebord.leaveGame(appManager.getUser().getId());
             gamebord.isListing=false;
              try {
                 gamebord.in.close();
@@ -509,6 +508,9 @@ public final class WaitingScrean extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(WaitingScrean.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        super.dispose();
+        
     }
 
     

@@ -113,9 +113,11 @@ public final class GameRoom extends UserGameDetails  {
                 p = player;
                 break;
             }
+        if(p!=null){
+            this.players.remove(p);
+        }
         
-        this.players.remove(p);
-        if(playerOneDetails.getPlayer().getId().equals(playerId)){
+        if(playerOneDetails!=null && playerOneDetails.getPlayer().getId().equals(playerId)){
             playerOneDetails = null;
             currentTurn = playerTwoDetails;
 
@@ -277,6 +279,10 @@ public final class GameRoom extends UserGameDetails  {
             return GameState.draw;
         
         return GameState.playing;
+    }
+    
+    public boolean hasPlayer(){
+        return !players.isEmpty();
     }
     
     

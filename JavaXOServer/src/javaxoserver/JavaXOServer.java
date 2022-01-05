@@ -276,17 +276,13 @@ class RequestHandler extends Thread {
             
             case LeaveGameRoom:
                 gemeRoomResponce = getGameRoom(action.getParams());
-//                if(gemeRoomResponce!=null){
-//                    new Responce(responceCodes.LeaveGameRoomError, gemeRoomResponce.name()).sendJson(out);
-//                    break;
-//                }
-                
                 gameRoom.Playerleave(action.getObject());
-//                s.close();
-//                in.close();
-//                out.close();
                 isRunning = false;
-                gameRoom.notifySockets(responceCodes.LeaveGameRoom,gameRoomResponce.PlayerLeave.name());
+                if(!gameRoom.hasPlayer())
+                    GameRoom.gameRooms.remove(gameRoom);
+                else
+                    gameRoom.notifySockets(responceCodes.LeaveGameRoom,gameRoomResponce.PlayerLeave.name());
+
             break;
                         
             case findGameRoom:

@@ -44,9 +44,12 @@ public class UserGameDetails extends BaseEntity {
             GameDifficultyLvl.valueOf(rs.getString("GAMEDIFFICULTYLVL")),
             playerOne,
             playerTwo,
-            obm.readValue(rs.getString("GAMEBORD"), typeReference)
+            rs.getString("GAMEBORD")==null
+                    ?new LinkedHashMap<Integer,PlayerSimbole>()
+                    :obm.readValue(rs.getString("GAMEBORD"), typeReference)
         );
     }
+    
     public static enum PlayerState{
         Winner,Loser,Draw
     }
