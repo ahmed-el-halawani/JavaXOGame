@@ -7,6 +7,12 @@ package UI;
 
 import Entities.GameRoom;
 import Entities.UserGameDetails;
+<<<<<<< Updated upstream
+=======
+import SinglePlayer.SingleMode;
+import UI.MultiPlayer.MultiMain;
+import UI.MultiPlayer.MultiOnlineMenu;
+>>>>>>> Stashed changes
 import Utils.AppManager;
 import Utils.ConnectionManager;
 import Utils.UserGameDetailsCrud;
@@ -210,6 +216,9 @@ public class Home extends javax.swing.JFrame {
         singlBT1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         singlBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/easy_1.png"))); // NOI18N
         singlBT1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                singlBT1MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 singlBT1MouseEntered(evt);
             }
@@ -462,6 +471,25 @@ if (back == 1) {
 
         }        // TODO add your handling code here:
     }//GEN-LAST:event_jLabel7MouseClicked
+<<<<<<< Updated upstream
+=======
+
+    private void multiBTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_multiBTMouseClicked
+                    this.setVisible(false);
+    
+        new MultiMain(this).setVisible(true);
+    }//GEN-LAST:event_multiBTMouseClicked
+
+    private void singlBT1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_singlBT1MouseClicked
+       this.setVisible(false);
+            SingleMode jframe = new SingleMode();
+            jframe.setVisible(true);
+            jframe.pack();
+            jframe.setLocationRelativeTo(null);
+        
+    }//GEN-LAST:event_singlBT1MouseClicked
+    
+>>>>>>> Stashed changes
     public void getPanal(JPanel jp) {
         jLayeredPane1.removeAll();
         jLayeredPane1.add(jp);
