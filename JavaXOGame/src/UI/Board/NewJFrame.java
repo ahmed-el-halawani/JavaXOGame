@@ -16,10 +16,16 @@ import javax.swing.ImageIcon;
  */
 public class NewJFrame extends javax.swing.JFrame{
    
-    int x_pressed = 0;
-    int y_pressed = 0;
+   protected int x_pressed = 0;
+    protected int y_pressed = 0;
     
+<<<<<<< Updated upstream
     boolean player1_turn;
+=======
+    String XSimbole = "/UI/Board/xCol2.png";
+    
+    protected boolean player1_turn;
+>>>>>>> Stashed changes
     
     Random random = new Random();
 
@@ -180,13 +186,14 @@ public class NewJFrame extends javax.swing.JFrame{
 
         jLabel10.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel10.setText("NickNaame");
+        jLabel10.setText("NickName");
+        jLabel10.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(55, 270, 110, 30));
 
         jLabel9.setBackground(java.awt.Color.white);
         jLabel9.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel9.setText("NickNaame");
+        jLabel9.setText("NickName");
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 270, 110, 30));
 
         jLabel7.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
@@ -217,6 +224,7 @@ public class NewJFrame extends javax.swing.JFrame{
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn8ActionPerformed
+<<<<<<< Updated upstream
         btn8.setIcon(new ImageIcon(getClass().getResource("/board/xCol2.png")));
     }//GEN-LAST:event_btn8ActionPerformed
 
@@ -234,6 +242,20 @@ public class NewJFrame extends javax.swing.JFrame{
 
     private void btn0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn0ActionPerformed
         btn0.setIcon(new ImageIcon(getClass().getResource("/board/xCol2.png")));
+=======
+    }//GEN-LAST:event_btn8ActionPerformed
+
+    private void btn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn2ActionPerformed
+    }//GEN-LAST:event_btn2ActionPerformed
+
+    private void btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn1ActionPerformed
+    }//GEN-LAST:event_btn1ActionPerformed
+
+    private void btn4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn4ActionPerformed
+    }//GEN-LAST:event_btn4ActionPerformed
+
+    private void btn0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn0ActionPerformed
+>>>>>>> Stashed changes
     }//GEN-LAST:event_btn0ActionPerformed
 
     private void dragLabelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dragLabelMousePressed
@@ -242,7 +264,7 @@ public class NewJFrame extends javax.swing.JFrame{
     }//GEN-LAST:event_dragLabelMousePressed
 
     private void dragLabelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dragLabelMouseDragged
-        setLocation(evt.getXOnScreen() - x_pressed, evt.getYOnScreen() - y_pressed);
+        
     }//GEN-LAST:event_dragLabelMouseDragged
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
@@ -250,11 +272,11 @@ public class NewJFrame extends javax.swing.JFrame{
     }//GEN-LAST:event_jLabel6MouseClicked
 
     private void btn6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn6ActionPerformed
-        btn6.setIcon(new ImageIcon(getClass().getResource("/board/xWin.png")));
+        
     }//GEN-LAST:event_btn6ActionPerformed
 
     private void btn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn3ActionPerformed
-        btn3.setIcon(new ImageIcon(getClass().getResource("/board/oCol2.png")));
+        
     }//GEN-LAST:event_btn3ActionPerformed
 
     private void btn5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn5ActionPerformed
@@ -304,17 +326,17 @@ public class NewJFrame extends javax.swing.JFrame{
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn0;
-    private javax.swing.JButton btn1;
-    private javax.swing.JButton btn2;
-    private javax.swing.JButton btn3;
-    private javax.swing.JButton btn4;
-    private javax.swing.JButton btn5;
-    private javax.swing.JButton btn6;
-    private javax.swing.JButton btn7;
-    private javax.swing.JButton btn8;
+    protected javax.swing.JButton btn0;
+    protected javax.swing.JButton btn1;
+    protected javax.swing.JButton btn2;
+    protected javax.swing.JButton btn3;
+    protected javax.swing.JButton btn4;
+    protected javax.swing.JButton btn5;
+    protected javax.swing.JButton btn6;
+    protected javax.swing.JButton btn7;
+    protected javax.swing.JButton btn8;
     private javax.swing.JLabel dragLabel;
-    private javax.swing.JLabel frstTurn;
+    protected javax.swing.JLabel frstTurn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
