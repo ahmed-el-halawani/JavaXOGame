@@ -16,16 +16,19 @@ import java.awt.Color;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
  *
- * @author El-Hoda
+ * @author Tarek
  */
 public class Home extends javax.swing.JFrame {
 
     int x;
     int y;
+    public static String player2;
+     public static String player1;
     
     private enum Screens{
         MultiOnline
@@ -52,6 +55,7 @@ public class Home extends javax.swing.JFrame {
             jPanel6.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
             jPanel5.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
             jPanel7.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
+            player1=appManager.getUser().getUserName();
         
         } catch (IOException ex) {
             Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
@@ -125,6 +129,9 @@ public class Home extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button (12).png"))); // NOI18N
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jLabel2MouseEntered(evt);
             }
@@ -173,6 +180,9 @@ public class Home extends javax.swing.JFrame {
         localBT.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         localBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/local player.png"))); // NOI18N
         localBT.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                localBTMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 localBTMouseEntered(evt);
             }
@@ -286,7 +296,7 @@ public class Home extends javax.swing.JFrame {
         win.setForeground(new java.awt.Color(255, 255, 255));
         win.setText("win : 3");
         jPanel1.add(win);
-        win.setBounds(390, 140, 80, 24);
+        win.setBounds(390, 140, 80, 25);
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/tic.png"))); // NOI18N
         jPanel1.add(jLabel9);
@@ -337,7 +347,7 @@ public class Home extends javax.swing.JFrame {
         lose.setForeground(new java.awt.Color(255, 255, 255));
         lose.setText("lose : 4");
         jPanel1.add(lose);
-        lose.setBounds(390, 180, 100, 24);
+        lose.setBounds(390, 180, 100, 25);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/scorePane (1).png"))); // NOI18N
         jPanel1.add(jLabel3);
@@ -482,6 +492,27 @@ if (back == 1) {
     
         new MultiMain(this).setVisible(true);
     }//GEN-LAST:event_multiBTMouseClicked
+
+    private void localBTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_localBTMouseClicked
+ String str = JOptionPane.showInputDialog(null, "Enter the second player's name : ", 
+"Click a button", 1);
+  if(str != null){
+ player2=str;
+ new MultiLocal().setVisible(true);
+  
+  }
+  
+  
+  
+
+      
+    }//GEN-LAST:event_localBTMouseClicked
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+new History().setVisible(true);
+
+// TODO add your handling code here:
+    }//GEN-LAST:event_jLabel2MouseClicked
     
     public void getPanal(JPanel jp) {
         jLayeredPane1.removeAll();
