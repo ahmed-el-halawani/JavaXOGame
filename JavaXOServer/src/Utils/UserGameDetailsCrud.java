@@ -31,8 +31,11 @@ class UserGameDetailsCrud{
         if(playerTwo==null){
             return -1;
         }
-
-        String id = UUID.randomUUID().toString();
+        
+        String id = entity.getId();
+        if(id ==null)
+            id = UUID.randomUUID().toString();
+        
         PreparedStatement query = con.prepareStatement("INSERT INTO USERGAMEDETAILS VALUES(?,?,?,?,?,?)");
         query.setString(1,id);
         query.setString(2,entity.getGameMode().name());
@@ -49,6 +52,38 @@ class UserGameDetailsCrud{
     }
 
     public int update(String id, Entities.UserGameDetails entity) throws JSONException, IOException, SQLException {
+        PreparedStatement query = con.prepareStatement("UPDATE USERGAMEDETAILS SET GAMEMODE = ?, GAMEDIFFICULTYLVL=?,PLAYERONEDETAILS=?,PLAYERTWODETAILS=?,GAMEBORD=? WHERE ID =?");
+
+        query.setString(1,entity.getGameMode().name());
+        query.setString(2,entity.getGameDifficultyLvl().name());
+        query.setString(3,entity.getPlayerOneDetails().getId());
+        query.setString(4,entity.getPlayerTwoDetails().getId());
+        query.setString(5,obm.writeValueAsString(entity.getGameBord()));
+        query.setString(6,entity.getId());
+
+        int index = query.executeUpdate();
+        return index;
+    }
+    
+    public int update(Entities.UserGameDetails entity) throws JSONException, IOException, SQLException {
+        return update(entity.getId(),entity);
+    }
+    
+    public int setIsRecorded(String userId,String gameDetailsId) throws JSONException, IOException, SQLException {
+        UserGameDetails entity= get("{id:"+gameDetailsId+"}");
+        PlayerDetails player= entity.getPlayerWithId(userId);
+        player.setIsRecorded(true);
+        PreparedStatement query = con.prepareStatement("UPDATE PLAYERDETAILS SET IS_RECORDED=? WHERE ID =?");
+        query.setBoolean(1,player.getIsRecorded());
+        query.setString(2,player.getId());
+        int index = query.executeUpdate();
+        
+        return index;
+    }
+    
+    
+    
+    public int addOrUpdate(String id, UserGameDetails entity) throws JSONException, IOException, SQLException {
         JSONObject params = new JSONObject(id);
         
 

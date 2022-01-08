@@ -5,6 +5,7 @@
  */
 package Entities;
 
+import Utils.UserGameDetailsCrud;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -31,25 +32,24 @@ public final class GameRoom extends UserGameDetails  {
     }
     
     public static String generateRandomPassword(int len) {
-		String chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijk"
-          +"lmnopqrstuvwxyz!@#$%&";
-		Random rnd = new Random();
-		StringBuilder sb = new StringBuilder(len);
-		for (int i = 0; i < len; i++)
-			sb.append(chars.charAt(rnd.nextInt(chars.length())));
-		return sb.toString();
-	}
+        String chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%&";
+        Random rnd = new Random();
+        StringBuilder sb = new StringBuilder(len);
+        for (int i = 0; i < len; i++)
+                sb.append(chars.charAt(rnd.nextInt(chars.length())));
+        return sb.toString();
+    }
     
+    @Override
     public String toJson() throws JsonProcessingException {
         ObjectMapper obm = new ObjectMapper();
         return obm.writeValueAsString(this);
     }
     
     public static GameRoom getGameRoom(String code){
-        for (Iterator<GameRoom> iterator = gameRooms.iterator(); iterator.hasNext();) {
-            GameRoom next = iterator.next();
+        for (GameRoom next : gameRooms) {
             System.out.println(next);
-             if(next.isEqualCode(code))
+            if(next.isEqualCode(code))
                 return next;
         }
         return null;
@@ -103,8 +103,6 @@ public final class GameRoom extends UserGameDetails  {
         return null;
     }
     
-    
-    
     public gameRoomResponce Playerleave(String playerId){
         Player p = null;
         
@@ -131,8 +129,6 @@ public final class GameRoom extends UserGameDetails  {
         return null;
     }
     
-    
-    
     public gameRoomResponce setMove(Integer position){
         if(gameBord.keySet().contains(position))
             return gameRoomResponce.WrongPlace;
@@ -147,6 +143,10 @@ public final class GameRoom extends UserGameDetails  {
         return null;
     }
     
+//    public void saveGame(UserGameDetails userGameDetails){
+//        new UserGameDetailsCrud();
+//    }
+    
     public GameRoom(Player p){
         super(
             GameModes.Multi, 
@@ -155,6 +155,7 @@ public final class GameRoom extends UserGameDetails  {
                 PlayerSimbole.X
             )
         );
+        this.players = new Vector<>();
         
         this.players.add(p);
         
@@ -175,6 +176,7 @@ public final class GameRoom extends UserGameDetails  {
                 PlayerSimbole.O
             )
         );
+        this.players = new Vector<>();
         
         this.players.add(p1);
         this.players.add(p2);
@@ -214,7 +216,7 @@ public final class GameRoom extends UserGameDetails  {
     }
     
     public boolean isMyTurn(String userId){
-        return userId==currentTurn.getPlayer().getId();
+        return (userId == null ? currentTurn.getPlayer().getId() == null : userId.equals(currentTurn.getPlayer().getId()));
     }
     
     public String startRecordingForUser(String userId){
@@ -285,7 +287,6 @@ public final class GameRoom extends UserGameDetails  {
         return !players.isEmpty();
     }
     
-    
      private void setWinnerWithSimbole(PlayerSimbole playerSimbole){
          if(playerOneDetails.getPlayerSimbole().equals(playerSimbole)){
              playerOneDetails.setPlayerState(PlayerState.Winner);
@@ -296,9 +297,7 @@ public final class GameRoom extends UserGameDetails  {
          }
     }
      
-	
-
-    private Vector<Player> players = new Vector<>();
+    private Vector<Player> players;
     private PlayerDetails currentTurn;
     private PlayerDetails nextTurn;
     private String code = "";

@@ -21,11 +21,11 @@ public class JsonAction{
         
         createGameRoom,findGameRoom,findGameRoomWithCode,
         
-        getCurrentTurn,isMyTurn,setMove,setPlayerTwo,startRecordingForUser,
+        getCurrentTurn,isMyTurn,setMove,setPlayerTwo,StartRecordingForUser,StartRecordingForUserFromLocal,
         
         AddUser,GetAllUsers,GetUser,GetUserWithUesrName,UpdateUser,DeleteUser,
-        LeaveGameRoom,QuitApp
-    }
+        LeaveGameRoom,QuitApp,SaveGame
+     }
 
     public static JsonAction fromJson(String body) throws  JsonProcessingException{
            ObjectMapper obm = new ObjectMapper();

@@ -6,7 +6,7 @@
 package Testing;
 
 import Entities.GameRoom;
-import Entities.GameRoomCrud;
+import Utils.GameRoomCrud;
 import Entities.Responce;
 import Entities.Responce.responceCodes;
 import Utils.AppManager;
@@ -216,9 +216,13 @@ public class GameBordUi extends javax.swing.JFrame {
                     {
                         new GameRoomCrud.NotifierObject(
                         (String object) -> {
-                             gamebord.code = object;
-                              EventQueue.invokeLater(()->{
-                                messages.setText("create game with code "+object);
+                            try {
+                                gamebord.gameRoom = gamebord.obm.readValue(object, GameRoom.class);
+                            } catch (JsonProcessingException ex) {
+                                Logger.getLogger(GameBordUi.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            EventQueue.invokeLater(()->{
+                              messages.setText("create game with code "+object);
                             });
                         },
                         responceCodes.createGameRoom

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package javaxoserver;
+package Main;
 
 import Entities.GameRoom;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -271,7 +271,7 @@ class RequestHandler extends Thread {
         switch(action.getType()){
             case createGameRoom:
                 gameRoom = new GameRoom(new Player(new ObjectMapper().readValue(action.getObject(), User.class),s));
-                new Responce(responceCodes.createGameRoom, gameRoom.getCode()).sendJson(out);
+                new Responce(responceCodes.createGameRoom, gameRoom.toJson()).sendJson(out);
             break;
             
             case LeaveGameRoom:
@@ -284,6 +284,21 @@ class RequestHandler extends Thread {
                     gameRoom.notifySockets(responceCodes.LeaveGameRoom,gameRoomResponce.PlayerLeave.name());
 
             break;
+            
+            case StartRecordingForUser:
+                getGameRoom(action.getParams());
+                userGameDetailsCrud.setIsRecorded(action.getObject(),gameRoom.getId());
+                System.out.println("StartRecordingForUser");
+            break;
+            
+//            case StartRecordingForUserFromLocal:
+//                userGameDetailsCrud.setIsRecorded(action.getObject(),gameRoom.getId());
+//            break;
+            
+//            case SaveGame:
+//                getGameRoom(action.getParams());
+//                userGameDetailsCrud.add(gameRoom);
+//            break;
                         
             case findGameRoom:
                 if(availToPlay.isEmpty()){
