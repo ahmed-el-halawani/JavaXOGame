@@ -3,15 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/UI/MultiPlayer/MultiOnlineMenu.java</file>
-            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/UI/Main.java</file>
-            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/Testing/MainTest.java</file>
-            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/UI/MultiPlayer/CC.java</file>
-            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/Testing/MultiPlayer.java</file>
-            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/UI/Home.java</file>
+            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/Utils/GameRoomCrud.java</file>
+            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/UI/MultiPlayer/GameRoomGui.java</file>
             <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/UI/MultiPlayer/MultiMain.java</file>
-            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/Utils/AppManager.java</file>
-            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/Testing/WaitingScrean.java</file>
+            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/Entities/UserGameDetails.java</file>
         </group>
     </open-files>
 </project-private>

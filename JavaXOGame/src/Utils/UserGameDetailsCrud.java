@@ -42,7 +42,6 @@ DataOutputStream out;
             JsonAction jsonAction = new JsonAction(
                     entity.toJson(),
                     JsonAction.Types.Add,
-                    
                     ""
             );
             System.out.println(obm.writeValueAsString(jsonAction));

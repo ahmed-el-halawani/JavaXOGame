@@ -19,13 +19,10 @@ public class JsonAction{
      public static enum Types{
         Add,Get,GetAll,Update,Delete,GetAllWithId,GetAllWithUesrName,
         
-        createGameRoom,findGameRoom,findGameRoomWithCode,
-        
-        getCurrentTurn,isMyTurn,setMove,setPlayerTwo,startRecordingForUser,
-        
         AddUser,GetAllUsers,GetUser,GetUserWithUesrName,UpdateUser,DeleteUser,
         
-        LeaveGameRoom,QuitApp
+        LeaveGameRoom,QuitApp,getCurrentTurn,isMyTurn,setMove,setPlayerTwo,StartRecordingForUser,
+        createGameRoom,findGameRoom,findGameRoomWithCode,SaveGame
      }
 
     public static JsonAction fromJson(String body) throws  JsonProcessingException{

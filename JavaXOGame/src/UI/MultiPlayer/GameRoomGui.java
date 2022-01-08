@@ -3,32 +3,37 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Testing;
+package UI.MultiPlayer;
 
+import Testing.*;
 import Entities.GameRoom;
 import Utils.GameRoomCrud;
 import Entities.Responce;
 import Entities.Responce.responceCodes;
+import static UI.MultiPlayer.GameBordPanel.OSimbole;
 import Utils.AppManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.awt.CardLayout;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
  * @author A H M E D
  */
-public final class WaitingScrean extends javax.swing.JFrame {
+public final class GameRoomGui extends javax.swing.JFrame {
 
-    /**
-     * Creates new form WaitingScrean
-     */
     
     private enum screens{
         waitingWithCode,leaver,game,waiting
@@ -39,54 +44,105 @@ public final class WaitingScrean extends javax.swing.JFrame {
     AppManager appManager;
     GameRoomCrud.ListenersX listener;
     CardLayout cardLayout;
-    public WaitingScrean(GameRoomCrud gamebord) {
+    GameBordPanel gamePanel;
+    public GameRoomGui(GameRoomCrud gamebord) {
+                initComponents();
+
         this.appManager = AppManager.getinstance();
         this.gamebord = gamebord;
+        gamePanel = new GameBordPanel();
         
-        initComponents();
+        game.add(gamePanel);
+        buttons = gamePanel.buttons;
+        
+        Arrays.asList(buttons).forEach(this::buttonAction);
+        
         setTitle("Game Bord Test");
-        buttons = new JButton[]{b1,b2,b3,b4,b5,b6,b7,b8,b9};
+        
         initListener();
         cardLayout = (CardLayout)cards.getLayout();
         cardLayout.show(cards, screens.waiting.name());
     }
+    
+    
+    private void buttonAction(JButton button) { 
+        button.addActionListener((evt) -> {
+            try {
+               if(!gamebord.isReadyToPlay()) return;
+               if(gamebord.gameRoom._getGameSate()==GameRoom.GameState.draw||gamebord.gameRoom._getGameSate()==GameRoom.GameState.winner) return;
+
+               System.out.println(appManager);
+               System.out.println(gamebord.gameRoom.currentTurn.getPlayer().getId());
+
+               if(appManager.getUser().getId().equals(gamebord.gameRoom.currentTurn.getPlayer().getId()))
+               gamebord.setMove(
+                   Integer.valueOf(((JButton)evt.getSource()).getName())
+               );
+           } catch (IOException ex) {
+               Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
+           }
+        });
+        
+    }  
 
       
     public void setMovieLisener(){
         gamebord.setMoveListenr(
             (String object) -> {
                 EventQueue.invokeLater(()->{
-                    messages.setText(
-                        gamebord.gameRoom.currentPosition.toString()+
-                        "::"+
-                        gamebord.gameRoom.currentTurn.getPlayerSimbole().name()+
-                        ":: is My Turn :"+
-                        gamebord.gameRoom.currentTurn.getPlayer().getId().equals(appManager.getUser().getId())
+                    gamePanel.TurnText.setText(
+                        gamebord.gameRoom.currentTurn.getPlayer().getName()
                     );
+                    gamePanel.setTurn(gamebord.gameRoom.currentTurn.getPlayerSimbole());
                     gamebord.gameRoom.getGameBord().forEach((t, u) -> {
-                        buttons[t-1].setText(u.name());
+                        gamePanel.setSimbole(buttons[t-1],u);
                     });
                 });
             },
             (String object) -> {
                 EventQueue.invokeLater(()->{
-                    messages.setText(gamebord.gameRoom.getPlayerStateWithId(appManager.getUser().getId()).name());
                     gamebord.gameRoom.getGameBord().forEach((t, u) -> {
-                        buttons[t-1].setText(u.name());
+                         gamePanel.setSimbole(buttons[t-1],u);
                     });
+                    gamePanel.TurnText.setText(
+                        gamebord.gameRoom.getPlayerStateWithId(appManager.getUser().getId()).name()
+                    );
+                    int answer = JOptionPane.showConfirmDialog(this, "do u want record game", "recording ", JOptionPane.YES_NO_OPTION);
+                    System.out.println("answer: "+answer);
+                    if(answer==0)
+                        try {
+                            gamebord.recordGame(appManager.getUser());
+                        } catch (IOException ex) {
+                            JOptionPane.showMessageDialog(this, "some thing wrong happend cant record game right now", "recording Error", JOptionPane.WARNING_MESSAGE);
+                            Logger.getLogger(GameRoomCrud.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                 });
             },
             (String object) -> {
                 EventQueue.invokeLater(()->{
-                    messages.setText("Draw");
                     gamebord.gameRoom.getGameBord().forEach((t, u) -> {
-                        buttons[t-1].setText(u.name());
+                         gamePanel.setSimbole(buttons[t-1],u);
                     });
+                    gamePanel.TurnText.setText(
+                        "Draw"
+                    );
+                    int answer = JOptionPane.showConfirmDialog(this, "do u want record game", "recording ", JOptionPane.YES_NO_OPTION);
+                    System.out.println("answer: "+answer);
+                    if(answer==0)
+                        try {
+                            gamebord.recordGame(appManager.getUser());
+                        } catch (IOException ex) {
+                            JOptionPane.showMessageDialog(this, "some thing wrong happend cant record game right now", "recording Error", JOptionPane.WARNING_MESSAGE);
+                            Logger.getLogger(GameRoomCrud.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    
                 });
             },
             (String object) -> {
             EventQueue.invokeLater(()->{
-                messages.setText(object);
+                gamePanel.TurnText.setText(
+                    object
+                );
             });
             }
         );
@@ -99,15 +155,14 @@ public final class WaitingScrean extends javax.swing.JFrame {
                     {
                         new GameRoomCrud.NotifierObject(
                         (String object) -> {
-            try {
-                gamebord.gameRoom = gamebord.obm.readValue(object, GameRoom.class);
-            } catch (JsonProcessingException ex) {
-                Logger.getLogger(WaitingScrean.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                            try {
+                                gamebord.gameRoom = gamebord.obm.readValue(object, GameRoom.class);
+                            } catch (JsonProcessingException ex) {
+                                Logger.getLogger(GameRoomGui.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                               EventQueue.invokeLater(()->{
-                                messages.setText("create game with code "+object);
                                 cardLayout.show(cards, screens.waitingWithCode.name());
-                                WaitingScrean.this.code.setText(object);
+                                GameRoomGui.this.code.setText(gamebord.gameRoom.code);
                             });
                         },
                         Responce.responceCodes.createGameRoom
@@ -117,9 +172,9 @@ public final class WaitingScrean extends javax.swing.JFrame {
                     new GameRoomCrud.NotifierObject(
                         (String object) -> {
                               EventQueue.invokeLater(()->{
-                                messages.setText("create game with code Error "+object);
+//                                messages.setText("create game with code Error "+object);
                                 cardLayout.show(cards, screens.waitingWithCode.name());
-                                WaitingScrean.this.code.setText(object);
+                                GameRoomGui.this.code.setText(object);
                             });
                         },
                         Responce.responceCodes.createGameRoomError
@@ -130,11 +185,14 @@ public final class WaitingScrean extends javax.swing.JFrame {
                                  gamebord.gameRoom = gamebord.obm.readValue(object, GameRoom.class);
                                  
                                  EventQueue.invokeLater(()->{
-                                    messages.setText("starting game "+gamebord.gameRoom.code);
-                                    
-                                     for (JButton button : buttons) {
-                                         button.setText("");
-                                     }
+//                                    messages.setText("starting game "+gamebord.gameRoom.code);
+                                    gamePanel.playerOne.setText(gamebord.gameRoom.getPlayerOneDetails().getPlayer().getName());
+                                    gamePanel.playerTwo.setText(gamebord.gameRoom.getPlayerTwoDetails().getPlayer().getName());
+                                    gamePanel.TurnText.setText(
+                                        gamebord.gameRoom.currentTurn.getPlayer().getName()
+                                    );
+                                    gamePanel.setTurn(gamebord.gameRoom.currentTurn.getPlayerSimbole());
+                                    gamePanel.resetButtons();
                                     
                                     cardLayout.show(cards, screens.game.name());
                                 });
@@ -147,7 +205,7 @@ public final class WaitingScrean extends javax.swing.JFrame {
                         new GameRoomCrud.NotifierObject(
                             (String object) -> {
                                  EventQueue.invokeLater(()->{
-                                    messages.setText("starting game");
+//                                    messages.setText("starting game");
                                 });
                             },
                             Responce.responceCodes.startGameError
@@ -184,26 +242,19 @@ public final class WaitingScrean extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         game = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        b1 = new javax.swing.JButton();
-        b2 = new javax.swing.JButton();
-        b3 = new javax.swing.JButton();
-        b4 = new javax.swing.JButton();
-        b5 = new javax.swing.JButton();
-        b6 = new javax.swing.JButton();
-        b7 = new javax.swing.JButton();
-        b8 = new javax.swing.JButton();
-        b9 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        messages = new javax.swing.JTextArea();
         waiting = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
+        setMaximumSize(new java.awt.Dimension(900, 634));
+        setMinimumSize(new java.awt.Dimension(900, 634));
+        setPreferredSize(new java.awt.Dimension(900, 634));
+        setResizable(false);
 
         cards.setBackground(new java.awt.Color(255, 255, 255));
+        cards.setPreferredSize(new java.awt.Dimension(900, 600));
         cards.setLayout(new java.awt.CardLayout());
 
         waitingWithCode.setBackground(new java.awt.Color(255, 255, 255));
@@ -233,7 +284,7 @@ public final class WaitingScrean extends javax.swing.JFrame {
             waitingWithCodeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, waitingWithCodeLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(waitingWithCodeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(waitingWithCodeLayout.createSequentialGroup()
@@ -249,7 +300,7 @@ public final class WaitingScrean extends javax.swing.JFrame {
         waitingWithCodeLayout.setVerticalGroup(
             waitingWithCodeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, waitingWithCodeLayout.createSequentialGroup()
-                .addContainerGap(231, Short.MAX_VALUE)
+                .addContainerGap(197, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addGap(86, 86, 86))
             .addGroup(waitingWithCodeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -260,7 +311,7 @@ public final class WaitingScrean extends javax.swing.JFrame {
                     .addGroup(waitingWithCodeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(code, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
                         .addComponent(copyCode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addContainerGap(487, Short.MAX_VALUE)))
+                    .addContainerGap(453, Short.MAX_VALUE)))
         );
 
         cards.add(waitingWithCode, "waitingWithCode");
@@ -293,14 +344,19 @@ public final class WaitingScrean extends javax.swing.JFrame {
             leaverLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(leaverLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(leaverLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, leaverLayout.createSequentialGroup()
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(leaverLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(leaverLayout.createSequentialGroup()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leaverLayout.createSequentialGroup()
+                        .addGap(0, 170, Short.MAX_VALUE)
+                        .addGroup(leaverLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(leaverLayout.createSequentialGroup()
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel4))
+                        .addGap(175, 175, 175))))
         );
         leaverLayout.setVerticalGroup(
             leaverLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -308,110 +364,18 @@ public final class WaitingScrean extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(leaverLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         cards.add(leaver, "leaver");
 
         game.setBackground(new java.awt.Color(255, 255, 255));
-        game.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jPanel4.setLayout(new java.awt.GridLayout(3, 3));
-
-        b1.setFont(new java.awt.Font("Adobe Arabic", 0, 120)); // NOI18N
-        b1.setName("1"); // NOI18N
-        b1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b5ActionPerformed(evt);
-            }
-        });
-        jPanel4.add(b1);
-
-        b2.setFont(new java.awt.Font("Adobe Arabic", 0, 120)); // NOI18N
-        b2.setName("2"); // NOI18N
-        b2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b5ActionPerformed(evt);
-            }
-        });
-        jPanel4.add(b2);
-
-        b3.setFont(new java.awt.Font("Adobe Arabic", 0, 120)); // NOI18N
-        b3.setName("3"); // NOI18N
-        b3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b5ActionPerformed(evt);
-            }
-        });
-        jPanel4.add(b3);
-
-        b4.setFont(new java.awt.Font("Adobe Arabic", 0, 120)); // NOI18N
-        b4.setName("4"); // NOI18N
-        b4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b5ActionPerformed(evt);
-            }
-        });
-        jPanel4.add(b4);
-
-        b5.setFont(new java.awt.Font("Adobe Arabic", 0, 100)); // NOI18N
-        b5.setName("5"); // NOI18N
-        b5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b5ActionPerformed(evt);
-            }
-        });
-        jPanel4.add(b5);
-
-        b6.setFont(new java.awt.Font("Adobe Arabic", 0, 120)); // NOI18N
-        b6.setName("6"); // NOI18N
-        b6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b5ActionPerformed(evt);
-            }
-        });
-        jPanel4.add(b6);
-
-        b7.setFont(new java.awt.Font("Adobe Arabic", 0, 120)); // NOI18N
-        b7.setName("7"); // NOI18N
-        b7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b5ActionPerformed(evt);
-            }
-        });
-        jPanel4.add(b7);
-
-        b8.setFont(new java.awt.Font("Adobe Arabic", 0, 120)); // NOI18N
-        b8.setName("8"); // NOI18N
-        b8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b5ActionPerformed(evt);
-            }
-        });
-        jPanel4.add(b8);
-
-        b9.setFont(new java.awt.Font("Adobe Arabic", 0, 120)); // NOI18N
-        b9.setName("9"); // NOI18N
-        b9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b5ActionPerformed(evt);
-            }
-        });
-        jPanel4.add(b9);
-
-        game.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, -2, 560, 440));
-
-        messages.setColumns(20);
-        messages.setRows(5);
-        jScrollPane1.setViewportView(messages);
-
-        game.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 470, 540, 150));
-
+        game.setLayout(new java.awt.BorderLayout());
         cards.add(game, "game");
 
         waiting.setBackground(new java.awt.Color(255, 255, 255));
@@ -430,7 +394,7 @@ public final class WaitingScrean extends javax.swing.JFrame {
             .addGroup(waitingLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(waitingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -439,7 +403,7 @@ public final class WaitingScrean extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, waitingLayout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
                 .addComponent(jLabel8)
                 .addGap(86, 86, 86))
         );
@@ -460,23 +424,6 @@ public final class WaitingScrean extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void b5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b5ActionPerformed
-        try {
-            if(!gamebord.isReadyToPlay()) return;
-            if(gamebord.gameRoom._getGameSate()==GameRoom.GameState.draw||gamebord.gameRoom._getGameSate()==GameRoom.GameState.winner) return;
-
-            System.out.println(appManager);
-            System.out.println(gamebord.gameRoom.currentTurn.getPlayer().getId());
-
-            if(appManager.getUser().getId().equals(gamebord.gameRoom.currentTurn.getPlayer().getId()))
-            gamebord.setMove(
-                Integer.valueOf(((JButton)evt.getSource()).getName())
-            );
-        } catch (IOException ex) {
-            Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_b5ActionPerformed
-
     private void copyCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyCodeActionPerformed
         StringSelection stringSelection = new StringSelection(code.getText());
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, stringSelection);
@@ -493,6 +440,7 @@ public final class WaitingScrean extends javax.swing.JFrame {
 
     @Override
     public void dispose() {
+        super.dispose();
         try {
             System.out.println("from dispose");
             gamebord.leaveGame(appManager.getUser());
@@ -500,34 +448,24 @@ public final class WaitingScrean extends javax.swing.JFrame {
              try {
                 gamebord.in.close();
             } catch (IOException ex1) {
-                Logger.getLogger(WaitingScrean.class.getName()).log(Level.SEVERE, null, ex1);
+                Logger.getLogger(GameRoomGui.class.getName()).log(Level.SEVERE, null, ex1);
             }
             try {
                 gamebord.out.close();
             } catch (IOException ex1) {
-                Logger.getLogger(WaitingScrean.class.getName()).log(Level.SEVERE, null, ex1);
+                Logger.getLogger(GameRoomGui.class.getName()).log(Level.SEVERE, null, ex1);
             }
             gamebord.connection.dispose();
             
         } catch (IOException ex) {
-            Logger.getLogger(WaitingScrean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GameRoomGui.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        super.dispose();
         
     }
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton b1;
-    private javax.swing.JButton b2;
-    private javax.swing.JButton b3;
-    private javax.swing.JButton b4;
-    private javax.swing.JButton b5;
-    private javax.swing.JButton b6;
-    private javax.swing.JButton b7;
-    private javax.swing.JButton b8;
-    private javax.swing.JButton b9;
     private javax.swing.JPanel cards;
     private javax.swing.JLabel code;
     private javax.swing.JButton copyCode;
@@ -540,10 +478,7 @@ public final class WaitingScrean extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel leaver;
-    private javax.swing.JTextArea messages;
     private javax.swing.JPanel waiting;
     private javax.swing.JPanel waitingWithCode;
     // End of variables declaration//GEN-END:variables

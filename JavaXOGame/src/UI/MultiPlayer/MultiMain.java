@@ -5,7 +5,7 @@
  */
 package UI.MultiPlayer;
 
-import Entities.GameRoomCrud;
+import Utils.GameRoomCrud;
 import Entities.Responce;
 import Entities.User;
 import Testing.MainTest;
@@ -51,8 +51,6 @@ class Initiater {
      
     public void sayHello() {
         System.out.println("Hello!!");
-
-        // Notify everybody that may be interested.
         for (HelloListener hl : listeners)
             hl.someoneSaidHello();
     }
@@ -104,20 +102,20 @@ class Initiater {
 
         jPanel3.setBackground(new java.awt.Color(78, 27, 171));
 
-        createGameRoom.setBackground(new java.awt.Color(255, 255, 255));
+        createGameRoom.setBackground(new Color(0,0,0,0));
         createGameRoom.setFont(new java.awt.Font("Lithos Pro Regular", 1, 24)); // NOI18N
         createGameRoom.setForeground(new java.awt.Color(67, 16, 162));
-        createGameRoom.setText("Create Room");
+        createGameRoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/MultiPlayer/button_create-game.png"))); // NOI18N
         createGameRoom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createGameRoomActionPerformed(evt);
             }
         });
 
-        randomGame.setBackground(new java.awt.Color(255, 255, 255));
+        randomGame.setBackground(new Color(0,0,0,0));
         randomGame.setFont(new java.awt.Font("Lithos Pro Regular", 1, 24)); // NOI18N
         randomGame.setForeground(new java.awt.Color(67, 16, 162));
-        randomGame.setText("Random Game");
+        randomGame.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/MultiPlayer/button_random-game (1).png"))); // NOI18N
 
         jPanel4.setBackground(new java.awt.Color(78, 27, 171));
 
@@ -134,10 +132,10 @@ class Initiater {
             }
         });
 
-        findGameWithCode.setBackground(new java.awt.Color(255, 255, 255));
+        findGameWithCode.setBackground(new Color(0,0,0,0));
         findGameWithCode.setFont(new java.awt.Font("Lithos Pro Regular", 1, 24)); // NOI18N
         findGameWithCode.setForeground(new java.awt.Color(67, 16, 162));
-        findGameWithCode.setText("Let Me In");
+        findGameWithCode.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/MultiPlayer/button_lets-go.png"))); // NOI18N
         findGameWithCode.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 findGameWithCodeActionPerformed(evt);
@@ -149,50 +147,48 @@ class Initiater {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addComponent(findGameWithCode, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(findGameWithCode, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(code))
+                .addComponent(code, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(135, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(findGameWithCode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(code, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(code, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 515, Short.MAX_VALUE)
-            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel3Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(createGameRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(randomGame, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(randomGame, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(createGameRoom, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 232, Short.MAX_VALUE)
-            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel3Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(createGameRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(18, 18, 18)
-                    .addComponent(randomGame, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(createGameRoom)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(randomGame, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 160, -1, -1));
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, 390, 240));
 
+        jLabel1.setBackground(new Color(0,0,0,0));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/MultiPlayer/background.png"))); // NOI18N
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -221,8 +217,8 @@ class Initiater {
             ConnectionManager cm4 = ConnectionManager.createGameSocet();
             GameRoomCrud gamebord = new GameRoomCrud(cm4.in,cm4.out,cm4);
             gamebord.createGameRoom(appManager.getUser());
-            JFrame game = new WaitingScrean(gamebord);
-            game.setVisible(true);
+            JFrame game2 = new GameRoomGui(gamebord);
+            game2.setVisible(true);
         } catch (IOException ex) {
             Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -242,23 +238,17 @@ class Initiater {
 
     private void findGameWithCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findGameWithCodeActionPerformed
         try {
-            appManager.setUser(new User(
-                "12475136-e31f-4ace-9a31-a8f2f445653f",
-                "ahmed34",
-                "ahmedGomaa24334",
-                "123123123",
-                User.UserType.Account
-            )
-        );
-
         ConnectionManager cm4 = ConnectionManager.createGameSocet();
         GameRoomCrud gamebord = new GameRoomCrud(cm4.in,cm4.out,cm4);
         gamebord .findGameRoomWithCode(appManager.getUser(),code.getText());
+        
+        
+        
 
         Initiater initiater = new Initiater();
 
         initiater.addListener(()->{
-            new WaitingScrean(gamebord).setVisible(true);
+            new GameRoomGui(gamebord).setVisible(true);
         });
 
         gamebord.setListener(new GameRoomCrud.ListenersX(
@@ -293,14 +283,44 @@ class Initiater {
        this.dispose();
     }//GEN-LAST:event_findGameWithCode1ActionPerformed
 
-    public static void main(String args[]) {
-    
-    }
-
     @Override
     public void dispose() {
         super.dispose();
         backFrame.setVisible(true);
+    }
+    
+    
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(MainTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(MainTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(MainTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                JFrame j = new JFrame();
+                new MultiMain(j).setVisible(true);
+            }
+        });
     }
     
     
