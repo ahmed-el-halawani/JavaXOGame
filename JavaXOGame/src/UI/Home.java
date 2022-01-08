@@ -12,6 +12,7 @@ import Testing.MainTest;
 import UI.MultiPlayer.CustomActionListener;
 import UI.MultiPlayer.GameRoomGui;
 import UI.MultiPlayer.MultiMain;
+import UI.RecordGame.RecordedGames;
 import Utils.AppManager;
 import Utils.ConnectionManager;
 import Utils.GameRoomCrud;
@@ -44,7 +45,7 @@ public class Home extends javax.swing.JFrame {
     int x;
     int y;
     public static String player2;
-     public static String player1;
+    public static String player1;
     
     private enum Screens{
         MultiOnline
@@ -54,11 +55,12 @@ public class Home extends javax.swing.JFrame {
      */
     MultiMain multiOnlinePanel;
     AppManager appManager;
+    RecordedGames recGame;
     public Home() {
 
         initComponents();
         init();
-
+        recGame = new RecordedGames(this);
         setLocationRelativeTo(null);
         ConnectionManager connection;
         
@@ -205,6 +207,9 @@ public class Home extends javax.swing.JFrame {
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/btRecords2.png"))); // NOI18N
         jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel12MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jLabel12MouseEntered(evt);
             }
@@ -468,7 +473,7 @@ public class Home extends javax.swing.JFrame {
         win.setForeground(new java.awt.Color(255, 255, 255));
         win.setText("win : 3");
         jPanel1.add(win);
-        win.setBounds(390, 140, 80, 25);
+        win.setBounds(390, 140, 80, 24);
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/tic.png"))); // NOI18N
         jPanel1.add(jLabel9);
@@ -519,7 +524,7 @@ public class Home extends javax.swing.JFrame {
         lose.setForeground(new java.awt.Color(255, 255, 255));
         lose.setText("lose : 4");
         jPanel1.add(lose);
-        lose.setBounds(390, 180, 100, 25);
+        lose.setBounds(390, 180, 100, 24);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/scorePane (1).png"))); // NOI18N
         jPanel1.add(jLabel3);
@@ -758,6 +763,11 @@ new History().setVisible(true);
     private void jLabel12MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseExited
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/btRecords2.png")));
     }//GEN-LAST:event_jLabel12MouseExited
+
+    private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
+        recGame.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jLabel12MouseClicked
 
     
     public void getPanal(JPanel jp) {

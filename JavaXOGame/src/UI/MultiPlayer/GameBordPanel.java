@@ -120,6 +120,11 @@ public class GameBordPanel extends JPanel {
         btn5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/Board/background.png"))); // NOI18N
         btn5.setBorder(null);
         btn5.setName("5"); // NOI18N
+        btn5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn5ActionPerformed(evt);
+            }
+        });
         jPanel1.add(btn5, new org.netbeans.lib.awtextra.AbsoluteConstraints(392, 250, 110, 93));
 
         btn6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/Board/background.png"))); // NOI18N
@@ -175,6 +180,7 @@ public class GameBordPanel extends JPanel {
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(255, 130, 380, 330));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/Board/background.png"))); // NOI18N
+        jLabel1.setRequestFocusEnabled(false);
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, -1));
 
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -183,6 +189,10 @@ public class GameBordPanel extends JPanel {
     private void btn9btn7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn9btn7ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btn9btn7ActionPerformed
+
+    private void btn5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn5ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

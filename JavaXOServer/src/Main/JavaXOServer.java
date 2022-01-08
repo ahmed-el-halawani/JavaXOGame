@@ -71,16 +71,13 @@ class RequestHandler extends Thread {
     static Vector<Player> availToPlay = new Vector<>();
 
     public RequestHandler(Socket s){
-        Integer updatedRow;
-        Integer deletedRow;
         try {
             this.in = new DataInputStream(s.getInputStream());
             this.out = new DataOutputStream(s.getOutputStream());
             this.s = s;
             con = DriverManager.getConnection("jdbc:derby://localhost:1527/javaOXDatabase","javaProject","javaProject");
             
-            
-            userCrud = new UserCrud(in,out,con);
+            userCrud = new UserCrud(con);
             playerDetailsCrud = new PlayerDetailsCrud(in,out,con);
             userGameDetailsCrud = new UserGameDetailsCrud(con,playerDetailsCrud);
             
@@ -157,6 +154,7 @@ class RequestHandler extends Thread {
                 } catch (SQLException ex1) {
                     Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex1);
                 }
+                System.out.println(ex);
                 System.out.println("user quit");
                 return;
             }
@@ -209,8 +207,6 @@ class RequestHandler extends Thread {
         Integer updatedRow;
         Integer deletedRow;
         switch(action.getType()){
-                   
-
                     case Add:
                         Integer addedRow = userGameDetailsCrud.add(new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
                         new Responce(responceCodes.Done, addedRow.toString()).sendJson(out);

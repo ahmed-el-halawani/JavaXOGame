@@ -50,8 +50,12 @@ public class ConnectionManager {
    
     
     public static ConnectionManager getInstance() throws IOException{
-       return cm==null?new ConnectionManager(socketType.data):cm;
-    }
+        if(cm==null){
+            cm =new ConnectionManager(socketType.data);
+        }
+        
+        return cm;
+    }   
     
     public static ConnectionManager createGameSocet() throws IOException{
        return new ConnectionManager(socketType.game);

@@ -5,7 +5,18 @@
  */
 package UI;
 
+import Entities.PlayerDetails;
+import Entities.User;
+import Entities.UserGameDetails;
+import Entities.UserGameDetails.PlayerState;
+import Utils.AppManager;
+import Utils.ConnectionManager;
+import Utils.UserGameDetailsCrud;
 import java.awt.Color;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -30,6 +41,10 @@ public class MultiLocal extends javax.swing.JFrame {
     String background="/UI/Board/background.png";
     boolean player1_turn;
     JButton[] buttons = new JButton[9];
+    UserGameDetails userGameDetails;
+    
+    AppManager appManager;
+    ConnectionManager cm;
     
     
 
@@ -38,26 +53,43 @@ public class MultiLocal extends javax.swing.JFrame {
      */
     public MultiLocal() {
         initComponents();
-        jLabel10.setText(Home.player2);
-                jLabel9.setText(Home.player1);
-
-         setLocationRelativeTo(null);
-               buttons[0] = btn0;
-               buttons[1] = btn1;
-               buttons[2] = btn2;
-               buttons[3] = btn3;
-               buttons[4] = btn4;
-               buttons[5] = btn5;
-               buttons[6] = btn6;
-               buttons[7] = btn7;
-               buttons[8] = btn8;
-               for (int i = 0; i <9; i++) {
-                   buttons[i].setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
+        try {
+            cm = ConnectionManager.getInstance();
+        } catch (IOException ex) {
+            Logger.getLogger(MultiLocal.class.getName()).log(Level.SEVERE, null, ex);
         }
+        appManager = AppManager.getinstance();
+        userGameDetails = new UserGameDetails(
+            UserGameDetails.GameModes.Single,
+            UserGameDetails.GameDifficultyLvl.Intermediate,
+            new PlayerDetails(
+                appManager.getUser(),
+                UserGameDetails.PlayerSimbole.X,
+                true
+            ),
+            new PlayerDetails(
+                new User(Home.player2),
+                UserGameDetails.PlayerSimbole.O,
+                false
+            )
+        );
+       
+        jLabel10.setText(Home.player2);
+        jLabel9.setText(Home.player1);
 
-
-         
-        
+        setLocationRelativeTo(null);
+        buttons[0] = btn0;
+        buttons[1] = btn1;
+        buttons[2] = btn2;
+        buttons[3] = btn3;
+        buttons[4] = btn4;
+        buttons[5] = btn5;
+        buttons[6] = btn6;
+        buttons[7] = btn7;
+        buttons[8] = btn8;
+        for (int i = 0; i <9; i++) {
+            buttons[i].setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -256,190 +288,208 @@ public class MultiLocal extends javax.swing.JFrame {
     private void btn0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn0ActionPerformed
        
      
-if(player1_turn){
-        if(btn0.getText()=="") {
-        player1_turn=false;
-         btn0.setText("x");
-          frstTurn.setText("O turn");
-          
-                          
-
-                 btn0.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
-                  check() ;
+        if(player1_turn){
+            if(btn0.getText()=="") {
+                player1_turn=false;
+                btn0.setText("x");
+                frstTurn.setText("O turn");
+                btn0.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
+                userGameDetails.gameBord.put(1, UserGameDetails.PlayerSimbole.X);
+                check() ;
+            }
+        }else{
+            if(btn0.getText()==""){
+                player1_turn=true;
+                btn0.setText("o");
+                frstTurn.setText("X turn");
+                btn0.setIcon(new ImageIcon(getClass().getResource(OSimbole)));
+                userGameDetails.gameBord.put(1, UserGameDetails.PlayerSimbole.O);
+                check();
+            }
         }
-}else{
-           if(btn0.getText()==""){
-      player1_turn=true;
-       btn0.setText("o");
-        frstTurn.setText("X turn");
-      
-                         btn0.setIcon(new ImageIcon(getClass().getResource(OSimbole)));
-                          check() ;
-}
- 
- }
     }//GEN-LAST:event_btn0ActionPerformed
 
     private void btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn1ActionPerformed
-       if(player1_turn){
-         if(btn1.getText()==""){
-         btn1.setText("x"); 
-         frstTurn.setText("O turn");
- 
-        player1_turn=false;
-                 btn1.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
-                  check() ;
-         }
-}else{if(btn1.getText()==""){
-         player1_turn=true;
-          btn1.setText("o");        frstTurn.setText("X turn");
-
-          
-                         btn1.setIcon(new ImageIcon(getClass().getResource(OSimbole)));
-                          check() ;
-    }}
-        
+        if(player1_turn){
+            if(btn1.getText()=="") {
+                player1_turn=false;
+                btn1.setText("x");
+                frstTurn.setText("O turn");
+                btn1.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
+                userGameDetails.gameBord.put(2, UserGameDetails.PlayerSimbole.X);
+                check() ;
+            }
+        }else{
+            if(btn1.getText()==""){
+                player1_turn=true;
+                btn1.setText("o");
+                frstTurn.setText("X turn");
+                btn1.setIcon(new ImageIcon(getClass().getResource(OSimbole)));
+                userGameDetails.gameBord.put(2, UserGameDetails.PlayerSimbole.O);
+                check();
+            }
+        }
     }//GEN-LAST:event_btn1ActionPerformed
 
     private void btn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn2ActionPerformed
-         if(player1_turn){
+        if(player1_turn){
             if(btn2.getText()=="") {
-        player1_turn=false;
-         btn2.setText("x");
-          frstTurn.setText("O turn");
-                 btn2.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
-                  check() ;}
-
-}else{
+                player1_turn=false;
+                btn2.setText("x");
+                frstTurn.setText("O turn");
+                btn2.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
+                userGameDetails.gameBord.put(3, UserGameDetails.PlayerSimbole.X);
+                check() ;
+            }
+        }else{
             if(btn2.getText()==""){
-             player1_turn=true;
-              btn2.setText("o");
-                      frstTurn.setText("X turn");
-
-    btn2.setIcon(new ImageIcon(getClass().getResource(OSimbole)));
-     check() ;
-        } }
-    //GEN-LAST:event_btn2ActionPerformed
+                player1_turn=true;
+                btn2.setText("o");
+                frstTurn.setText("X turn");
+                btn2.setIcon(new ImageIcon(getClass().getResource(OSimbole)));
+                userGameDetails.gameBord.put(3, UserGameDetails.PlayerSimbole.O);
+                check();
+            }
+        }    
+                                        
     }//GEN-LAST:event_btn2ActionPerformed
 
     private void btn6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn6ActionPerformed
-       if(player1_turn){if(btn6.getText()=="") {
-        player1_turn=false;
-         btn6.setText("x");
-          frstTurn.setText("O turn");
-                 btn6.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
-                  check() ;}
-
-}else{if(btn6.getText()==""){
-              player1_turn=true;
-               btn6.setText("o");
-                       frstTurn.setText("X turn");
-
-                         btn6.setIcon(new ImageIcon(getClass().getResource(OSimbole)));
-                          check() ;
-         }}
+       if(player1_turn){
+            if(btn6.getText()=="") {
+                player1_turn=false;
+                btn6.setText("x");
+                frstTurn.setText("O turn");
+                btn6.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
+                
+                userGameDetails.gameBord.put(7, UserGameDetails.PlayerSimbole.X);
+                check() ;
+            }
+        }else{
+            if(btn6.getText()==""){
+                player1_turn=true;
+                btn6.setText("o");
+                frstTurn.setText("X turn");
+                btn6.setIcon(new ImageIcon(getClass().getResource(OSimbole)));
+                userGameDetails.gameBord.put(7, UserGameDetails.PlayerSimbole.O);
+                check();
+            }
+        }
     }//GEN-LAST:event_btn6ActionPerformed
 
     private void btn7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn7ActionPerformed
         if(player1_turn){
-        if(btn7.getText()=="") {
-        player1_turn=false;
-         btn7.setText("x");
-         frstTurn.setText("O turn");
-                          
-
-                 btn7.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
-                  check() ;
-        }
-}else{if(btn7.getText()==""){
-      player1_turn=true;
-       btn7.setText("o");
-              frstTurn.setText("X turn");
-      btn7.setIcon(new ImageIcon(getClass().getResource(OSimbole)));
-                          check() ;
-}
+            if(btn7.getText()=="") {
+                player1_turn=false;
+                btn7.setText("x");
+                frstTurn.setText("O turn");
+                btn7.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
+                
+                userGameDetails.gameBord.put(8, UserGameDetails.PlayerSimbole.X);
+                check() ;
+            }
+        }else{
+            if(btn7.getText()==""){
+                player1_turn=true;
+                btn7.setText("o");
+                frstTurn.setText("X turn");
+                btn7.setIcon(new ImageIcon(getClass().getResource(OSimbole)));
+                userGameDetails.gameBord.put(8, UserGameDetails.PlayerSimbole.O);
+                check();
+            }
         }
     }//GEN-LAST:event_btn7ActionPerformed
 
     private void btn8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn8ActionPerformed
         if(player1_turn){
             if(btn8.getText()=="") {
-        player1_turn=false;
-         btn8.setText("x");
-          frstTurn.setText("O turn");
-                 btn8.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
-                  check() ;}
-
-}else{
+                player1_turn=false;
+                btn8.setText("x");
+                frstTurn.setText("O turn");
+                btn8.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
+                
+                userGameDetails.gameBord.put(9, UserGameDetails.PlayerSimbole.X);
+                check() ;
+            }
+        }else{
             if(btn8.getText()==""){
-             player1_turn=true;
-              btn8.setText("o");
-                      frstTurn.setText("X turn");
-
-                         btn8.setIcon(new ImageIcon(getClass().getResource(OSimbole)));
-                          check() ;
-        }
+                player1_turn=true;
+                btn8.setText("o");
+                frstTurn.setText("X turn");
+                btn8.setIcon(new ImageIcon(getClass().getResource(OSimbole)));
+                userGameDetails.gameBord.put(9, UserGameDetails.PlayerSimbole.O);
+                check();
+            }
         }
     }//GEN-LAST:event_btn8ActionPerformed
 
     private void btn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn3ActionPerformed
-        
-         if(player1_turn){
-             if(btn3.getText()=="") {
-        player1_turn=false;
-         btn3.setText("x");
-          frstTurn.setText("O turn");
-                 btn3.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
-                  check() ;
-             }
-}else{if(btn3.getText()==""){
-      player1_turn=true;
-       btn3.setText("o");
-               frstTurn.setText("X turn");
-
-                         btn3.setIcon(new ImageIcon(getClass().getResource(OSimbole)));
-  check() ;
-}
- }
- 
+        if(player1_turn){
+            if(btn3.getText()=="") {
+                player1_turn=false;
+                btn3.setText("x");
+                frstTurn.setText("O turn");
+                btn3.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
+                
+                userGameDetails.gameBord.put(4, UserGameDetails.PlayerSimbole.X);
+                check() ;
+            }
+        }else{
+            if(btn3.getText()==""){
+                player1_turn=true;
+                btn3.setText("o");
+                frstTurn.setText("X turn");
+                btn3.setIcon(new ImageIcon(getClass().getResource(OSimbole)));
+                userGameDetails.gameBord.put(4, UserGameDetails.PlayerSimbole.O);
+                check();
+            }
+        }
     }//GEN-LAST:event_btn3ActionPerformed
 
     private void btn4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn4ActionPerformed
         if(player1_turn){
-             if(btn4.getText()==""){
-        player1_turn=false;
-         btn4.setText("x");
-          frstTurn.setText("O turn");
-                 btn4.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
-                  check() ;}
-
-}else{if(btn4.getText()==""){
-             player1_turn=true;
-              btn4.setText("o");
-                      frstTurn.setText("X turn");
-
-                         btn4.setIcon(new ImageIcon(getClass().getResource(OSimbole)));
-                          check() ;
-        }}
+            if(btn4.getText()=="") {
+                player1_turn=false;
+                btn4.setText("x");
+                frstTurn.setText("O turn");
+                btn4.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
+                
+                userGameDetails.gameBord.put(5, UserGameDetails.PlayerSimbole.X);
+                check() ;
+            }
+        }else{
+            if(btn4.getText()==""){
+                player1_turn=true;
+                btn4.setText("o");
+                frstTurn.setText("X turn");
+                btn4.setIcon(new ImageIcon(getClass().getResource(OSimbole)));
+                userGameDetails.gameBord.put(5, UserGameDetails.PlayerSimbole.O);
+                check();
+            }
+        }
     }//GEN-LAST:event_btn4ActionPerformed
 
     private void btn5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn5ActionPerformed
   if(player1_turn){
             if(btn5.getText()=="") {
-        player1_turn=false;
-         btn5.setText("x");
-          frstTurn.setText("O turn");
-                 btn5.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
-                  check() ;
+                player1_turn=false;
+                btn5.setText("x");
+                frstTurn.setText("O turn");
+                btn5.setIcon(new ImageIcon(getClass().getResource(XSimbole)));
+                
+                userGameDetails.gameBord.put(6, UserGameDetails.PlayerSimbole.X);
+                check() ;
             }
-} else{if(btn5.getText()==""){
-             player1_turn=true;
-              btn5.setText("o");
-                      frstTurn.setText("X turn");
-                         btn5.setIcon(new ImageIcon(getClass().getResource(OSimbole)));
-                          check() ;
-        
-        }}
+        }else{
+            if(btn5.getText()==""){
+                player1_turn=true;
+                btn5.setText("o");
+                frstTurn.setText("X turn");
+                btn5.setIcon(new ImageIcon(getClass().getResource(OSimbole)));
+                userGameDetails.gameBord.put(6, UserGameDetails.PlayerSimbole.O);
+                check();
+            }
+        }
             }//GEN-LAST:event_btn5ActionPerformed
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
@@ -491,22 +541,21 @@ if(player1_turn){
         });
     }
      public void playAgain(){
-    int n = JOptionPane.showConfirmDialog(
-    this,
-    "Do you want to play again?",
-    "Click a button",
-    JOptionPane.YES_NO_OPTION);
-    if(n==JOptionPane.YES_OPTION){
-        
-         
-        for (int i = 0; i < 9; i++) {
-            buttons[i].setText("");
-            buttons[i].setIcon(new ImageIcon(getClass().getResource(background)));}
-        frstTurn.setText("");
-    }else{                 
-
-                System.exit(0);
-                }
+        recordGame();
+        int n = JOptionPane.showConfirmDialog(
+        this,
+        "Do you want to play again?",
+        "Click a button",
+        JOptionPane.YES_NO_OPTION);
+        if(n==JOptionPane.YES_OPTION){
+            for (int i = 0; i < 9; i++) {
+                buttons[i].setText("");
+                buttons[i].setIcon(new ImageIcon(getClass().getResource(background)));
+            }
+            frstTurn.setText("");
+        }else{                 
+            System.exit(0);
+        }
     }
      
      
@@ -515,17 +564,17 @@ if(player1_turn){
       e=0;
                
                          
-			       if((buttons[0].getText()!="") &&
-				(buttons[1].getText()!="") &&
-				(buttons[2].getText()!="")&&
-                                (buttons[3].getText()!="") &&
-				(buttons[4].getText()!="") &&
-				(buttons[5].getText()!="")&&
-                                (buttons[6].getText()!="") &&
-				(buttons[7].getText()!="") &&
-				(buttons[8].getText()!=""))
-                               {
-                        e=1;};
+                    if((buttons[0].getText()!="") &&
+                        (buttons[1].getText()!="") &&
+                        (buttons[2].getText()!="")&&
+                        (buttons[3].getText()!="") &&
+                        (buttons[4].getText()!="") &&
+                        (buttons[5].getText()!="")&&
+                        (buttons[6].getText()!="") &&
+                        (buttons[7].getText()!="") &&
+                        (buttons[8].getText()!=""))
+                       {
+                e=1;};
 		 
                          
 		//check X win conditions
@@ -585,6 +634,9 @@ if(player1_turn){
 				) {
 			xWins(2,4,6);
 		}
+                
+                
+                
 		//check O win conditions
 		if(
 				(buttons[0].getText()=="o") &&
@@ -642,8 +694,9 @@ if(player1_turn){
 				) {
 			oWins(2,4,6);
 		}
+                
                 if(e==1){
-                playAgain();
+                    playAgain();
                 }
                 
 	}
@@ -653,11 +706,13 @@ if(player1_turn){
 		buttons[a].setIcon(new ImageIcon(getClass().getResource(XWin)));
 		buttons[b].setIcon(new ImageIcon(getClass().getResource(XWin)));
 		buttons[c].setIcon(new ImageIcon(getClass().getResource(XWin)));
-              
-                		frstTurn.setText("X wins");
-
+                frstTurn.setText("X wins");
+                
+                userGameDetails.playerOneDetails.setPlayerState(PlayerState.Winner);
+                userGameDetails.playerTwoDetails.setPlayerState(PlayerState.Loser);
+                
 		if(e!=1)
-                playAgain();
+                    playAgain();
 		 
 	}
 	public void oWins(int a,int b,int c) {
@@ -665,15 +720,32 @@ if(player1_turn){
 		buttons[a].setIcon(new ImageIcon(getClass().getResource(OWin)));
 		buttons[b].setIcon(new ImageIcon(getClass().getResource(OWin)));
 		buttons[c].setIcon(new ImageIcon(getClass().getResource(OWin)));
+                frstTurn.setText("O wins");
                 
-               
-                		frstTurn.setText("O wins");
+                userGameDetails.playerOneDetails.setPlayerState(PlayerState.Loser);
+                userGameDetails.playerTwoDetails.setPlayerState(PlayerState.Winner);
 
                 if(e!=1)
-		playAgain();
+                    playAgain();
 		
 	}
-    
+        
+        
+        public void recordGame(){
+            int n = JOptionPane.showConfirmDialog(
+            this,
+            "Do you want to Record this Game?",
+            "Recording",
+            JOptionPane.YES_NO_OPTION);
+            if(n==JOptionPane.NO_OPTION)
+                return;
+            try {
+                userGameDetails.playerOneDetails.setIsRecorded(true);
+                new UserGameDetailsCrud(cm.in, cm.out).add(userGameDetails);
+            } catch (IOException ex) {
+                Logger.getLogger(MultiLocal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     
  
 

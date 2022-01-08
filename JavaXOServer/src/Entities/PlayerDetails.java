@@ -23,7 +23,8 @@ public class PlayerDetails extends BaseEntity {
                 u,
                 PlayerState.valueOf(rs.getString("PLAYER_STATE")),
                 UserGameDetails.PlayerSimbole.valueOf(rs.getString("PLAYER_SIMBOLE")),
-                rs.getBoolean("IS_RECORDED")
+                rs.getBoolean("IS_RECORDED"),
+                rs.getBoolean("IS_ACCOUNT")
         );
     }
     
@@ -71,12 +72,23 @@ public class PlayerDetails extends BaseEntity {
         this.playerState = playerState;
     }
 
-    public PlayerDetails(String id,User player, PlayerState playerState, UserGameDetails.PlayerSimbole PlayerSimbole, boolean isRecorded) {
+    public boolean getIsAccount() {
+        return isAccount;
+    }
+
+    public void setIsAccount(boolean isAccount) {
+        this.isAccount = isAccount;
+    }
+    
+    
+
+    public PlayerDetails(String id,User player, PlayerState playerState, UserGameDetails.PlayerSimbole PlayerSimbole, boolean isRecorded,boolean isAccount) {
         super(id);
         this.player = player;
         this.playerState = playerState;
         this.PlayerSimbole = PlayerSimbole;
         this.isRecorded = isRecorded;
+        this.isAccount = isAccount;
     }
 
 
@@ -90,16 +102,19 @@ public class PlayerDetails extends BaseEntity {
         
     public PlayerDetails() {
     }
+
+    @Override
+    public String toString() {
+        return "PlayerDetails{" + "player=" + player + ", playerState=" + playerState + ", PlayerSimbole=" + PlayerSimbole + ", isRecorded=" + isRecorded + ", isAccount=" + isAccount + '}';
+    }
     
 
     
-        @Override
-        public String toString() {
-            return "PlayerDetails{" + "player=" + player + ", playerState=" + playerState + ", PlayerSimbole=" + PlayerSimbole + '}';
-        }
+     
         
         private User player;
         private UserGameDetails.PlayerState playerState;
         private UserGameDetails.PlayerSimbole  PlayerSimbole;
         protected boolean isRecorded;
+        protected boolean isAccount;
 }

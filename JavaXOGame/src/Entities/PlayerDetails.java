@@ -30,11 +30,8 @@ public class PlayerDetails extends BaseEntity {
 
     @Override
     public String toString() {
-        return "PlayerDetails{" + "player=" + player + ", playerState=" + playerState + ", PlayerSimbole=" + PlayerSimbole + ", isRecorded=" + isRecorded + '}';
+        return "PlayerDetails{" + "player=" + player + ", playerState=" + playerState + ", PlayerSimbole=" + PlayerSimbole + ", isRecorded=" + isRecorded + ", isAccount=" + isAccount + '}';
     }
-    
-    
-    
 
     public User getPlayer() {
         return player;
@@ -67,19 +64,40 @@ public class PlayerDetails extends BaseEntity {
     public void setIsRecorded(boolean isRecorded) {
         this.isRecorded = isRecorded;
     }
-        
-    public PlayerDetails(String id,User player, UserGameDetails.PlayerState playerState, UserGameDetails.PlayerSimbole PlayerSimbole, boolean isRecorded) {
+    
+    public boolean getIsAccount() {
+        return isAccount;
+    }
+
+    public void setIsAccount(boolean isAccount) {
+        this.isAccount = isAccount;
+    }
+    
+    
+
+    public PlayerDetails(String id,User player, UserGameDetails.PlayerState playerState, UserGameDetails.PlayerSimbole PlayerSimbole, boolean isRecorded,boolean isAccount) {
         super(id);
         this.player = player;
         this.playerState = playerState;
         this.PlayerSimbole = PlayerSimbole;
         this.isRecorded = isRecorded;
+        this.isAccount = isAccount;
+        isAccount=player.getUserName()!=null;
     }
+
         
     public PlayerDetails(User player, UserGameDetails.PlayerSimbole playerSample) {
         this.player = player;
         this.PlayerSimbole = playerSample;
         this.playerState = UserGameDetails.PlayerState.Draw;
+        isAccount=player.getUserName()!=null;
+    }
+    
+    public PlayerDetails(User player, UserGameDetails.PlayerSimbole playerSample,boolean isAccount) {
+        this.player = player;
+        this.PlayerSimbole = playerSample;
+        this.playerState = UserGameDetails.PlayerState.Draw;
+        this.isAccount=isAccount;
     }
 
     public PlayerDetails() {
@@ -89,4 +107,5 @@ public class PlayerDetails extends BaseEntity {
     private UserGameDetails.PlayerState playerState;
     private UserGameDetails.PlayerSimbole  PlayerSimbole;
     protected boolean isRecorded;
+    protected boolean isAccount;
 }

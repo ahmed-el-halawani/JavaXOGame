@@ -73,13 +73,15 @@ public class UserGameDetails extends BaseEntity {
                         new User("ahmed", "mo", "123123"),
                         UserGameDetails.PlayerState.Loser, 
                         PlayerSimbole.X,
-                        false
+                        false,
+                        true
                 ),
                 new PlayerDetails(UUID.randomUUID().toString(),
                         new User("ahmed2", "moo", "123123"),
                         UserGameDetails.PlayerState.Winner,
                         PlayerSimbole.O,
-                        false
+                        false,
+                        true
                 ),
                 new LinkedHashMap()
         );

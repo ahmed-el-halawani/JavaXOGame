@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.UUID;
 import org.json.JSONException;
 
 /**
@@ -204,6 +205,7 @@ public class UserGameDetails extends BaseEntity {
             PlayerDetails playerOneDetails, 
             PlayerDetails playerTwoDetails
     ) {
+        super(UUID.randomUUID().toString());
         this.gameMode = gameMode;
         this.gameDifficultyLvl = gameDifficultyLvl;
         this.playerOneDetails = playerOneDetails;

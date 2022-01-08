@@ -108,6 +108,15 @@ public class UserCrud{
         }
     }
     
+    public User getOrAddPc()throws JSONException, IOException, SQLException {
+        User pc = getWithUserName("CPU");
+        if(pc==null){
+            pc = new User();
+            add(pc);
+        }
+       return pc;
+    }
+    
     public User getWithUserName(String params)throws JSONException, IOException, SQLException {
         final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
         final ArrayList<User> users = new ArrayList<>();
@@ -141,16 +150,11 @@ public class UserCrud{
     }
     
     
-    public UserCrud( DataInputStream in,DataOutputStream out,Connection con) {
-        this.out = out;
-        this.in = in;
+    public UserCrud(Connection con) {
         this.con= con;
-        this.mapper = new ObjectMapper();
     }
     
-    final private DataOutputStream out;
-    final private DataInputStream in;
+
     final private Connection con;
-    final private ObjectMapper mapper;
 
 }
