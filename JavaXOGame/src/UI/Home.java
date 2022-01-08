@@ -24,16 +24,18 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
  *
- * @author El-Hoda
+ * @author Tarek
  */
 public class Home extends javax.swing.JFrame {
     
@@ -41,6 +43,8 @@ public class Home extends javax.swing.JFrame {
 
     int x;
     int y;
+    public static String player2;
+     public static String player1;
     
     private enum Screens{
         MultiOnline
@@ -67,6 +71,7 @@ public class Home extends javax.swing.JFrame {
             jPanel6.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
             jPanel5.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
             jPanel7.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
+            player1=appManager.getUser().getUserName();
         
         } catch (IOException ex) {
             Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
@@ -130,6 +135,7 @@ public class Home extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         singlBT = new javax.swing.JLabel();
         localBT = new javax.swing.JLabel();
@@ -186,6 +192,9 @@ public class Home extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button (12).png"))); // NOI18N
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jLabel2MouseEntered(evt);
             }
@@ -194,25 +203,42 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/btRecords2.png"))); // NOI18N
+        jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel12MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel12MouseExited(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(92, 92, 92)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(85, Short.MAX_VALUE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(83, 83, 83)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(106, 106, 106)
+                        .addComponent(jLabel12)))
+                .addContainerGap(94, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(32, 32, 32)
+                .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel12)
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         jLayeredPane1.add(jPanel6, "card3");
@@ -234,6 +260,9 @@ public class Home extends javax.swing.JFrame {
         localBT.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         localBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/local player.png"))); // NOI18N
         localBT.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                localBTMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 localBTMouseEntered(evt);
             }
@@ -439,7 +468,7 @@ public class Home extends javax.swing.JFrame {
         win.setForeground(new java.awt.Color(255, 255, 255));
         win.setText("win : 3");
         jPanel1.add(win);
-        win.setBounds(390, 140, 80, 24);
+        win.setBounds(390, 140, 80, 25);
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/tic.png"))); // NOI18N
         jPanel1.add(jLabel9);
@@ -490,7 +519,7 @@ public class Home extends javax.swing.JFrame {
         lose.setForeground(new java.awt.Color(255, 255, 255));
         lose.setText("lose : 4");
         jPanel1.add(lose);
-        lose.setBounds(390, 180, 100, 24);
+        lose.setBounds(390, 180, 100, 25);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/scorePane (1).png"))); // NOI18N
         jPanel1.add(jLabel3);
@@ -700,6 +729,36 @@ if (back == 1) {
             Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_findGameWithCodeActionPerformed
+
+    private void localBTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_localBTMouseClicked
+ String str = JOptionPane.showInputDialog(null, "Enter the second player's name : ", 
+"Click a button", 1);
+  if(str != null){
+ player2=str;
+ new MultiLocal().setVisible(true);
+  
+  }
+  
+  
+  
+
+      
+    }//GEN-LAST:event_localBTMouseClicked
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+new History().setVisible(true);
+
+// TODO add your handling code here:
+    }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void jLabel12MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseEntered
+       jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/btrecords.png")));
+    }//GEN-LAST:event_jLabel12MouseEntered
+
+    private void jLabel12MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseExited
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/btRecords2.png")));
+    }//GEN-LAST:event_jLabel12MouseExited
+
     
     public void getPanal(JPanel jp) {
         jLayeredPane1.removeAll();
@@ -771,6 +830,7 @@ if (back == 1) {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
