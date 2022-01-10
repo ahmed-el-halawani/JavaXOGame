@@ -41,10 +41,15 @@ public class MultiLocal extends javax.swing.JFrame {
     String background="/UI/Board/background.png";
     boolean player1_turn;
     JButton[] buttons = new JButton[9];
+ 
+    public static String sendScrean;
+    String result;
+ 
     UserGameDetails userGameDetails;
     
     AppManager appManager;
     ConnectionManager cm;
+ 
     
     
 
@@ -343,14 +348,16 @@ public class MultiLocal extends javax.swing.JFrame {
             }
         }else{
             if(btn2.getText()==""){
-                player1_turn=true;
-                btn2.setText("o");
-                frstTurn.setText("X turn");
-                btn2.setIcon(new ImageIcon(getClass().getResource(OSimbole)));
-                userGameDetails.gameBord.put(3, UserGameDetails.PlayerSimbole.O);
-                check();
-            }
-        }    
+ 
+             player1_turn=true;
+              btn2.setText("o");
+                      frstTurn.setText("X turn");
+
+    btn2.setIcon(new ImageIcon(getClass().getResource(OSimbole)));
+     userGameDetails.gameBord.put(3, UserGameDetails.PlayerSimbole.O);
+     check() ;
+        } }
+
                                         
     }//GEN-LAST:event_btn2ActionPerformed
 
@@ -541,22 +548,34 @@ public class MultiLocal extends javax.swing.JFrame {
         });
     }
      public void playAgain(){
-        recordGame();
-        int n = JOptionPane.showConfirmDialog(
-        this,
-        "Do you want to play again?",
-        "Click a button",
-        JOptionPane.YES_NO_OPTION);
-        if(n==JOptionPane.YES_OPTION){
-            for (int i = 0; i < 9; i++) {
-                buttons[i].setText("");
-                buttons[i].setIcon(new ImageIcon(getClass().getResource(background)));
-            }
-            frstTurn.setText("");
-        }else{                 
-            System.exit(0);
+ 
+         if(result=="X wins"||result=="O wins"){
+          
+    setVisible(false);
+   new Video().setVisible(true); 
+                    
+
+                //System.exit(0);
+                
+    }else{
+     int n = JOptionPane.showConfirmDialog(
+    this,
+    "Do you want to play again?",
+    "Click a button",
+    JOptionPane.YES_NO_OPTION);
+    if(n==JOptionPane.YES_OPTION){
+        for (int i = 0; i <9; i++) {
+                   buttons[i].setIcon(new ImageIcon(getClass().getResource(background)));
+                   buttons[i].setText("");
         }
-    }
+        frstTurn.setText("");
+             }else{
+        setVisible(false);
+
+    }}
+     recordGame();
+     }
+ 
      
      
    public void check() {
@@ -706,11 +725,16 @@ public class MultiLocal extends javax.swing.JFrame {
 		buttons[a].setIcon(new ImageIcon(getClass().getResource(XWin)));
 		buttons[b].setIcon(new ImageIcon(getClass().getResource(XWin)));
 		buttons[c].setIcon(new ImageIcon(getClass().getResource(XWin)));
-                frstTurn.setText("X wins");
+
+              
+                result="X wins";
+                		frstTurn.setText(result);
+                                     sendScrean="O Lose";
                 
                 userGameDetails.playerOneDetails.setPlayerState(PlayerState.Winner);
                 userGameDetails.playerTwoDetails.setPlayerState(PlayerState.Loser);
                 
+
 		if(e!=1)
                     playAgain();
 		 
@@ -722,8 +746,15 @@ public class MultiLocal extends javax.swing.JFrame {
 		buttons[c].setIcon(new ImageIcon(getClass().getResource(OWin)));
                 frstTurn.setText("O wins");
                 
+ 
+               result="O wins";
+                		frstTurn.setText(result);
+        
+                                sendScrean="X Lose";
+ 
                 userGameDetails.playerOneDetails.setPlayerState(PlayerState.Loser);
                 userGameDetails.playerTwoDetails.setPlayerState(PlayerState.Winner);
+ 
 
                 if(e!=1)
                     playAgain();
