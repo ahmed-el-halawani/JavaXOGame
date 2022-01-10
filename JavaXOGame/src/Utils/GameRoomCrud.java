@@ -3,20 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entities;
+package Utils;
 
+import Entities.GameRoom;
+import Entities.PlayerDetails;
+import Entities.Responce;
 import Entities.Responce.responceCodes;
-import Utils.ConnectionManager;
-import Utils.JsonAction;
+import Entities.User;
+import Entities.UserGameDetails;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,9 +29,7 @@ import java.util.logging.Logger;
 public class GameRoomCrud {
     
 
-    public boolean isReadyToPlay(){
-    return gameRoom!=null && gameRoom.playerOneDetails!=null && gameRoom.playerTwoDetails!=null;
-    }
+    
     
     public GameRoomCrud(DataInputStream in,DataOutputStream out,ConnectionManager connection) {
         this.out = out;
@@ -87,16 +86,38 @@ public class GameRoomCrud {
         );
     }
     
-    public void leaveGame(String id) throws JsonProcessingException, IOException{
-        System.out.println(id);
+    public void leaveGame(User user) throws JsonProcessingException, IOException{
         JsonAction jsonAction = new JsonAction(
-                id,
+                user.getId(),
                 JsonAction.Types.LeaveGameRoom,
                 gameRoom.code
         );
         System.out.println(obm.writeValueAsString(jsonAction));
         out.writeUTF(obm.writeValueAsString(jsonAction));
     }
+    
+    public void recordGame(User user) throws JsonProcessingException, IOException{
+        JsonAction jsonAction = new JsonAction(
+                user.getId(),
+                JsonAction.Types.StartRecordingForUser,
+                gameRoom.code
+        );
+
+        System.out.println(obm.writeValueAsString(jsonAction));
+        out.writeUTF(obm.writeValueAsString(jsonAction));
+    }
+    
+    public void saveGame(UserGameDetails userGameDetails) throws JsonProcessingException, IOException{
+        JsonAction jsonAction = new JsonAction(
+                userGameDetails.toJson(),
+                JsonAction.Types.SaveGame,
+                gameRoom.code
+        );
+        System.out.println(obm.writeValueAsString(jsonAction));
+        out.writeUTF(obm.writeValueAsString(jsonAction));
+    }
+    
+    
 
     
     public void findGameRoomWithCode(User user,String code) throws JsonProcessingException, IOException {
@@ -110,10 +131,12 @@ public class GameRoomCrud {
         out.writeUTF(obm.writeValueAsString(jsonAction));
 
     }
-
-    public String getCode() {
-        return this.code;
+    
+    public boolean isReadyToPlay(){
+        return gameRoom!=null && gameRoom.playerOneDetails!=null && gameRoom.playerTwoDetails!=null;
     }
+
+    
 
     public PlayerDetails getCurrentTurn() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -229,12 +252,10 @@ public class GameRoomCrud {
                         System.out.println(r);
                         Responce res = obm.readValue(r, Responce.class);
                         
-                        for (Iterator<ListenersX> iterator = iterator2.iterator(); iterator.hasNext();) {
-                            ListenersX next = iterator.next();
+                        for(ListenersX next : iterator2) {
                             next.doIt(res.getObject(),res.getStatusCode());
-//                            if(next.isFinish){
-//                                listeners.remove(next);
-//                            }
+                            if(next.isFinish)
+                                listeners.remove(next);
                         }
                        
                     } catch (IOException ex) {
@@ -263,8 +284,6 @@ public class GameRoomCrud {
     }
     
     public static class ListenersX{
-        public INotifayer refresh;
-        public INotifayer error;
         public boolean isOneTime;
         public int reciveCode;
         public int erroCode;
@@ -284,12 +303,12 @@ public class GameRoomCrud {
         
         public ListenersX(NotifierObject notifier,boolean isOneTime){
             notifiers.add(notifier);
-            this.isOneTime = true;
+            this.isOneTime = isOneTime;
         }
         
         public ListenersX(NotifierObject[] notifier,boolean isOneTime){
             notifiers.addAll(Arrays.asList(notifier) );
-            this.isOneTime = true;
+            this.isOneTime = isOneTime;
         }
         
         
@@ -325,8 +344,6 @@ public class GameRoomCrud {
     }
     
     public boolean running = true;
-
-    public String code;
     public GameRoom gameRoom = null;
     public final DataOutputStream out;
     public final DataInputStream in;

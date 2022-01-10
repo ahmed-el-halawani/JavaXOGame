@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.UUID;
 import org.json.JSONException;
 
 /**
@@ -31,6 +32,10 @@ public class UserGameDetails extends BaseEntity {
     }
     public static enum GameDifficultyLvl{
         Easy,Medium,Intermediate
+    }
+    
+    public boolean isRecordedForUser(User user){
+        return getPlayerWithId(user.getId()).getIsRecorded();
     }
     
     public static UserGameDetails dumyObject(){
@@ -200,6 +205,7 @@ public class UserGameDetails extends BaseEntity {
             PlayerDetails playerOneDetails, 
             PlayerDetails playerTwoDetails
     ) {
+        super(UUID.randomUUID().toString());
         this.gameMode = gameMode;
         this.gameDifficultyLvl = gameDifficultyLvl;
         this.playerOneDetails = playerOneDetails;
@@ -208,37 +214,16 @@ public class UserGameDetails extends BaseEntity {
 
     }
 
-    public UserGameDetails(
-            GameModes gameMode,
-            GameDifficultyLvl gameDifficultyLvl,
-            PlayerDetails playerOneDetails, 
-            LinkedHashMap<Integer, PlayerSimbole> gameBord
-    ) {
-        this.gameMode = gameMode;
-        this.gameDifficultyLvl = gameDifficultyLvl;
-        this.gameBord = gameBord;
-        this.playerOneDetails = playerOneDetails;
-        PlayerSimbole x =  playerOneDetails.getPlayerSimbole();
-        this.playerTwoDetails = 
-                new PlayerDetails(
-                    new User(),
-                    x == PlayerSimbole.X?  
-                            PlayerSimbole.O: 
-                            PlayerSimbole.X
-                );
-    }
 
     @Override
     public String toString() {
         return "UserGameDetails{" + "gameMode=" + gameMode + ", gameDifficultyLvl=" + gameDifficultyLvl + ", playerOneDetails=" + playerOneDetails + ", playerTwoDetails=" + playerTwoDetails + ", gameBord=" + gameBord + '}';
     }
     
+    private GameModes gameMode;
+    private GameDifficultyLvl gameDifficultyLvl;
+    public PlayerDetails playerOneDetails;
+    public PlayerDetails playerTwoDetails;
+    public LinkedHashMap<Integer,PlayerSimbole> gameBord;
     
-    
-   
-    protected GameModes gameMode;
-    protected GameDifficultyLvl gameDifficultyLvl;
-    protected PlayerDetails playerOneDetails;
-    protected PlayerDetails playerTwoDetails;
-    protected LinkedHashMap<Integer,PlayerSimbole> gameBord;
-   }
+}

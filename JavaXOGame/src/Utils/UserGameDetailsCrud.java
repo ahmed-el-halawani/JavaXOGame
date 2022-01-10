@@ -42,13 +42,12 @@ DataOutputStream out;
             JsonAction jsonAction = new JsonAction(
                     entity.toJson(),
                     JsonAction.Types.Add,
-                    
                     ""
             );
             System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
             Responce res = obm.readValue(in.readUTF(), Responce.class);
-                        System.out.println(res);
+            System.out.println(res);
 
             if(res.getStatusCode() == Responce.responceCodes.Done){
                 return obm.readValue(res.getObject(), Integer.class);

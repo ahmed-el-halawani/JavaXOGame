@@ -6,16 +6,31 @@
 package UI;
 
 import Entities.GameRoom;
+import Entities.Responce;
 import Entities.UserGameDetails;
+import Testing.MainTest;
+import UI.MultiPlayer.CustomActionListener;
+import UI.MultiPlayer.GameRoomGui;
 import UI.MultiPlayer.MultiMain;
-import UI.MultiPlayer.MultiOnlineMenu;
+import UI.RecordGame.RecordedGames;
 import Utils.AppManager;
 import Utils.ConnectionManager;
+import Utils.GameRoomCrud;
 import Utils.UserGameDetailsCrud;
 import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -24,11 +39,13 @@ import javax.swing.JPanel;
  * @author Tarek
  */
 public class Home extends javax.swing.JFrame {
+    
+    public static final String CODE_HINT = "Enter Code";
 
     int x;
     int y;
     public static String player2;
-     public static String player1;
+    public static String player1;
     
     private enum Screens{
         MultiOnline
@@ -36,16 +53,17 @@ public class Home extends javax.swing.JFrame {
     /**
      * Creates new form Home
      */
-    MultiOnlineMenu multiOnlinePanel;
+    MultiMain multiOnlinePanel;
+    AppManager appManager;
+    RecordedGames recGame;
     public Home() {
+
         initComponents();
-        multiOnlinePanel = new MultiOnlineMenu();
-        multiOnlinePanel.setVisible(true);
-        
-        
+        init();
+        recGame = new RecordedGames(this);
         setLocationRelativeTo(null);
         ConnectionManager connection;
-        AppManager appManager;
+        
         appManager = AppManager.getinstance();
         try {
             connection = ConnectionManager.getInstance();
@@ -63,7 +81,47 @@ public class Home extends javax.swing.JFrame {
       
 
     }
+    
+    public void hoverGenerator(JButton btn,String defaultImage,String hoveredImge){
+        URL defImgPath = getClass().getResource(defaultImage);
+        URL hovImgPath = getClass().getResource(hoveredImge);
+        
+        btn.setIcon(new ImageIcon(defImgPath));
+        btn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                btn.setIcon(new ImageIcon(defImgPath));
+            }
 
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                btn.setIcon(new ImageIcon(hovImgPath));
+            }
+        });
+    }
+
+    
+    public void init(){
+        hoverGenerator(
+            findGameWithCode,
+            "/UI/MultiPlayer/button_lets-go.png",
+            "/UI/MultiPlayer/button_lets-go (1).png"
+        );
+        
+        hoverGenerator(
+            createGameRoom,
+            "/UI/MultiPlayer/button_create-game.png",
+            "/UI/MultiPlayer/button_create-game (1).png"
+        );
+        
+        hoverGenerator(
+            randomGame,
+            "/UI/MultiPlayer/button_random-game (1).png",
+            "/UI/MultiPlayer/button_random-game.png"
+        );
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -88,6 +146,12 @@ public class Home extends javax.swing.JFrame {
         singlBT1 = new javax.swing.JLabel();
         localBT1 = new javax.swing.JLabel();
         multiBT1 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        createGameRoom = new javax.swing.JButton();
+        randomGame = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        code = new javax.swing.JTextField();
+        findGameWithCode = new javax.swing.JButton();
         win = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -143,6 +207,9 @@ public class Home extends javax.swing.JFrame {
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/btRecords2.png"))); // NOI18N
         jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel12MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jLabel12MouseEntered(evt);
             }
@@ -307,6 +374,98 @@ public class Home extends javax.swing.JFrame {
 
         jLayeredPane1.add(jPanel7, "card2");
 
+        jPanel3.setBackground(new Color(0,0,0,0));
+
+        createGameRoom.setBackground(new Color(0,0,0,0));
+        createGameRoom.setFont(new java.awt.Font("Lithos Pro Regular", 1, 24)); // NOI18N
+        createGameRoom.setForeground(new java.awt.Color(67, 16, 162));
+        createGameRoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/MultiPlayer/button_create-game.png"))); // NOI18N
+        createGameRoom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createGameRoomActionPerformed(evt);
+            }
+        });
+
+        randomGame.setBackground(new Color(0,0,0,0));
+        randomGame.setFont(new java.awt.Font("Lithos Pro Regular", 1, 24)); // NOI18N
+        randomGame.setForeground(new java.awt.Color(67, 16, 162));
+        randomGame.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/MultiPlayer/button_random-game (1).png"))); // NOI18N
+
+        jPanel4.setBackground(new Color(0,0,0,0));
+
+        code.setFont(new java.awt.Font("Lithos Pro Regular", 1, 24)); // NOI18N
+        code.setForeground(new java.awt.Color(67, 16, 162));
+        code.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        code.setText("Enter Code");
+        code.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                codeFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                codeFocusLost(evt);
+            }
+        });
+
+        findGameWithCode.setBackground(new Color(0,0,0,0));
+        findGameWithCode.setFont(new java.awt.Font("Lithos Pro Regular", 1, 24)); // NOI18N
+        findGameWithCode.setForeground(new java.awt.Color(67, 16, 162));
+        findGameWithCode.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/MultiPlayer/button_lets-go.png"))); // NOI18N
+        findGameWithCode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                findGameWithCodeActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addComponent(findGameWithCode, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(code, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(136, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(findGameWithCode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(code, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(randomGame, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(createGameRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(13, 13, 13)
+                .addComponent(createGameRoom)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(randomGame, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
+        jLayeredPane1.add(jPanel3, "card5");
+
         jPanel1.add(jLayeredPane1);
         jLayeredPane1.setBounds(221, 239, 390, 270);
 
@@ -314,7 +473,7 @@ public class Home extends javax.swing.JFrame {
         win.setForeground(new java.awt.Color(255, 255, 255));
         win.setText("win : 3");
         jPanel1.add(win);
-        win.setBounds(390, 140, 80, 25);
+        win.setBounds(390, 140, 80, 24);
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/tic.png"))); // NOI18N
         jPanel1.add(jLabel9);
@@ -365,7 +524,7 @@ public class Home extends javax.swing.JFrame {
         lose.setForeground(new java.awt.Color(255, 255, 255));
         lose.setText("lose : 4");
         jPanel1.add(lose);
-        lose.setBounds(390, 180, 100, 25);
+        lose.setBounds(390, 180, 100, 24);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/scorePane (1).png"))); // NOI18N
         jPanel1.add(jLabel3);
@@ -498,18 +657,83 @@ if (back == 1) {
 
         }
         if (back == 2) {
-
             getPanal(jPanel5);
             back = 1;
-
-        }        // TODO add your handling code here:
+        }  
+// TODO add your handling code here:
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void multiBTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_multiBTMouseClicked
-                    this.setVisible(false);
-    
-        new MultiMain(this).setVisible(true);
+//        this.setVisible(false);
+//        new MultiMain(this).setVisible(true);
+        getPanal(jPanel3);
+        back = 2;
     }//GEN-LAST:event_multiBTMouseClicked
+
+    private void codeFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_codeFocusGained
+        if(code.getText().equals(CODE_HINT)){
+            code.setText("");
+        }
+    }//GEN-LAST:event_codeFocusGained
+
+    private void codeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_codeFocusLost
+        if(code.getText().equals("")){
+            code.setText(CODE_HINT);
+        }
+    }//GEN-LAST:event_codeFocusLost
+
+    private void createGameRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createGameRoomActionPerformed
+        try {
+
+            ConnectionManager cm4 = ConnectionManager.createGameSocet();
+            GameRoomCrud gamebord = new GameRoomCrud(cm4.in,cm4.out,cm4);
+            gamebord.createGameRoom(appManager.getUser());
+            JFrame game2 = new GameRoomGui(gamebord);
+            game2.setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_createGameRoomActionPerformed
+
+    private void findGameWithCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findGameWithCodeActionPerformed
+        try {
+            ConnectionManager cm4 = ConnectionManager.createGameSocet();
+            GameRoomCrud gamebord = new GameRoomCrud(cm4.in,cm4.out,cm4);
+            gamebord .findGameRoomWithCode(appManager.getUser(),code.getText());
+
+            CustomActionListener cal = new CustomActionListener();
+
+            cal.addListener(()->{
+                new GameRoomGui(gamebord).setVisible(true);
+            });
+
+            gamebord.setListener(new GameRoomCrud.ListenersX(
+                new GameRoomCrud.NotifierObject[]
+                {
+                    new GameRoomCrud.NotifierObject(
+                        (String object) -> {
+                            EventQueue.invokeLater(()->{
+                                JOptionPane.showMessageDialog(this, object, "Finding game", JOptionPane.WARNING_MESSAGE);
+                            });
+                        },
+                        Responce.responceCodes.findGameWithCodeError
+                    ),
+
+                    new GameRoomCrud.NotifierObject(
+                        (String object) -> {
+                            cal.sayHello();
+                        },
+                        Responce.responceCodes.findGameWithCode
+                    ),
+                },
+                false
+            )
+        );
+
+        } catch (IOException ex) {
+            Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_findGameWithCodeActionPerformed
 
     private void localBTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_localBTMouseClicked
  String str = JOptionPane.showInputDialog(null, "Enter the second player's name : ", 
@@ -539,6 +763,12 @@ new History().setVisible(true);
     private void jLabel12MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseExited
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/btRecords2.png")));
     }//GEN-LAST:event_jLabel12MouseExited
+
+    private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
+        recGame.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jLabel12MouseClicked
+
     
     public void getPanal(JPanel jp) {
         jLayeredPane1.removeAll();
@@ -604,6 +834,9 @@ new History().setVisible(true);
 
     private int back = 0;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField code;
+    private javax.swing.JButton createGameRoom;
+    private javax.swing.JButton findGameWithCode;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -618,6 +851,8 @@ new History().setVisible(true);
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
@@ -626,6 +861,7 @@ new History().setVisible(true);
     private javax.swing.JLabel lose;
     private javax.swing.JLabel multiBT;
     private javax.swing.JLabel multiBT1;
+    private javax.swing.JButton randomGame;
     private javax.swing.JLabel singlBT;
     private javax.swing.JLabel singlBT1;
     private javax.swing.JLabel win;

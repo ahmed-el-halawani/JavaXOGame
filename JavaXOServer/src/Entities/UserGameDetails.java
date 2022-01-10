@@ -73,13 +73,15 @@ public class UserGameDetails extends BaseEntity {
                         new User("ahmed", "mo", "123123"),
                         UserGameDetails.PlayerState.Loser, 
                         PlayerSimbole.X,
-                        false
+                        false,
+                        true
                 ),
                 new PlayerDetails(UUID.randomUUID().toString(),
                         new User("ahmed2", "moo", "123123"),
                         UserGameDetails.PlayerState.Winner,
                         PlayerSimbole.O,
-                        false
+                        false,
+                        true
                 ),
                 new LinkedHashMap()
         );
@@ -197,6 +199,7 @@ public class UserGameDetails extends BaseEntity {
             PlayerDetails playerTwoDetails, 
             LinkedHashMap<Integer, PlayerSimbole> gameBord
     ) {
+        super(UUID.randomUUID().toString());
         this.gameMode = gameMode;
         this.gameDifficultyLvl = gameDifficultyLvl;
         this.playerOneDetails = playerOneDetails;
@@ -212,6 +215,7 @@ public class UserGameDetails extends BaseEntity {
             LinkedHashMap<Integer, PlayerSimbole> gameBord,
             boolean isRecorded
     ) {
+        super(UUID.randomUUID().toString());
         this.gameMode = gameMode;
         this.gameDifficultyLvl = gameDifficultyLvl;
         this.gameBord = gameBord;
@@ -232,6 +236,7 @@ public class UserGameDetails extends BaseEntity {
             GameModes gameMode,
             PlayerDetails playerOneDetails
     ) {
+        super(UUID.randomUUID().toString());
         this.gameMode = gameMode;
         this.gameDifficultyLvl = gameDifficultyLvl.Intermediate;
         this.playerOneDetails = playerOneDetails;
@@ -244,6 +249,7 @@ public class UserGameDetails extends BaseEntity {
             PlayerDetails playerOneDetails,
             PlayerDetails playerTwoDetails
     ) {
+        super(UUID.randomUUID().toString());
         this.gameMode = gameMode;
         this.gameDifficultyLvl = gameDifficultyLvl.Intermediate;
         this.playerOneDetails = playerOneDetails;
@@ -252,6 +258,7 @@ public class UserGameDetails extends BaseEntity {
     }
     
      public UserGameDetails() {
+        super(UUID.randomUUID().toString());
         gameBord = new LinkedHashMap();
     }
     

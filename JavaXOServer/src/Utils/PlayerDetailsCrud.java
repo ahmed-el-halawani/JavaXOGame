@@ -34,12 +34,21 @@ Connection con;
         
                 String id = UUID.randomUUID().toString();
                 entity.setId(id);
-                PreparedStatement query = con.prepareStatement("INSERT INTO PLAYERDETAILS VALUES(?,?,?,?,?)");
+                System.out.println("PlayerDetails add");
+                System.out.println(entity);
+
+                PreparedStatement query = con.prepareStatement("INSERT INTO PLAYERDETAILS VALUES(?,?,?,?,?,?)");
                 query.setString(1,entity.getPlayerState().name());
                 query.setString(2,entity.getPlayerSimbole().name());
-                query.setString(3,entity.getPlayer().getId());
+                if(entity.getIsAccount())
+                    query.setString(3,entity.getPlayer().getId());
+                else
+                    query.setString(3,entity.getPlayer().getName());
+                
                 query.setString(4,entity.getId());
                 query.setBoolean(5,entity.getIsRecorded());
+                query.setBoolean(6,entity.getIsAccount());
+                
 
                 if(query.executeUpdate()!=0){
                     return entity;
@@ -47,7 +56,7 @@ Connection con;
            
         return null;
     }
-
+    
     public PlayerDetails update(String idParam, PlayerDetails entity) throws JSONException, IOException, SQLException {
         JSONObject jsonObject = new JSONObject(idParam);
         final String id = jsonObject.getString("id");
@@ -96,7 +105,11 @@ Connection con;
         ResultSet rs = query.executeQuery();
 
         if(rs.next()){
-            User user = new UserCrud(in, out,con).getWithId(con,rs.getString("USER_ID"));
+            User user;
+            if(rs.getBoolean("IS_ACCOUNT"))
+                user= new UserCrud(con).getWithId(con,rs.getString("USER_ID"));
+            else
+                user= new User(rs.getString("USER_ID"));
             return PlayerDetails.fromResultSet(rs,user);
         }
 
@@ -114,7 +127,11 @@ Connection con;
         ResultSet rs = query.executeQuery();
 
         while(rs.next()){
-           User user = new UserCrud(in, out,con).getWithId(con,rs.getString("USER_ID"));
+            User user;
+            if(rs.getBoolean("IS_ACCOUNT"))
+                user= new UserCrud(con).getWithId(con,rs.getString("USER_ID"));
+            else
+                user= new User(rs.getString("USER_ID"));
            playersDetails.add(PlayerDetails.fromResultSet(rs,user));
         }
         

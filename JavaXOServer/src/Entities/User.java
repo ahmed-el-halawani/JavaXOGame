@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONException;
@@ -97,9 +98,10 @@ public class User extends BaseEntity{
     }
     
     public User() {
-        this.name = "CPU";
-        this.userName = "";
-        this.password = "";
+        super(UUID.randomUUID().toString());
+        this.name = "PC";
+        this.userName = "CPU";
+        this.password = "CPU";
         this.userType = UserType.Cpu;
     }
     

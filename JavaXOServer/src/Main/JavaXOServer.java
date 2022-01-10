@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package javaxoserver;
+package Main;
 
 import Entities.GameRoom;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -71,16 +71,13 @@ class RequestHandler extends Thread {
     static Vector<Player> availToPlay = new Vector<>();
 
     public RequestHandler(Socket s){
-        Integer updatedRow;
-        Integer deletedRow;
         try {
             this.in = new DataInputStream(s.getInputStream());
             this.out = new DataOutputStream(s.getOutputStream());
             this.s = s;
             con = DriverManager.getConnection("jdbc:derby://localhost:1527/javaOXDatabase","javaProject","javaProject");
             
-            
-            userCrud = new UserCrud(in,out,con);
+            userCrud = new UserCrud(con);
             playerDetailsCrud = new PlayerDetailsCrud(in,out,con);
             userGameDetailsCrud = new UserGameDetailsCrud(con,playerDetailsCrud);
             
@@ -157,6 +154,7 @@ class RequestHandler extends Thread {
                 } catch (SQLException ex1) {
                     Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex1);
                 }
+                System.out.println(ex);
                 System.out.println("user quit");
                 return;
             }
@@ -209,8 +207,6 @@ class RequestHandler extends Thread {
         Integer updatedRow;
         Integer deletedRow;
         switch(action.getType()){
-                   
-
                     case Add:
                         Integer addedRow = userGameDetailsCrud.add(new ObjectMapper().readValue(action.getObject(), UserGameDetails.class));
                         new Responce(responceCodes.Done, addedRow.toString()).sendJson(out);
@@ -271,7 +267,7 @@ class RequestHandler extends Thread {
         switch(action.getType()){
             case createGameRoom:
                 gameRoom = new GameRoom(new Player(new ObjectMapper().readValue(action.getObject(), User.class),s));
-                new Responce(responceCodes.createGameRoom, gameRoom.getCode()).sendJson(out);
+                new Responce(responceCodes.createGameRoom, gameRoom.toJson()).sendJson(out);
             break;
             
             case LeaveGameRoom:
@@ -284,6 +280,21 @@ class RequestHandler extends Thread {
                     gameRoom.notifySockets(responceCodes.LeaveGameRoom,gameRoomResponce.PlayerLeave.name());
 
             break;
+            
+            case StartRecordingForUser:
+                getGameRoom(action.getParams());
+                userGameDetailsCrud.setIsRecorded(action.getObject(),gameRoom.getId());
+                System.out.println("StartRecordingForUser");
+            break;
+            
+//            case StartRecordingForUserFromLocal:
+//                userGameDetailsCrud.setIsRecorded(action.getObject(),gameRoom.getId());
+//            break;
+            
+//            case SaveGame:
+//                getGameRoom(action.getParams());
+//                userGameDetailsCrud.add(gameRoom);
+//            break;
                         
             case findGameRoom:
                 if(availToPlay.isEmpty()){

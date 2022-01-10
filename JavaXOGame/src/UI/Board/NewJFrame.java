@@ -20,6 +20,9 @@ public class NewJFrame extends javax.swing.JFrame{
     int y_pressed = 0;
     
     String XSimbole = "/UI/Board/xCol2.png";
+    String OSimbole = "/UI/Board/oCol2.png";
+    
+    
     
     boolean player1_turn;
     
@@ -81,7 +84,7 @@ public class NewJFrame extends javax.swing.JFrame{
         });
         jPanel1.add(btn0, new org.netbeans.lib.awtextra.AbsoluteConstraints(275, 146, 108, 93));
 
-        btn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/Board/xCol2.png"))); // NOI18N
+        btn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/Board/oWin.png"))); // NOI18N
         btn1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn1ActionPerformed(evt);
