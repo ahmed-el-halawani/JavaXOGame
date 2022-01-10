@@ -30,6 +30,8 @@ public class MultiLocal extends javax.swing.JFrame {
     String background="/UI/Board/background.png";
     boolean player1_turn;
     JButton[] buttons = new JButton[9];
+    public static String sendScrean;
+    String result;
     
     
 
@@ -319,7 +321,7 @@ if(player1_turn){
     btn2.setIcon(new ImageIcon(getClass().getResource(OSimbole)));
      check() ;
         } }
-    //GEN-LAST:event_btn2ActionPerformed
+                                        
     }//GEN-LAST:event_btn2ActionPerformed
 
     private void btn6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn6ActionPerformed
@@ -491,23 +493,31 @@ if(player1_turn){
         });
     }
      public void playAgain(){
-    int n = JOptionPane.showConfirmDialog(
+         if(result=="X wins"||result=="O wins"){
+          
+    setVisible(false);
+   new Video().setVisible(true); 
+                    
+
+                //System.exit(0);
+                
+    }else{
+     int n = JOptionPane.showConfirmDialog(
     this,
     "Do you want to play again?",
     "Click a button",
     JOptionPane.YES_NO_OPTION);
     if(n==JOptionPane.YES_OPTION){
-        
-         
-        for (int i = 0; i < 9; i++) {
-            buttons[i].setText("");
-            buttons[i].setIcon(new ImageIcon(getClass().getResource(background)));}
+        for (int i = 0; i <9; i++) {
+                   buttons[i].setIcon(new ImageIcon(getClass().getResource(background)));
+                   buttons[i].setText("");
+        }
         frstTurn.setText("");
-    }else{                 
+             }else{
+        setVisible(false);
 
-                System.exit(0);
-                }
-    }
+    }}
+     }
      
      
    public void check() {
@@ -654,7 +664,11 @@ if(player1_turn){
 		buttons[b].setIcon(new ImageIcon(getClass().getResource(XWin)));
 		buttons[c].setIcon(new ImageIcon(getClass().getResource(XWin)));
               
-                		frstTurn.setText("X wins");
+                result="X wins";
+                		frstTurn.setText(result);
+                                     sendScrean="O Lose";
+                                     
+
 
 		if(e!=1)
                 playAgain();
@@ -666,8 +680,10 @@ if(player1_turn){
 		buttons[b].setIcon(new ImageIcon(getClass().getResource(OWin)));
 		buttons[c].setIcon(new ImageIcon(getClass().getResource(OWin)));
                 
-               
-                		frstTurn.setText("O wins");
+               result="O wins";
+                		frstTurn.setText(result);
+        
+                                sendScrean="X Lose";
 
                 if(e!=1)
 		playAgain();

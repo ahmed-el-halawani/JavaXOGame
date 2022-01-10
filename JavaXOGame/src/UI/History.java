@@ -178,7 +178,6 @@ System.exit(0);        // TODO add your handling code here:
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-new Home().setVisible(true);
         setVisible(false);
 // TODO add your handling code here:
     }//GEN-LAST:event_jLabel3MouseClicked
