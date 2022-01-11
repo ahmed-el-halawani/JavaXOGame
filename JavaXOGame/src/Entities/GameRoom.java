@@ -119,12 +119,28 @@ public class GameRoom extends UserGameDetails  {
         this.getPlayerWithId(userId).setIsRecorded(true);
         return null;
     }
+    
+    public int getPlayerOneWins() {
+        return playerOneWins;
+    }
+
+    public void setPlayerOneWins(int playerOneWins) {
+        this.playerOneWins = playerOneWins;
+    }
+
+    public int getPlayerTwoWins() {
+        return playerTwoWins;
+    }
+
+    public void setPlayerTwoWins(int playerTwoWins) {
+        this.playerTwoWins = playerTwoWins;
+    }
 
     @Override
     public String toString() {
-        return super.toString()+"\nGameRoom{" + "currentTurn=" + currentTurn + ", nextTurn=" + nextTurn + ", code=" + code + ", currentPosition=" + currentPosition + '}';
+        return "GameRoom{" + "currentTurn=" + currentTurn + ", nextTurn=" + nextTurn + ", code=" + code + ", currentPosition=" + currentPosition + ", playerOneWins=" + playerOneWins + ", playerTwoWins=" + playerTwoWins + '}';
     }
-
+    
     public PlayerDetails getNextTurn() {
         return nextTurn;
     }
@@ -188,9 +204,11 @@ public class GameRoom extends UserGameDetails  {
     public static enum GameState{
         playing,draw,winner
     }
-    
+
     public PlayerDetails currentTurn;
     public PlayerDetails nextTurn;
     public String code = "";
     public Integer currentPosition;
+    private int playerOneWins=0;
+    private int playerTwoWins=0;
 }

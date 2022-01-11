@@ -5,6 +5,7 @@
  */
 package UI.MultiPlayer;
 
+import Entities.GameRoom;
 import Utils.GameRoomCrud;
 import Entities.Responce;
 import Entities.User;
@@ -12,6 +13,7 @@ import Testing.MainTest;
 import Testing.WaitingScrean;
 import Utils.AppManager;
 import Utils.ConnectionManager;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -116,6 +118,11 @@ class Initiater {
         randomGame.setFont(new java.awt.Font("Lithos Pro Regular", 1, 24)); // NOI18N
         randomGame.setForeground(new java.awt.Color(67, 16, 162));
         randomGame.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/MultiPlayer/button_random-game (1).png"))); // NOI18N
+        randomGame.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                randomGameActionPerformed(evt);
+            }
+        });
 
         jPanel4.setBackground(new java.awt.Color(78, 27, 171));
 
@@ -282,6 +289,17 @@ class Initiater {
     private void findGameWithCode1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findGameWithCode1ActionPerformed
        this.dispose();
     }//GEN-LAST:event_findGameWithCode1ActionPerformed
+
+    private void randomGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomGameActionPerformed
+        try {
+            ConnectionManager cm4 = ConnectionManager.createGameSocet();
+            GameRoomCrud gamebord = new GameRoomCrud(cm4.in,cm4.out,cm4);
+            gamebord .findGameRoom(appManager.getUser());
+            new GameRoomGui(gamebord).setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_randomGameActionPerformed
 
     @Override
     public void dispose() {

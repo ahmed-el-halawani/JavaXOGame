@@ -22,7 +22,7 @@ public class JsonAction{
         AddUser,GetAllUsers,GetUser,GetUserWithUesrName,UpdateUser,DeleteUser,
         
         LeaveGameRoom,QuitApp,getCurrentTurn,isMyTurn,setMove,setPlayerTwo,StartRecordingForUser,
-        createGameRoom,findGameRoom,findGameRoomWithCode,SaveGame
+        createGameRoom,findGameRoom,findGameRoomWithCode,SaveGame,playAgain
      }
 
     public static JsonAction fromJson(String body) throws  JsonProcessingException{

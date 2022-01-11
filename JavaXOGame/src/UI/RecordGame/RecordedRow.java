@@ -28,12 +28,12 @@ public class RecordedRow extends javax.swing.JPanel {
         playerOne1.setText(playerOne.getPlayer().getName()+" ("+playerOne.getPlayer().getUserName()+") ");
         playerTwo1.setText(playerTwo.getPlayer().getName()+" ("+(playerTwo.getIsAccount()?playerTwo.getPlayer().getUserName():"Gust")+") ");
         
-        if(gameState1.equals(PlayerState.Winner)){
-            jPanel1.setBackground(new java.awt.Color(0, 102, 102));
-        }else if(gameState1.equals(PlayerState.Loser)){
-            jPanel1.setBackground(new java.awt.Color(153, 0, 102));
+        if(playerState.equals(PlayerState.Winner)){
+            jPanel1.setBackground(new java.awt.Color(0,153,255));
+        }else if(playerState.equals(PlayerState.Loser)){
+            jPanel1.setBackground(new java.awt.Color(209,9,21));
         }else{
-            jPanel1.setBackground(new java.awt.Color(153, 0, 204));
+            jPanel1.setBackground(new java.awt.Color(0,102,153));
         }
     }
 
@@ -53,11 +53,12 @@ public class RecordedRow extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
 
         setBackground(new Color(0,0,0,0));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         setMaximumSize(new java.awt.Dimension(2000, 45));
         setMinimumSize(new java.awt.Dimension(900, 45));
         setPreferredSize(new java.awt.Dimension(663, 40));
 
-        jPanel1.setBackground(new java.awt.Color(153, 0, 204));
+        jPanel1.setBackground(new java.awt.Color(0, 102, 153));
 
         gameState1.setBackground(new java.awt.Color(255, 255, 255));
         gameState1.setFont(new java.awt.Font("Lithos Pro Regular", 1, 14)); // NOI18N
@@ -115,9 +116,7 @@ public class RecordedRow extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 10, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
     }// </editor-fold>//GEN-END:initComponents
 

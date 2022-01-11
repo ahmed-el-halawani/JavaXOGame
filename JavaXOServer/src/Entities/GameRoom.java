@@ -5,11 +5,13 @@
  */
 package Entities;
 
+import Entities.Responce.responceCodes;
 import Utils.UserGameDetailsCrud;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Random;
 import java.util.Vector;
 
@@ -226,7 +228,6 @@ public final class GameRoom extends UserGameDetails  {
         return null;
     }
     
-    
     public void notifySockets(Responce.responceCodes code,String object) throws IOException{
         for (Iterator<Player> iterator = players.iterator(); iterator.hasNext();) {
             Player next = iterator.next();
@@ -249,6 +250,24 @@ public final class GameRoom extends UserGameDetails  {
     public void setCurrentPosition(Integer currentPosition) {
         this.currentPosition = currentPosition;
     }
+    
+    public int getPlayerOneWins() {
+        return playerOneWins;
+    }
+
+    public void setPlayerOneWins(int playerOneWins) {
+        this.playerOneWins = playerOneWins;
+    }
+
+    public int getPlayerTwoWins() {
+        return playerTwoWins;
+    }
+
+    public void setPlayerTwoWins(int playerTwoWins) {
+        this.playerTwoWins = playerTwoWins;
+    }
+    
+    
     
     public GameState _getGameSate(){
         for(int i =1;i<=6;i+=3)
@@ -287,19 +306,34 @@ public final class GameRoom extends UserGameDetails  {
         return !players.isEmpty();
     }
     
-     private void setWinnerWithSimbole(PlayerSimbole playerSimbole){
+    private void setWinnerWithSimbole(PlayerSimbole playerSimbole){
          if(playerOneDetails.getPlayerSimbole().equals(playerSimbole)){
              playerOneDetails.setPlayerState(PlayerState.Winner);
              playerTwoDetails.setPlayerState(PlayerState.Loser);
+             playerOneWins+=1;
          }else{
             playerOneDetails.setPlayerState(PlayerState.Loser);
             playerTwoDetails.setPlayerState(PlayerState.Winner);
+            playerTwoWins+=1;
          }
     }
      
+    public responceCodes playAgain(String userId){
+        if(playerWantPlayAgain==null || playerWantPlayAgain==userId){
+            playerWantPlayAgain = userId;
+            return Responce.responceCodes.waitingPlayerTwoPlayAgain;
+        }else{
+            gameBord = new LinkedHashMap();
+            return Responce.responceCodes.playAgain;
+        }
+    }
+
     private Vector<Player> players;
     private PlayerDetails currentTurn;
     private PlayerDetails nextTurn;
     private String code = "";
     private Integer currentPosition;
+    private int playerOneWins=0;
+    private int playerTwoWins=0;
+    private String playerWantPlayAgain;
 }

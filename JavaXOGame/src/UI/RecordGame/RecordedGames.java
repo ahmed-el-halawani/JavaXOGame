@@ -107,17 +107,39 @@ public class RecordedGames extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         recordsList = new javax.swing.JPanel();
 
         setMinimumSize(new java.awt.Dimension(900, 386));
 
+        jPanel1.setBackground(new java.awt.Color(102, 0, 204));
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jScrollPane2.setBackground(new java.awt.Color(102, 0, 204));
+
+        recordsList.setBackground(new java.awt.Color(0, 0, 0));
         recordsList.setMinimumSize(new java.awt.Dimension(900, 0));
         recordsList.setPreferredSize(new java.awt.Dimension(900, 100));
         recordsList.setLayout(new javax.swing.BoxLayout(recordsList, javax.swing.BoxLayout.Y_AXIS));
         jScrollPane2.setViewportView(recordsList);
 
-        getContentPane().add(jScrollPane2, java.awt.BorderLayout.CENTER);
+        jPanel1.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -158,6 +180,7 @@ public class RecordedGames extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel recordsList;
     // End of variables declaration//GEN-END:variables

@@ -49,41 +49,16 @@ public class GameRoomCrud {
             out.writeUTF(obm.writeValueAsString(jsonAction));
     }
 
-    public void findGameRoom(User user,INotifayer recive,INotifayer error) throws JsonProcessingException, IOException {
-        System.out.println(user);
-       
+    public void findGameRoom(User user) throws JsonProcessingException, IOException {
         JsonAction jsonAction = new JsonAction(
             user.toJson(),
             JsonAction.Types.findGameRoom,
-            
             ""
         );
         System.out.println(obm.writeValueAsString(jsonAction));
         out.writeUTF(obm.writeValueAsString(jsonAction));
 
-        setListener(
-                new ListenersX(new NotifierObject[]
-                {
-                    new NotifierObject(
-                        (String object) -> {
-                            try {
-                             gameRoom = obm.readValue(object, GameRoom.class);
-                             recive.notif(object);
-                            } catch (JsonProcessingException ex) {
-                             Logger.getLogger(GameRoomCrud.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        },
-                        responceCodes.findGame
-                    ),
-                    new NotifierObject(
-                        (String object) -> {
-                             error.notif(object);
-                        },
-                        responceCodes.findGameError
-                    )
-                }
-            )
-        );
+        
     }
     
     public void leaveGame(User user) throws JsonProcessingException, IOException{
@@ -117,8 +92,15 @@ public class GameRoomCrud {
         out.writeUTF(obm.writeValueAsString(jsonAction));
     }
     
-    
-
+    public void playAgain(User user) throws JsonProcessingException, IOException{
+        JsonAction jsonAction = new JsonAction(
+                user.getId(),
+                JsonAction.Types.playAgain,
+                gameRoom.code
+        );
+        System.out.println(obm.writeValueAsString(jsonAction));
+        out.writeUTF(obm.writeValueAsString(jsonAction));
+    }
     
     public void findGameRoomWithCode(User user,String code) throws JsonProcessingException, IOException {
         System.out.println(user);

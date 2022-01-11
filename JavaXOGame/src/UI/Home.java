@@ -5,6 +5,8 @@
  */
 package UI;
 
+import BounsGames.FlappyBird;
+import BounsGames.SnackGame;
 import Entities.GameRoom;
 import Entities.Responce;
 import Entities.UserGameDetails;
@@ -21,6 +23,10 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
@@ -133,6 +139,8 @@ public class Home extends javax.swing.JFrame {
 
         jLabel8 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         jPanel6 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -172,6 +180,28 @@ public class Home extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 552));
         jPanel1.setLayout(null);
+
+        jLabel13.setBackground(new java.awt.Color(255, 0, 255));
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/snack.png"))); // NOI18N
+        jLabel13.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel13MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel13);
+        jLabel13.setBounds(70, 140, 120, 120);
+
+        jLabel14.setBackground(new java.awt.Color(255, 0, 255));
+        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/flappyBird.png"))); // NOI18N
+        jLabel14.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel14.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel14MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel14);
+        jLabel14.setBounds(100, 280, 100, 110);
 
         jLayeredPane1.setLayout(new java.awt.CardLayout());
 
@@ -232,7 +262,7 @@ public class Home extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(106, 106, 106)
                         .addComponent(jLabel12)))
-                .addContainerGap(94, Short.MAX_VALUE))
+                .addContainerGap(230, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -300,7 +330,7 @@ public class Home extends javax.swing.JFrame {
                     .addComponent(localBT, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(singlBT, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(multiBT, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(89, Short.MAX_VALUE))
+                .addContainerGap(225, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -359,7 +389,7 @@ public class Home extends javax.swing.JFrame {
                     .addComponent(localBT1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(singlBT1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(multiBT1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(89, Short.MAX_VALUE))
+                .addContainerGap(225, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -390,6 +420,11 @@ public class Home extends javax.swing.JFrame {
         randomGame.setFont(new java.awt.Font("Lithos Pro Regular", 1, 24)); // NOI18N
         randomGame.setForeground(new java.awt.Color(67, 16, 162));
         randomGame.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/MultiPlayer/button_random-game (1).png"))); // NOI18N
+        randomGame.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                randomGameActionPerformed(evt);
+            }
+        });
 
         jPanel4.setBackground(new Color(0,0,0,0));
 
@@ -769,6 +804,76 @@ new History().setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jLabel12MouseClicked
 
+    private void randomGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomGameActionPerformed
+        try {
+            ConnectionManager cm4 = ConnectionManager.createGameSocet();
+            GameRoomCrud gamebord = new GameRoomCrud(cm4.in,cm4.out,cm4);
+            gamebord .findGameRoom(appManager.getUser());
+            new GameRoomGui(gamebord).setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_randomGameActionPerformed
+
+    private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
+        SnackGame snack = new SnackGame();
+        snack.setVisible(true);
+        snack.start();
+        this.setVisible(false);
+        snack.addWindowListener(new CloseWindowListener(){
+            @Override
+            public void windowClosed(WindowEvent e) {
+                Home.this.setVisible(true);
+            }
+        });
+    }//GEN-LAST:event_jLabel13MouseClicked
+
+    private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
+        FlappyBird f = new FlappyBird();
+        f.setVisible(true);
+        f.start();
+        this.setVisible(false);
+      
+        f.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                Home.this.setVisible(true);
+            }
+        });
+    }//GEN-LAST:event_jLabel14MouseClicked
+
+    class CloseWindowListener implements WindowListener{
+
+        @Override
+        public void windowOpened(WindowEvent e) {
+        }
+
+        @Override
+        public void windowClosing(WindowEvent e) {
+        }
+
+        @Override
+        public void windowClosed(WindowEvent e) {
+        }
+
+        @Override
+        public void windowIconified(WindowEvent e) {
+        }
+
+        @Override
+        public void windowDeiconified(WindowEvent e) {
+        }
+
+        @Override
+        public void windowActivated(WindowEvent e) {
+        }
+
+        @Override
+        public void windowDeactivated(WindowEvent e) {
+        }
+        
+    }
+    
     
     public void getPanal(JPanel jp) {
         jLayeredPane1.removeAll();
@@ -841,6 +946,8 @@ new History().setVisible(true);
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

@@ -32,12 +32,11 @@ class UserGameDetailsCrud{
             return -1;
         }
         
-        String id = entity.getId();
-        if(id ==null)
-            id = UUID.randomUUID().toString();
+       if( entity.getId()==null)
+            entity.setId( UUID.randomUUID().toString());
         
         PreparedStatement query = con.prepareStatement("INSERT INTO USERGAMEDETAILS VALUES(?,?,?,?,?,?)");
-        query.setString(1,id);
+        query.setString(1,entity.getId());
         query.setString(2,entity.getGameMode().name());
         query.setString(3,entity.getGameDifficultyLvl().name());
         query.setString(4,playerOne.getId());

@@ -68,7 +68,7 @@ class RequestHandler extends Thread {
     boolean isRunning =true;
     GameRoom gameRoom;
     
-    static Vector<Player> availToPlay = new Vector<>();
+    public static Vector<Player> availToPlay = new Vector<>();
 
     public RequestHandler(Socket s){
         try {
@@ -270,6 +270,8 @@ class RequestHandler extends Thread {
                 new Responce(responceCodes.createGameRoom, gameRoom.toJson()).sendJson(out);
             break;
             
+            
+            
             case LeaveGameRoom:
                 gemeRoomResponce = getGameRoom(action.getParams());
                 gameRoom.Playerleave(action.getObject());
@@ -287,23 +289,27 @@ class RequestHandler extends Thread {
                 System.out.println("StartRecordingForUser");
             break;
             
-//            case StartRecordingForUserFromLocal:
-//                userGameDetailsCrud.setIsRecorded(action.getObject(),gameRoom.getId());
-//            break;
+            case playAgain:
+                getGameRoom(action.getParams());
+                gameRoom.playAgain(action.getObject());
+                if(gameRoom.playAgain(action.getObject()).equals(responceCodes.waitingPlayerTwoPlayAgain)){
+                    gameRoom.notifySockets(responceCodes.waitingPlayerTwoPlayAgain,action.getObject());
+                }else{
+                    gameRoom.notifySockets(responceCodes.playAgain,gameRoom.toJson());
+                }
+            break;
             
-//            case SaveGame:
-//                getGameRoom(action.getParams());
-//                userGameDetailsCrud.add(gameRoom);
-//            break;
-                        
+            
             case findGameRoom:
+                System.out.println("availToPlay.isEmpty()");
+                System.out.println(availToPlay.isEmpty());
                 if(availToPlay.isEmpty()){
                     availToPlay.add(new Player(new ObjectMapper().readValue(action.getObject(), User.class),s));
-                    new Responce(responceCodes.findGameError, gameRoomResponce.FindingGame.name()).sendJson(out);
+                    new Responce(responceCodes.findGame, gameRoomResponce.FindingGame.name()).sendJson(out);
                 }else{
                     gameRoom = new GameRoom(availToPlay.get(0),new Player(new ObjectMapper().readValue(action.getObject(), User.class),s));
                     availToPlay.remove(0);
-                    gameRoom.notifySockets(responceCodes.findGame,gameRoom.toJson());
+                    gameRoom.notifySockets(responceCodes.startGame,gameRoom.toJson());
                 }
             break;
 

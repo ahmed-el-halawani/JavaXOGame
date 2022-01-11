@@ -96,6 +96,7 @@ public class PlayerDetails extends BaseEntity {
         this.player = player;
         this.PlayerSimbole = playerSample;
         this.playerState = UserGameDetails.PlayerState.Draw;
+        this.isAccount = player.getUserName()!=null;
     }
         
         

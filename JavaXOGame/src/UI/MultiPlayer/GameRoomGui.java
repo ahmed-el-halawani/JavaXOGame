@@ -45,8 +45,9 @@ public final class GameRoomGui extends javax.swing.JFrame {
     GameRoomCrud.ListenersX listener;
     CardLayout cardLayout;
     GameBordPanel gamePanel;
+    boolean isPlayerLeave = false;
     public GameRoomGui(GameRoomCrud gamebord) {
-                initComponents();
+        initComponents();
 
         this.appManager = AppManager.getinstance();
         this.gamebord = gamebord;
@@ -107,15 +108,7 @@ public final class GameRoomGui extends javax.swing.JFrame {
                     gamePanel.TurnText.setText(
                         gamebord.gameRoom.getPlayerStateWithId(appManager.getUser().getId()).name()
                     );
-                    int answer = JOptionPane.showConfirmDialog(this, "do u want record game", "recording ", JOptionPane.YES_NO_OPTION);
-                    System.out.println("answer: "+answer);
-                    if(answer==0)
-                        try {
-                            gamebord.recordGame(appManager.getUser());
-                        } catch (IOException ex) {
-                            JOptionPane.showMessageDialog(this, "some thing wrong happend cant record game right now", "recording Error", JOptionPane.WARNING_MESSAGE);
-                            Logger.getLogger(GameRoomCrud.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                    gameEnded();
                 });
             },
             (String object) -> {
@@ -126,15 +119,8 @@ public final class GameRoomGui extends javax.swing.JFrame {
                     gamePanel.TurnText.setText(
                         "Draw"
                     );
-                    int answer = JOptionPane.showConfirmDialog(this, "do u want record game", "recording ", JOptionPane.YES_NO_OPTION);
-                    System.out.println("answer: "+answer);
-                    if(answer==0)
-                        try {
-                            gamebord.recordGame(appManager.getUser());
-                        } catch (IOException ex) {
-                            JOptionPane.showMessageDialog(this, "some thing wrong happend cant record game right now", "recording Error", JOptionPane.WARNING_MESSAGE);
-                            Logger.getLogger(GameRoomCrud.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                    gameEnded();
+                   
                     
                 });
             },
@@ -148,11 +134,51 @@ public final class GameRoomGui extends javax.swing.JFrame {
         );
     }
     
+    
+    public void gameEnded(){
+        System.out.println("gameEnded gameEnded");
+        recordGame();
+        playAgain();
+    }
+    
+    public void recordGame(){
+         int answer = JOptionPane.showConfirmDialog(this, "do u want record game", "recording ", JOptionPane.YES_NO_OPTION);
+                    System.out.println("answer: "+answer);
+                    if(answer==0)
+                        try {
+                            gamebord.recordGame(appManager.getUser());
+                        } catch (IOException ex) {
+                            JOptionPane.showMessageDialog(this, "some thing wrong happend cant record game right now", "recording Error", JOptionPane.WARNING_MESSAGE);
+                            Logger.getLogger(GameRoomCrud.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+    }
+    
+    public void playAgain(){
+        if(isPlayerLeave)
+            return;
+        int answer = JOptionPane.showConfirmDialog(this, "do u want play Again", "playAgain ", JOptionPane.YES_NO_OPTION);
+            System.out.println("answer: "+answer);
+            if(answer==0)
+                try {
+                    gamebord.playAgain(appManager.getUser());
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "some thing wrong happend cant record game right now", "recording Error", JOptionPane.WARNING_MESSAGE);
+                    Logger.getLogger(GameRoomCrud.class.getName()).log(Level.SEVERE, null, ex);
+                }
+    }
+    
     public void initListener(){
         if(listener !=null) return;
         listener = new GameRoomCrud.ListenersX(
                     new GameRoomCrud.NotifierObject[]
                     {
+                        new GameRoomCrud.NotifierObject(
+                            (String object) -> {
+                                JOptionPane.showMessageDialog(this, "waiting");
+                            },
+                            Responce.responceCodes.findGame
+                        ),
+                        
                         new GameRoomCrud.NotifierObject(
                         (String object) -> {
                             try {
@@ -185,6 +211,7 @@ public final class GameRoomGui extends javax.swing.JFrame {
                                  gamebord.gameRoom = gamebord.obm.readValue(object, GameRoom.class);
                                  
                                  EventQueue.invokeLater(()->{
+                                     isPlayerLeave = false;
 //                                    messages.setText("starting game "+gamebord.gameRoom.code);
                                     gamePanel.playerOne.setText(gamebord.gameRoom.getPlayerOneDetails().getPlayer().getName());
                                     gamePanel.playerTwo.setText(gamebord.gameRoom.getPlayerTwoDetails().getPlayer().getName());
@@ -210,8 +237,41 @@ public final class GameRoomGui extends javax.swing.JFrame {
                             },
                             Responce.responceCodes.startGameError
                         ),
+                        
                         new GameRoomCrud.NotifierObject(
                         (String object) -> {
+                            try {
+                                gamebord.gameRoom = gamebord.obm.readValue(object, GameRoom.class);
+                            } catch (JsonProcessingException ex) {
+                                Logger.getLogger(GameRoomGui.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            
+                             EventQueue.invokeLater(()->{
+//                                    messages.setText("starting game "+gamebord.gameRoom.code);
+                                    gamePanel.TurnText.setText(
+                                        gamebord.gameRoom.currentTurn.getPlayer().getName()
+                                    );
+                                    gamePanel.setTurn(gamebord.gameRoom.currentTurn.getPlayerSimbole());
+                                    gamePanel.resetButtons();
+                                    
+                                });
+                        },
+                        Responce.responceCodes.playAgain
+                    ),
+                        
+                         new GameRoomCrud.NotifierObject(
+                            (String object) -> {
+                                if(appManager.getUser().getId()==object){
+                                    System.out.println("waiting other player");
+                                }else{
+                                    System.out.println("other player want play again");
+                                }
+                            },
+                            Responce.responceCodes.waitingPlayerTwoPlayAgain
+                        ),
+                        new GameRoomCrud.NotifierObject(
+                        (String object) -> {
+                            isPlayerLeave = true;
                             EventQueue.invokeLater(()->{
                                 cardLayout.show(cards, screens.leaver.name());
                             });
@@ -225,6 +285,9 @@ public final class GameRoomGui extends javax.swing.JFrame {
         gamebord.setListener(listener);
         setMovieLisener();
     }
+    
+    
+    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

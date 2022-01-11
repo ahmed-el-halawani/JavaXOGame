@@ -3,11 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/Utils/JsonAction.java</file>
             <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/Utils/GameRoomCrud.java</file>
+            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/Entities/GameRoom.java</file>
+            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/Entities/Responce.java</file>
+            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/UI/Home.java</file>
             <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/UI/MultiPlayer/GameRoomGui.java</file>
             <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/UI/MultiPlayer/MultiMain.java</file>
-            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/Entities/UserGameDetails.java</file>
-
+            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/UI/MultiPlayer/GameBordPanel.java</file>
         </group>
     </open-files>
 </project-private>

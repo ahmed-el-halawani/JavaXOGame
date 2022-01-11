@@ -24,7 +24,7 @@ public class Responce {
         ConnectionApproved,SQLConnectionError,message,sendObject,refreshGame,startGame,setMove,
         createGameRoom,findGame,findGameWithCode,Draw,Winner,
         error,setMoveError,createGameRoomError,findGameError,findGameWithCodeError,startGameError,
-        LeaveGameRoom,LeaveGameRoomError
+        LeaveGameRoom,LeaveGameRoomError,playAgain,waitingPlayerTwoPlayAgain
     }
     
     

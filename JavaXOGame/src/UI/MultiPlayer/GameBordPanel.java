@@ -47,7 +47,6 @@ public class GameBordPanel extends JPanel {
     
     public GameBordPanel() {
         initComponents();
-        
         buttons = new JButton[]{btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8,btn9};
     }
 

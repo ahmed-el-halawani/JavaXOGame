@@ -82,7 +82,7 @@ public class PlayerDetails extends BaseEntity {
         this.PlayerSimbole = PlayerSimbole;
         this.isRecorded = isRecorded;
         this.isAccount = isAccount;
-        isAccount=player.getUserName()!=null;
+        this.isAccount=isAccount;
     }
 
         
@@ -90,7 +90,7 @@ public class PlayerDetails extends BaseEntity {
         this.player = player;
         this.PlayerSimbole = playerSample;
         this.playerState = UserGameDetails.PlayerState.Draw;
-        isAccount=player.getUserName()!=null;
+        this.isAccount=player.getUserName()!=null;
     }
     
     public PlayerDetails(User player, UserGameDetails.PlayerSimbole playerSample,boolean isAccount) {

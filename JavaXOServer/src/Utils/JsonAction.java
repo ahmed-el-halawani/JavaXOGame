@@ -24,7 +24,7 @@ public class JsonAction{
         getCurrentTurn,isMyTurn,setMove,setPlayerTwo,StartRecordingForUser,StartRecordingForUserFromLocal,
         
         AddUser,GetAllUsers,GetUser,GetUserWithUesrName,UpdateUser,DeleteUser,
-        LeaveGameRoom,QuitApp,SaveGame
+        LeaveGameRoom,QuitApp,SaveGame,playAgain
      }
 
     public static JsonAction fromJson(String body) throws  JsonProcessingException{
