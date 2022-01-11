@@ -17,7 +17,7 @@ import javafx.scene.media.MediaView;
 
 /**
  *
- * @author El-Hoda
+ * @author Tarek
  */
 public class Video extends javax.swing.JFrame {
 
@@ -25,11 +25,33 @@ public class Video extends javax.swing.JFrame {
     public static int finsh=1;
      int x_pressed = 0;
     int y_pressed = 0;
+    String fileURL="";
+    int d;
+    int modes=0;
+     MediaPlayer mp;
+     
     /**
      * Creates new form Video
      */
-    public Video() {
+     public Video() {
+             initComponents();
+
+          fileURL ="C:\\Users\\El-Hoda\\Downloads\\Video\\sorry.mp4";
+        modes=1;
+         jLabel8.setText(MultiLocal.sendScrean);
+        createScren();
+        setTitle("vido java");
+        jLabel6.setLayout(new BorderLayout());
+         
+         jLabel6.add(fXPanel);
+        this.setLocationRelativeTo(null);
+     
+     }
+    public Video(String file,int m) {
         initComponents();
+        fileURL =file;
+        modes=m;
+
         jLabel8.setText(MultiLocal.sendScrean);
         createScren();
         setTitle("vido java");
@@ -43,13 +65,15 @@ public class Video extends javax.swing.JFrame {
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                File file = new File("C:\\Users\\El-Hoda\\Downloads\\Video\\sorry.mp4");
+                File file = new File(fileURL);
                 MediaPlayer mp = new MediaPlayer(new Media(file.toURI().toString()));
                 
                 fXPanel.setScene(new Scene (new Group(new MediaView(mp))));
                 mp.setVolume(0.7);
                 mp.setCycleCount(MediaPlayer.INDEFINITE);
                 mp.play();
+                if(d==2){
+                mp.stop();}
             };
         });
         
@@ -234,8 +258,15 @@ public class Video extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel3MouseEntered
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        setVisible(false);
-        new MultiLocal().setVisible(true);        // TODO add your handling code here:
+         d=2;
+         createScren();
+        if(modes==1){
+           
+            setVisible(false);
+            
+        new MultiLocal().setVisible(true);}
+
+        // TODO add your handling code here:
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void dragLabelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dragLabelMouseDragged
