@@ -172,12 +172,10 @@ public final class GameRoomGui extends javax.swing.JFrame {
         listener = new GameRoomCrud.ListenersX(
                     new GameRoomCrud.NotifierObject[]
                     {
-                        new GameRoomCrud.NotifierObject(
-                            (String object) -> {
-                                JOptionPane.showMessageDialog(this, "waiting");
-                            },
-                            Responce.responceCodes.findGame
-                        ),
+//                        new GameRoomCrud.NotifierObject(
+//                            (String object) -> {},
+//                            Responce.responceCodes.findGame
+//                        ),
                         
                         new GameRoomCrud.NotifierObject(
                         (String object) -> {

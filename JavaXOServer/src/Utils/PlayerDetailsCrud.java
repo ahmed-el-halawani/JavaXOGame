@@ -40,14 +40,14 @@ Connection con;
                 PreparedStatement query = con.prepareStatement("INSERT INTO PLAYERDETAILS VALUES(?,?,?,?,?,?)");
                 query.setString(1,entity.getPlayerState().name());
                 query.setString(2,entity.getPlayerSimbole().name());
-                if(entity.getPlayer().getUserName()!=null)
+                if(entity.getIsAccount())
                     query.setString(3,entity.getPlayer().getId());
                 else
                     query.setString(3,entity.getPlayer().getName());
                 
                 query.setString(4,entity.getId());
                 query.setBoolean(5,entity.getIsRecorded());
-                query.setBoolean(6,entity.getPlayer().getUserName()!=null);
+                query.setBoolean(6,entity.getIsAccount());
                 
 
                 if(query.executeUpdate()!=0){

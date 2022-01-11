@@ -83,6 +83,11 @@ public class GameBordPanel extends JPanel {
 
         btn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/Board/background.png"))); // NOI18N
         btn1.setName("1"); // NOI18N
+        btn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(btn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(275, 146, 108, 93));
 
         btn2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/Board/background.png"))); // NOI18N
@@ -192,6 +197,10 @@ public class GameBordPanel extends JPanel {
     private void btn5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btn5ActionPerformed
+
+    private void btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

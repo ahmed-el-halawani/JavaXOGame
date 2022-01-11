@@ -349,6 +349,9 @@ public class Home extends javax.swing.JFrame {
         singlBT1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         singlBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/easy_1.png"))); // NOI18N
         singlBT1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                singlBT1MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 singlBT1MouseEntered(evt);
             }
@@ -771,18 +774,13 @@ if (back == 1) {
     }//GEN-LAST:event_findGameWithCodeActionPerformed
 
     private void localBTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_localBTMouseClicked
- String str = JOptionPane.showInputDialog(null, "Enter the second player's name : ", 
-"Click a button", 1);
-  if(str != null){
- player2=str;
- new MultiLocal().setVisible(true);
-  
-  }
-  
-  
-  
+        String str = JOptionPane.showInputDialog(null, "Enter the second player's name : ", 
+       "Click a button", 1);
+         if(str != null){
+        player2=str;
+        new MultiLocal().setVisible(true);
 
-      
+         }
     }//GEN-LAST:event_localBTMouseClicked
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
@@ -841,6 +839,10 @@ new History().setVisible(true);
             }
         });
     }//GEN-LAST:event_jLabel14MouseClicked
+
+    private void singlBT1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_singlBT1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_singlBT1MouseClicked
 
     class CloseWindowListener implements WindowListener{
 
