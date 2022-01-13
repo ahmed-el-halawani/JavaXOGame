@@ -782,18 +782,13 @@ if (back == 1) {
     }//GEN-LAST:event_findGameWithCodeActionPerformed
 
     private void localBTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_localBTMouseClicked
- String str = JOptionPane.showInputDialog(null, "Enter the second player's name : ", 
-"Click a button", 1);
-  if(str != null){
- player2=str;
- new MultiLocal().setVisible(true);
-  
-  }
-  
-  
-  
+        String str = JOptionPane.showInputDialog(null, "Enter the second player's name : ", 
+       "Click a button", 1);
+         if(str != null){
+        player2=str;
+        new MultiLocal().setVisible(true);
 
-      
+         }
     }//GEN-LAST:event_localBTMouseClicked
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
@@ -854,6 +849,7 @@ new History().setVisible(true);
     }//GEN-LAST:event_jLabel14MouseClicked
 
     private void singlBT1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_singlBT1MouseClicked
+
         SingleMode jframe = new SingleMode(Game.EASY);
             jframe.setVisible(true);
             jframe.pack();
@@ -873,6 +869,7 @@ new History().setVisible(true);
             jframe.pack();
             jframe.setLocationRelativeTo(null);
     }//GEN-LAST:event_localBT1MouseClicked
+
 
     class CloseWindowListener implements WindowListener{
 
