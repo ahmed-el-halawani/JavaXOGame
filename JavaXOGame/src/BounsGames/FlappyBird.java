@@ -199,7 +199,6 @@ public class FlappyBird extends javax.swing.JFrame {
         score = new javax.swing.JLabel();
         gameOverLabel2 = new javax.swing.JLabel();
 
-        setMaximumSize(new java.awt.Dimension(606, 378));
         setMinimumSize(new java.awt.Dimension(606, 378));
         setUndecorated(true);
         setResizable(false);
@@ -359,7 +358,6 @@ public class FlappyBird extends javax.swing.JFrame {
                         if(barrier.checkIsPass(b))
                            gameScore++;
                     
-                    System.out.println(gameScore%5);
                     if(gameScore!=0 && gameScore%5==0)
                     {
                         gameScore+=1;
