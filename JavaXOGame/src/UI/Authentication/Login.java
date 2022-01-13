@@ -17,6 +17,7 @@ import Utils.AppManager;
 import Utils.ConnectionManager;
 import Utils.UserCrud;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -419,27 +420,37 @@ public class Login extends javax.swing.JFrame {
         signupBtn.setForeground(new Color(204,204,204));
     }//GEN-LAST:event_signupBtnMouseExited
 
+    boolean isLoading = false;
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
         
+        if(isLoading)
+            return;
         
         String userName = jTextField1.getText(); 
         String password = String.valueOf(jPasswordField1.getPassword());
         
            
-        User u = userCrud.getWithUserName(userName);
+        new Thread(()->{
+            EventQueue.invokeLater(()->{
+                isLoading = true;
+            });
+            User u = userCrud.getWithUserName(userName);
 
-        if(u != null && u.getPassword().equals(password)){
-            AppManager app = AppManager.getinstance();
-            app.setUser(u);
-            
-            JFrame form = new Home();
-            form.setVisible(true);
-            form.pack();
-            form.setLocationRelativeTo(null);
-            this.dispose();
-         }else{
-             JOptionPane.showMessageDialog(null,"Invalid Username / Password", "Login Error",2);
-         }
+            EventQueue.invokeLater(()->{
+                if(u != null && u.getPassword().equals(password)){
+                    AppManager app = AppManager.getinstance();
+                    app.setUser(u);
+
+                    JFrame form = new Home();
+                    form.setVisible(true);
+                    form.pack();
+                    form.setLocationRelativeTo(null);
+                    this.dispose();
+                 }else{
+                     JOptionPane.showMessageDialog(null,"Invalid Username / Password", "Login Error",2);
+                 }
+            });
+        }).start();
     }//GEN-LAST:event_loginBtnActionPerformed
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked

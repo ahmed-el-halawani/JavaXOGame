@@ -48,6 +48,7 @@ public final class GameRoomGui extends javax.swing.JFrame {
     boolean isPlayerLeave = false;
     public GameRoomGui(GameRoomCrud gamebord) {
         initComponents();
+        setLocationRelativeTo(null);
 
         this.appManager = AppManager.getinstance();
         this.gamebord = gamebord;

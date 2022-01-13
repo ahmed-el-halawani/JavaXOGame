@@ -19,14 +19,11 @@ public class Game {
     public static final String X = "X";
     public static final String O = "O";
    
-    
     public ArrayList<Integer> empty(ArrayList<mButton> bord)  {
             ArrayList<Integer> list = new ArrayList<>();
-            for (mButton i : bord) {
-                if (!(i.getText() == X || i.getText() == O)) {
+            for (mButton i : bord) 
+                if (!(i.getText() == X || i.getText() == O)) 
                     list.add(bord.indexOf(i));
-                }
-            }
             
             return list;
         }
@@ -145,9 +142,11 @@ public class Game {
     public static class mButton{
         String text;
         JButton jbutton;
-        mButton(String text,JButton jbutton){
+        int index;
+        mButton(String text,JButton jbutton,int index){
             this.text=text;
             this.jbutton = jbutton;
+            this.index = index;
         };
 
         public String getText() {
@@ -163,7 +162,7 @@ public class Game {
             ArrayList<mButton> arr = new ArrayList<mButton>();
             
             for (JButton button : buttons) {
-                arr.add(new mButton(button.getText(),button));
+                arr.add(new mButton(button.getText(),button,buttons.indexOf(button)));
             }
             
             return arr;

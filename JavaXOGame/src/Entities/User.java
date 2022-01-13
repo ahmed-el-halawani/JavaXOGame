@@ -81,8 +81,6 @@ public class User extends BaseEntity{
     
     public User() {
         this.name = "CPU";
-        this.userName = "";
-        this.password = "";
         this.userType = UserType.Cpu;
     }
     

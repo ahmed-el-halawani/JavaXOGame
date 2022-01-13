@@ -10,6 +10,7 @@ import Utils.AppManager;
 import Utils.ConnectionManager;
 import Utils.UserGameDetailsCrud;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -24,40 +25,53 @@ import javax.swing.table.DefaultTableModel;
  * @author Tarek
  */
 public class History extends javax.swing.JFrame {
-
-    /**
-     * Creates new form History
-     */String id;
-      Vector<String> data= new Vector<>();
+       
       int x,y;
+      UserGameDetailsCrud userGameDetailsCrud;
     public History() {
         initComponents();
-                setLocationRelativeTo(null);
+       setLocationRelativeTo(null);
 
        ConnectionManager connection;
         try {
             connection = ConnectionManager.getInstance();
+            
+            userGameDetailsCrud = new UserGameDetailsCrud(connection.in,connection.out);
+
             AppManager app = AppManager.getinstance();
-            UserGameDetailsCrud userg = new UserGameDetailsCrud(connection.in,connection.out);
-             DefaultTableModel model=(DefaultTableModel)jTable1.getModel();
+//            UserGameDetailsCrud userg = new UserGameDetailsCrud(connection.in,connection.out);
+            DefaultTableModel model=(DefaultTableModel)jTable1.getModel();
 
+            new Thread(()->{
+                try {
+                    ArrayList<UserGameDetails> userGamesDetails =
+                            userGameDetailsCrud
+                                    .getAllWithId(app.getUser().getId());
+                                            
 
-            id = app.getUser().getId();
-          //id="9e6db09d-a39c-4699-a86c-b9aa2e4922ec";
-           for (UserGameDetails ugd :getData(connection, id)){
-               data.add(ugd.getPlayerOneDetails().getPlayer().getUserName());
-               data.add(ugd.getPlayerTwoDetails().getPlayer().getUserName());
-               data.add(ugd.getGameMode().toString());
-               data.add(ugd.getGameDifficultyLvl().toString());
-               data.add(ugd.getPlayerOneDetails().getPlayerSimbole().toString());
-               data.add(ugd.getPlayerTwoDetails().getPlayerSimbole().toString());
-               data.add(""+ugd.isRecordedForUser(id));
-               data.add(ugd.getPlayerOneDetails().getPlayerState().toString());
-               data.add(ugd.getPlayerTwoDetails().getPlayerState().toString());
-               model.addRow(data);
+                    for (UserGameDetails ugd :userGamesDetails){
+                        Vector<String> data= new Vector<>();
+                        data.add(ugd.getPlayerOneDetails().getPlayer().getName());
+                        data.add(ugd.getPlayerTwoDetails().getPlayer().getName());
+                        data.add(ugd.getGameMode().toString());
+                        data.add(ugd.getGameDifficultyLvl().toString());
+                        data.add(ugd.getPlayerOneDetails().getPlayerSimbole().toString());
+                        data.add(ugd.getPlayerTwoDetails().getPlayerSimbole().toString());
+                        data.add(""+ugd.isRecordedForUser(app.getUser().getId()));
+                        data.add(ugd.getPlayerOneDetails().getPlayerState().toString());
+                        data.add(ugd.getPlayerTwoDetails().getPlayerState().toString());
+                        EventQueue.invokeLater(()->{
+                            model.addRow(data);
+                            revalidate();
+                        });
+                    } 
+                                            
+                                                                   
 
-
-         }
+                                            } catch (IOException ex) {
+                    Logger.getLogger(History.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }).start();
 
 
 
@@ -92,7 +106,6 @@ public class History extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
         setPreferredSize(new java.awt.Dimension(1300, 600));
         getContentPane().setLayout(null);
@@ -103,14 +116,14 @@ public class History extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Player one Name", "Player two Name ", "Game Mode ", "Game Difficulty", "Player one Simbole", "Player two Simbole ", "Record", "Player one status", "Player two status "
+                "Player one Name", "Player one Simbole", "Player two Name ", "Player two Simbole ", "Player one status", "Player two status ", "Game Mode ", "Game Difficulty", "Record"
             }
         ));
         jTable1.setSelectionBackground(new java.awt.Color(102, 102, 255));
         jScrollPane1.setViewportView(jTable1);
 
         getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(0, 32, 1300, 570);
+        jScrollPane1.setBounds(0, 30, 1290, 570);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jLabel1.setText("x");
@@ -122,7 +135,7 @@ public class History extends javax.swing.JFrame {
         getContentPane().add(jLabel1);
         jLabel1.setBounds(1260, -10, 40, 40);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/backBlack.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/134226_back_arrow_left_icon.png"))); // NOI18N
         jLabel3.setText(" ");
         jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -174,11 +187,11 @@ public class History extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-System.exit(0);        // TODO add your handling code here:
+        dispose();
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        setVisible(false);
+       dispose();
 // TODO add your handling code here:
     }//GEN-LAST:event_jLabel3MouseClicked
 
@@ -219,8 +232,6 @@ System.exit(0);        // TODO add your handling code here:
 public  Vector<UserGameDetails> getData(ConnectionManager connection, String id) {
     Vector<UserGameDetails> data = new Vector<>();
         try {
-
-
             for (UserGameDetails ugd : (new UserGameDetailsCrud(connection.in, connection.out)).getAllWithId(id)) {
                 data.add(ugd);
             }

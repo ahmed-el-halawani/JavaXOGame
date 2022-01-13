@@ -12,6 +12,7 @@ import Utils.AppManager;
 import Utils.ConnectionManager;
 import Utils.UserGameDetailsCrud;
 import java.awt.BorderLayout;
+import java.awt.EventQueue;
 import java.awt.Label;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -39,17 +40,14 @@ public class RecordedGames extends javax.swing.JFrame {
     AppManager appManager;
     UserGameDetailsCrud userGameDetailsCrud;
     ConnectionManager cm;
-    JFrame backFrame;
-    public RecordedGames(JFrame backFrame) {
-        this.backFrame = backFrame;
+    public RecordedGames() {
         initComponents();
+        setLocationRelativeTo(null);
         try {
-        appManager = AppManager.getinstance();
-     
-        cm = ConnectionManager.getInstance();
-        
-        userGameDetailsCrud= new UserGameDetailsCrud(cm.in,cm.out);
-        init();
+            appManager = AppManager.getinstance();
+            cm = ConnectionManager.getInstance();
+            userGameDetailsCrud= new UserGameDetailsCrud(cm.in,cm.out);
+
         } catch (IOException ex) {
             Logger.getLogger(RecordedGames.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -62,39 +60,40 @@ public class RecordedGames extends javax.swing.JFrame {
     }
     
     public void init() throws IOException{
+        recordsList.removeAll();
+        new Thread(()->{
         
-        ArrayList<UserGameDetails> userGamesDetails = userGameDetailsCrud.getAllWithId(appManager.getUser().getId());
-
-        for (Iterator<UserGameDetails> iterator = userGamesDetails.iterator(); iterator.hasNext();) {
-            UserGameDetails next = iterator.next();
-            PlayerDetails p = next.getPlayerWithId(appManager.getUser().getId());
-            if(!p.getIsRecorded())
-                continue;
+            try {
+                ArrayList<UserGameDetails> userGamesDetails = userGameDetailsCrud.getAllWithId(appManager.getUser().getId());
                 
-            RecordedRow rr = new RecordedRow(p.getPlayerState(),next.playerOneDetails,next.playerTwoDetails);
-            rr.addMouseListener(new MouseAdapter(){
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    super.mouseClicked(e); 
-                    replay(next);
-                }
-            });
-            recordsList.add(rr);
-        }
+                for (Iterator<UserGameDetails> iterator = userGamesDetails.iterator(); iterator.hasNext();) {
+                    UserGameDetails next = iterator.next();
+                    PlayerDetails p = next.getPlayerWithId(appManager.getUser().getId());
+                    if(!p.getIsRecorded())
+                        continue;
+                    
+                    RecordedRow rr = new RecordedRow(p.getPlayerState(),next.playerOneDetails,next.playerTwoDetails);
+                    rr.addMouseListener(new MouseAdapter(){
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            super.mouseClicked(e);
+                            replay(next);
+                        }
+                    });
+                    EventQueue.invokeLater(()->{
+                        recordsList.add(rr);
+                        revalidate();
+                    });
+                }   
+            } catch (IOException ex) {
+                Logger.getLogger(RecordedGames.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        }).start();
+        
         
     }
     
-    
-    @Override
-    public void dispose() {
-        super.dispose();
-    }
-
-    @Override
-    public void hide() {
-        super.hide(); 
-        backFrame.setVisible(true);
-    }
     
     
    
@@ -107,38 +106,32 @@ public class RecordedGames extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         recordsList = new javax.swing.JPanel();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(900, 386));
 
-        jPanel1.setBackground(new java.awt.Color(102, 0, 204));
-        jPanel1.setLayout(new java.awt.BorderLayout());
-
-        jScrollPane2.setBackground(new java.awt.Color(102, 0, 204));
+        jScrollPane2.setBackground(new java.awt.Color(0, 0, 0));
+        jScrollPane2.setMaximumSize(new java.awt.Dimension(902, 424));
+        jScrollPane2.setMinimumSize(new java.awt.Dimension(902, 424));
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(902, 424));
 
         recordsList.setBackground(new java.awt.Color(0, 0, 0));
-        recordsList.setMinimumSize(new java.awt.Dimension(900, 0));
-        recordsList.setPreferredSize(new java.awt.Dimension(900, 100));
-        recordsList.setLayout(new javax.swing.BoxLayout(recordsList, javax.swing.BoxLayout.Y_AXIS));
+        recordsList.setMaximumSize(new java.awt.Dimension(902, 424));
+        recordsList.setMinimumSize(new java.awt.Dimension(902, 424));
+        recordsList.setPreferredSize(new java.awt.Dimension(900, 410));
         jScrollPane2.setViewportView(recordsList);
-
-        jPanel1.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -174,13 +167,12 @@ public class RecordedGames extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RecordedGames(new JFrame()).setVisible(true);
+                new RecordedGames().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel recordsList;
     // End of variables declaration//GEN-END:variables

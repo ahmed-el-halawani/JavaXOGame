@@ -5,6 +5,7 @@
  */
 package UI.MultiPlayer;
 
+import Entities.UserGameDetails;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,21 +18,19 @@ import java.util.List;
 
 // Someone who says "Hello"
 public class CustomActionListener {
-    public static interface HelloListener {
-        void someoneSaidHello();
+   
+ 
+    private List<Runnable> listeners = new ArrayList<Runnable>();
+
+  
+    public void addListener(Runnable runner) {
+        listeners.add(runner);
     }
-
-    
-    private List<HelloListener> listeners = new ArrayList<HelloListener>();
-
-    public void addListener(HelloListener toAdd) {
-        listeners.add(toAdd);
-    }
-
+  
      
     public void sayHello() {
-        System.out.println("Hello!!");
-        for (HelloListener hl : listeners)
-            hl.someoneSaidHello();
+        for (Runnable hl : listeners)
+            hl.run();
     }
+  
 }
