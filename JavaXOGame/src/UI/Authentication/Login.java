@@ -30,6 +30,9 @@ public class Login extends javax.swing.JFrame {
     ConnectionManager cm;
     UserCrud userCrud;
 
+    int x_pressed = 0;
+    int y_pressed = 0;
+    
     /**
      * Creates new form Login
      */
@@ -77,6 +80,7 @@ public class Login extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel6 = new javax.swing.JLabel();
+        dragPan = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
@@ -112,6 +116,34 @@ public class Login extends javax.swing.JFrame {
             public void windowLostFocus(java.awt.event.WindowEvent evt) {
             }
         });
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        dragPan.setBackground(new Color(0,0,0,0));
+        dragPan.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                dragPanMouseDragged(evt);
+            }
+        });
+        dragPan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                dragPanMousePressed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout dragPanLayout = new javax.swing.GroupLayout(dragPan);
+        dragPan.setLayout(dragPanLayout);
+        dragPanLayout.setHorizontalGroup(
+            dragPanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 620, Short.MAX_VALUE)
+        );
+        dragPanLayout.setVerticalGroup(
+            dragPanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 30, Short.MAX_VALUE)
+        );
+
+        getContentPane().add(dragPan, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 620, 30));
+
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(74, 31, 61));
 
@@ -129,10 +161,12 @@ public class Login extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(81, Short.MAX_VALUE)
                 .addComponent(jLabel10)
                 .addGap(75, 75, 75))
         );
+
+        jPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         jPanel3.setBackground(new java.awt.Color(186, 79, 84));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -282,31 +316,9 @@ public class Login extends javax.swing.JFrame {
         });
         jPanel3.add(signupBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 220, 90, 30));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
-        );
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(337, 0, 329, 356));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -434,6 +446,14 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabel5MouseClicked
 
+    private void dragPanMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dragPanMousePressed
+        x_pressed = evt.getX();
+        y_pressed = evt.getY();    }//GEN-LAST:event_dragPanMousePressed
+
+    private void dragPanMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dragPanMouseDragged
+        setLocation(evt.getXOnScreen() - x_pressed, evt.getYOnScreen() - y_pressed);
+    }//GEN-LAST:event_dragPanMouseDragged
+
     
     /**
      * @param args the command line arguments
@@ -472,6 +492,7 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel dragPan;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
