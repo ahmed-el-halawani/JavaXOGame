@@ -3,29 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
- 
-            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/Testing/waiting.gif</file>
-            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/UI/Authentication/Login.java</file>
-            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/Testing/leaver.jpg</file>
-            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/Entities/GameRoomCrud.java</file>
-            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/UI/MultiPlayer/CC.java</file>
-            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/UI/MultiLocal.java</file>
-            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/UI/Board/backWhite2.png</file>
-            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/UI/Main.java</file>
-            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/UI/History.java</file>
-            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/UI/Home.java</file>
-            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/UI/MultiPlayer/MultiMain.java</file>
-            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/UI/Video.java</file>
-            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/UI/Board/xWin.png</file>
-            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/UI/MultiPlayer/background.png</file>
-            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/Testing/WaitingScrean.java</file>
-            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/UI/Board/NewJFrame.java</file>
-            <file>file:/C:/Users/El-Hoda/Desktop/iti3/java/JavaXOGame/JavaXOGame/src/UI/MultiPlayer/MultiOnlineMenu.java</file>
-            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/Utils/GameRoomCrud.java</file>
-            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/UI/MultiPlayer/GameRoomGui.java</file>
-            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/UI/MultiPlayer/MultiMain.java</file>
-            <file>file:/F:/iti%20lessons/tasks/java/XOGame/JavaXOGame/src/Entities/UserGameDetails.java</file>
- 
+            <file>file:/C:/Users/hossa/OneDrive/Documents/GitHub/JavaXOGame/JavaXOGame/src/SinglePlayer/Game.java</file>
+            <file>file:/C:/Users/hossa/OneDrive/Documents/GitHub/JavaXOGame/JavaXOGame/src/Utils/AppManager.java</file>
+            <file>file:/C:/Users/hossa/OneDrive/Documents/GitHub/JavaXOGame/JavaXOGame/src/SinglePlayer/SingleMode.java</file>
         </group>
     </open-files>
 </project-private>

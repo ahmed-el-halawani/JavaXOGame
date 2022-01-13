@@ -10,6 +10,8 @@ import BounsGames.SnackGame;
 import Entities.GameRoom;
 import Entities.Responce;
 import Entities.UserGameDetails;
+import SinglePlayer.Game;
+import SinglePlayer.SingleMode;
 import Testing.MainTest;
 import UI.MultiPlayer.CustomActionListener;
 import UI.MultiPlayer.GameRoomGui;
@@ -349,6 +351,9 @@ public class Home extends javax.swing.JFrame {
         singlBT1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         singlBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/easy_1.png"))); // NOI18N
         singlBT1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                singlBT1MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 singlBT1MouseEntered(evt);
             }
@@ -360,6 +365,9 @@ public class Home extends javax.swing.JFrame {
         localBT1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         localBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/difficult_1.png"))); // NOI18N
         localBT1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                localBT1MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 localBT1MouseEntered(evt);
             }
@@ -371,6 +379,9 @@ public class Home extends javax.swing.JFrame {
         multiBT1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         multiBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/meduim.png"))); // NOI18N
         multiBT1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                multiBT1MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 multiBT1MouseEntered(evt);
             }
@@ -508,7 +519,7 @@ public class Home extends javax.swing.JFrame {
         win.setForeground(new java.awt.Color(255, 255, 255));
         win.setText("win : 3");
         jPanel1.add(win);
-        win.setBounds(390, 140, 80, 24);
+        win.setBounds(390, 140, 80, 25);
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/tic.png"))); // NOI18N
         jPanel1.add(jLabel9);
@@ -559,7 +570,7 @@ public class Home extends javax.swing.JFrame {
         lose.setForeground(new java.awt.Color(255, 255, 255));
         lose.setText("lose : 4");
         jPanel1.add(lose);
-        lose.setBounds(390, 180, 100, 24);
+        lose.setBounds(390, 180, 100, 25);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/scorePane (1).png"))); // NOI18N
         jPanel1.add(jLabel3);
@@ -841,6 +852,27 @@ new History().setVisible(true);
             }
         });
     }//GEN-LAST:event_jLabel14MouseClicked
+
+    private void singlBT1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_singlBT1MouseClicked
+        SingleMode jframe = new SingleMode(Game.EASY);
+            jframe.setVisible(true);
+            jframe.pack();
+            jframe.setLocationRelativeTo(null);
+    }//GEN-LAST:event_singlBT1MouseClicked
+
+    private void multiBT1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_multiBT1MouseClicked
+        SingleMode jframe = new SingleMode(Game.MID);
+            jframe.setVisible(true);
+            jframe.pack();
+            jframe.setLocationRelativeTo(null);
+    }//GEN-LAST:event_multiBT1MouseClicked
+
+    private void localBT1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_localBT1MouseClicked
+        SingleMode jframe = new SingleMode(Game.HARD);
+            jframe.setVisible(true);
+            jframe.pack();
+            jframe.setLocationRelativeTo(null);
+    }//GEN-LAST:event_localBT1MouseClicked
 
     class CloseWindowListener implements WindowListener{
 
