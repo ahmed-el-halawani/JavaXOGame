@@ -36,7 +36,7 @@ public class Video extends javax.swing.JFrame {
      public Video() {
              initComponents();
 
-          fileURL ="C:\\Users\\El-Hoda\\Downloads\\Video\\sorry.mp4";
+          fileURL ="F:\\iti lessons\\tasks\\java\\XOGame\\JavaXOGame\\src\\UI\\winVideo.mp4";
         modes=1;
          jLabel8.setText(MultiLocal.sendScrean);
         createScren(0);
