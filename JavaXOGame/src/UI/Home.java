@@ -169,7 +169,6 @@ public class Home extends javax.swing.JFrame {
         draw = new javax.swing.JLabel();
         lose = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLayeredPane1 = new javax.swing.JLayeredPane();
@@ -193,9 +192,9 @@ public class Home extends javax.swing.JFrame {
         findGameWithCode = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
 
@@ -234,15 +233,6 @@ public class Home extends javax.swing.JFrame {
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/ScoreBoard_1.png"))); // NOI18N
         jPanel1.add(jLabel13);
         jLabel13.setBounds(220, 70, 460, 180);
-
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/backWhite.png"))); // NOI18N
-        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel7MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel7);
-        jLabel7.setBounds(20, 10, 48, 30);
 
         jLabel15.setBackground(new java.awt.Color(255, 0, 255));
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/snack.png"))); // NOI18N
@@ -567,12 +557,22 @@ public class Home extends javax.swing.JFrame {
         jPanel1.add(jLabel10);
         jLabel10.setBounds(440, 20, 100, 50);
 
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/backWhite.png"))); // NOI18N
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel3);
+        jLabel3.setBounds(10, 0, 70, 40);
+
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/toe.png"))); // NOI18N
         jPanel1.add(jLabel11);
         jLabel11.setBounds(590, 20, 100, 60);
 
         jLabel6.setFont(new java.awt.Font("Tempus Sans ITC", 1, 48)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("x");
         jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -580,16 +580,7 @@ public class Home extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(850, 0, 30, 30);
-
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/backWhite.png"))); // NOI18N
-        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel7MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel7);
-        jLabel7.setBounds(10, 10, 93, 30);
+        jLabel6.setBounds(840, 0, 50, 30);
 
         jLabel4.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
@@ -920,7 +911,19 @@ System.exit(0);        // TODO add your handling code here:
         });
     }//GEN-LAST:event_jLabel16MouseClicked
 
-    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+if (back == 1) {
+            getPanal(jPanel6);
+            back = 0;
+
+        }
+        if (back == 2) {
+            getPanal(jPanel5);
+            back = 1;
+        }         // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {                                     
         if (back == 1) {
             getPanal(jPanel6);
             back = 0;
@@ -931,20 +934,7 @@ System.exit(0);        // TODO add your handling code here:
             back = 1;
         }
         // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel7MouseClicked
-
-    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-
-if (back == 1) {
-            getPanal(jPanel6);
-            back = 0;
-
-        }
-        if (back == 2) {
-            getPanal(jPanel5);
-            back = 1;
-        }          // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel7MouseClicked
+    }                                    
 
 
     class CloseWindowListener implements WindowListener{
@@ -1062,10 +1052,10 @@ if (back == 1) {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
