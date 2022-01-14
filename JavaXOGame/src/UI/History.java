@@ -101,7 +101,6 @@ public class History extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
@@ -133,16 +132,6 @@ public class History extends javax.swing.JFrame {
         });
         getContentPane().add(jLabel1);
         jLabel1.setBounds(1260, -10, 40, 40);
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/134226_back_arrow_left_icon.png"))); // NOI18N
-        jLabel3.setText(" ");
-        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel3MouseClicked(evt);
-            }
-        });
-        getContentPane().add(jLabel3);
-        jLabel3.setBounds(20, 0, 60, 30);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 60)); // NOI18N
         jLabel2.setText("-");
@@ -188,11 +177,6 @@ public class History extends javax.swing.JFrame {
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         dispose();
     }//GEN-LAST:event_jLabel1MouseClicked
-
-    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-       dispose();
-// TODO add your handling code here:
-    }//GEN-LAST:event_jLabel3MouseClicked
 
     /**
      * @param args the command line arguments
@@ -243,7 +227,6 @@ public  Vector<UserGameDetails> getData(ConnectionManager connection, String id)
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
