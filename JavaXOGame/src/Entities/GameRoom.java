@@ -62,7 +62,7 @@ public class GameRoom extends UserGameDetails  {
     }
     
     public GameRoom(PlayerDetails playerOneDetails){
-        this.playerOneDetails = this.playerOneDetails;
+        this.playerOneDetails = playerOneDetails;
         code = "abcd";
     }
     
@@ -70,8 +70,8 @@ public class GameRoom extends UserGameDetails  {
     }
     
     public GameRoom(PlayerDetails playerOneDetails,PlayerDetails playerTwoDetails){
-        this.playerOneDetails = this.playerOneDetails;
-        this.playerTwoDetails = this.playerTwoDetails;
+        this.playerOneDetails = playerOneDetails;
+        this.playerTwoDetails = playerTwoDetails;
     }
     
     public void createGameRoom(){
@@ -80,7 +80,7 @@ public class GameRoom extends UserGameDetails  {
     }
     
     public void randomGameRoom(PlayerDetails playerOneDetails){
-        this.playerOneDetails = this.playerOneDetails;
+        this.playerOneDetails = playerOneDetails;
     }
     
     public PlayerDetails getCurrentTurn() {

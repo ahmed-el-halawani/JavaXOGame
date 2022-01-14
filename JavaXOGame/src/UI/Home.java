@@ -68,7 +68,7 @@ public class Home extends javax.swing.JFrame {
 
         initComponents();
         init();
-        recGame = new RecordedGames(this);
+        recGame = new RecordedGames();
         setLocationRelativeTo(null);
         ConnectionManager connection;
         
@@ -677,6 +677,19 @@ localBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/l
     }//GEN-LAST:event_multiBT1MouseExited
 
     private void singlBTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_singlBTMouseClicked
+        History history = new History();
+        history.setVisible(true);
+        Home.this.setVisible(false);
+        
+        history.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                super.windowClosed(e); 
+                Home.this.setVisible(true);
+            }
+        });
+        
+        
         getPanal(jPanel7);
         back = 2;
     }//GEN-LAST:event_singlBTMouseClicked
@@ -767,19 +780,41 @@ System.exit(0);        // TODO add your handling code here:
     }//GEN-LAST:event_findGameWithCodeActionPerformed
 
     private void localBTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_localBTMouseClicked
-        String str = JOptionPane.showInputDialog(null, "Enter the second player's name : ", 
-       "Click a button", 1);
-         if(str != null){
-        player2=str;
-        new MultiLocal().setVisible(true);
+        String str = JOptionPane.showInputDialog(
+            null, 
+            "Enter the second player's name : ", 
+            "Click a button", 
+            1
+        );
+        
+        if(str != null){
+            player2=str;
+            MultiLocal multiLocal = new MultiLocal();
+            multiLocal.setVisible(true);
+            Home.this.setVisible(false);
 
-         }
+            multiLocal.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    super.windowClosed(e); 
+                    Home.this.setVisible(true);
+                }
+            });
+        }
     }//GEN-LAST:event_localBTMouseClicked
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-new History().setVisible(true);
-
-// TODO add your handling code here:
+        JFrame history = new History();
+        history.setVisible(true);
+        Home.this.setVisible(false);
+        
+        history.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                super.windowClosed(e); 
+                Home.this.setVisible(true);
+            }
+        });
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jLabel12MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseEntered
@@ -791,8 +826,21 @@ new History().setVisible(true);
     }//GEN-LAST:event_jLabel12MouseExited
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
-        recGame.setVisible(true);
-        this.setVisible(false);
+        try {
+            recGame.setVisible(true);
+            recGame.init();
+            this.setVisible(false);
+            recGame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    super.windowClosed(e);
+                    Home.this.setVisible(true);
+                }
+            });
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jLabel12MouseClicked
 
     private void randomGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomGameActionPerformed

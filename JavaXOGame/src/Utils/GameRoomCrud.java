@@ -37,6 +37,12 @@ public class GameRoomCrud {
         this.connection =connection;
     }
     
+    public GameRoomCrud(ConnectionManager connection) {
+        this.out = connection.out;
+        this.in = connection.in;
+        this.connection =connection;
+    }
+    
     public void createGameRoom(User user) throws JsonProcessingException, IOException {
           System.out.println(user);
        

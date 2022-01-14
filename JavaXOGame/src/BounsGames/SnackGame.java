@@ -23,17 +23,7 @@ import javax.swing.JOptionPane;
 
 public class SnackGame extends javax.swing.JFrame {
 
-    private int newX;
-    private int newY;
-    private int lastCode;
-    private boolean updateKey;
-    private boolean isGameOver;
-    private Snack s;
     
-    public SnackGame() {
-        initComponents();
-        setLocationRelativeTo(null);
-    }
     
     public void newSnack(){
           s = new Snack(
@@ -366,7 +356,7 @@ public class SnackGame extends javax.swing.JFrame {
         
         updateKey=true;
     }
-
+    
     
     
     public static void main(String args[]) {
@@ -376,7 +366,19 @@ public class SnackGame extends javax.swing.JFrame {
             s.start();
         });
     }
+    
+    
+    public SnackGame() {
+        initComponents();
+        setLocationRelativeTo(null);
+    }
 
+    private int newX;
+    private int newY;
+    private int lastCode;
+    private boolean updateKey;
+    private boolean isGameOver;
+    private Snack s;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Score;
     private javax.swing.JPanel draggeer;

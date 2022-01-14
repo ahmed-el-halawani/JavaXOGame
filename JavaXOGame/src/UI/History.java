@@ -4,20 +4,14 @@
  * and open the template in the editor.
  */
 package UI;
-
-import Entities.PlayerDetails;
 import Entities.UserGameDetails;
-import UI.RecordGame.RecordedRow;
 import Utils.AppManager;
 import Utils.ConnectionManager;
 import Utils.UserGameDetailsCrud;
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,7 +24,8 @@ import javax.swing.table.DefaultTableModel;
  * @author Tarek
  */
 public class History extends javax.swing.JFrame {
- int x,y;
+       
+      int x,y;
       UserGameDetailsCrud userGameDetailsCrud;
     public History() {
         initComponents();
@@ -106,10 +101,10 @@ public class History extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
         setPreferredSize(new java.awt.Dimension(1300, 600));
         getContentPane().setLayout(null);
@@ -120,14 +115,14 @@ public class History extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Player one Name", "Player two Name ", "Game Mode ", "Game Difficulty", "Player one Simbole", "Player two Simbole ", "Record", "Player one status", "Player two status "
+                "Player one Name", "Player one Simbole", "Player two Name ", "Player two Simbole ", "Player one status", "Player two status ", "Game Mode ", "Game Difficulty", "Record"
             }
         ));
         jTable1.setSelectionBackground(new java.awt.Color(102, 102, 255));
         jScrollPane1.setViewportView(jTable1);
 
         getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(0, 32, 1300, 570);
+        jScrollPane1.setBounds(0, 30, 1290, 570);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jLabel1.setText("x");
@@ -138,6 +133,16 @@ public class History extends javax.swing.JFrame {
         });
         getContentPane().add(jLabel1);
         jLabel1.setBounds(1260, -10, 40, 40);
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/134226_back_arrow_left_icon.png"))); // NOI18N
+        jLabel3.setText(" ");
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
+        getContentPane().add(jLabel3);
+        jLabel3.setBounds(20, 0, 60, 30);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 60)); // NOI18N
         jLabel2.setText("-");
@@ -167,12 +172,12 @@ public class History extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel4MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseDragged
-        this.setLocation(evt.getXOnScreen() - x, evt.getYOnScreen() - y);
+        this.setLocation(evt.getXOnScreen()-x,evt.getYOnScreen()-y);
     }//GEN-LAST:event_jLabel4MouseDragged
 
     private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed
-        x = evt.getX();
-        y = evt.getY();
+        x=evt.getX();
+        y=evt.getY();
     }//GEN-LAST:event_jLabel4MousePressed
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
@@ -181,8 +186,13 @@ public class History extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        System.exit(0);        // TODO add your handling code here:
+        dispose();
     }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+       dispose();
+// TODO add your handling code here:
+    }//GEN-LAST:event_jLabel3MouseClicked
 
     /**
      * @param args the command line arguments
@@ -218,11 +228,9 @@ public class History extends javax.swing.JFrame {
             }
         });
     }
-
-    public Vector<UserGameDetails> getData(ConnectionManager connection, String id) {
-        Vector<UserGameDetails> data = new Vector<>();
+public  Vector<UserGameDetails> getData(ConnectionManager connection, String id) {
+    Vector<UserGameDetails> data = new Vector<>();
         try {
-
             for (UserGameDetails ugd : (new UserGameDetailsCrud(connection.in, connection.out)).getAllWithId(id)) {
                 data.add(ugd);
             }
@@ -235,6 +243,7 @@ public class History extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

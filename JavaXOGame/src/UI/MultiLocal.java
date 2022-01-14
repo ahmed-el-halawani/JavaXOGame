@@ -132,7 +132,6 @@ public class MultiLocal extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -503,10 +502,13 @@ public class MultiLocal extends javax.swing.JFrame {
             }//GEN-LAST:event_btn5ActionPerformed
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
+ 
         setVisible(false);
         new Home().setVisible(true);
         // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel6MouseClicked
+ 
+              // TODO add your handling code here:
+     }//GEN-LAST:event_jLabel6MouseClicked
 
     private void dragLabelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dragLabelMouseDragged
         setLocation(evt.getXOnScreen() - x_pressed, evt.getYOnScreen() - y_pressed);
