@@ -58,6 +58,9 @@ public class MultiLocal extends javax.swing.JFrame {
      */
     public MultiLocal() {
         initComponents();
+        player1_turn=true;
+                        frstTurn.setText("X turn");
+
         try {
             cm = ConnectionManager.getInstance();
         } catch (IOException ex) {
@@ -500,7 +503,9 @@ public class MultiLocal extends javax.swing.JFrame {
             }//GEN-LAST:event_btn5ActionPerformed
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
-        System.exit(0);        // TODO add your handling code here:
+        setVisible(false);
+        new Home().setVisible(true);
+        // TODO add your handling code here:
     }//GEN-LAST:event_jLabel6MouseClicked
 
     private void dragLabelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dragLabelMouseDragged

@@ -26,7 +26,7 @@ public class Video extends javax.swing.JFrame {
      int x_pressed = 0;
     int y_pressed = 0;
     String fileURL="";
-    int d;
+   
     int modes=0;
      MediaPlayer mp;
      
@@ -39,7 +39,7 @@ public class Video extends javax.swing.JFrame {
           fileURL ="C:\\Users\\El-Hoda\\Downloads\\Video\\sorry.mp4";
         modes=1;
          jLabel8.setText(MultiLocal.sendScrean);
-        createScren();
+        createScren(0);
         setTitle("vido java");
         jLabel6.setLayout(new BorderLayout());
          
@@ -53,7 +53,7 @@ public class Video extends javax.swing.JFrame {
         modes=m;
 
         jLabel8.setText(MultiLocal.sendScrean);
-        createScren();
+        createScren(0);
         setTitle("vido java");
         jLabel6.setLayout(new BorderLayout());
          
@@ -61,7 +61,8 @@ public class Video extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
          
     }
-    private void createScren(){
+    private void createScren(int i){
+         int d=i;
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
@@ -72,8 +73,14 @@ public class Video extends javax.swing.JFrame {
                 mp.setVolume(0.7);
                 mp.setCycleCount(MediaPlayer.INDEFINITE);
                 mp.play();
+                finsh=d;
+                System.out.println("d="+finsh);
+                //stop video
                 if(d==2){
-                mp.stop();}
+                    mp.setVolume(0);
+                mp.stop();
+                
+                }
             };
         });
         
@@ -154,6 +161,11 @@ public class Video extends javax.swing.JFrame {
         });
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/Board/XPngg.png"))); // NOI18N
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/Board/oPng.png"))); // NOI18N
 
@@ -243,10 +255,14 @@ public class Video extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel2MouseEntered
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+ 
+        
+         
+         createScren(2);
 
-        finsh=0;
-        System.err.println("adads"+finsh);
-        System.exit(0);
+        setVisible(false);
+        
+        new Home().setVisible(true);
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jLabel3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseExited
@@ -258,14 +274,15 @@ public class Video extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel3MouseEntered
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-         d=2;
-         createScren();
+        
+         createScren(2);
+
         if(modes==1){
            
             setVisible(false);
-            
         new MultiLocal().setVisible(true);}
 
+       
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabel3MouseClicked
 
@@ -279,8 +296,17 @@ public class Video extends javax.swing.JFrame {
     }//GEN-LAST:event_dragLabelMousePressed
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-         setVisible(false);        // TODO add your handling code here:
+          
+         createScren(2);
+                                
+
+        setVisible(false);
+        new Home().setVisible(true);        // TODO add your handling code here:
     }//GEN-LAST:event_jLabel7MouseClicked
+
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel4MouseClicked
 
     /**
      * @param args the command line arguments

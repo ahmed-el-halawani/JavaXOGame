@@ -5,13 +5,19 @@
  */
 package UI;
 
+import Entities.PlayerDetails;
 import Entities.UserGameDetails;
+import UI.RecordGame.RecordedRow;
 import Utils.AppManager;
 import Utils.ConnectionManager;
 import Utils.UserGameDetailsCrud;
 import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,40 +30,52 @@ import javax.swing.table.DefaultTableModel;
  * @author Tarek
  */
 public class History extends javax.swing.JFrame {
-
-    /**
-     * Creates new form History
-     */String id;
-      Vector<String> data= new Vector<>();
-      int x,y;
+ int x,y;
+      UserGameDetailsCrud userGameDetailsCrud;
     public History() {
         initComponents();
-                setLocationRelativeTo(null);
+       setLocationRelativeTo(null);
 
        ConnectionManager connection;
         try {
             connection = ConnectionManager.getInstance();
+            
+            userGameDetailsCrud = new UserGameDetailsCrud(connection.in,connection.out);
+
             AppManager app = AppManager.getinstance();
-            UserGameDetailsCrud userg = new UserGameDetailsCrud(connection.in,connection.out);
-             DefaultTableModel model=(DefaultTableModel)jTable1.getModel();
+//            UserGameDetailsCrud userg = new UserGameDetailsCrud(connection.in,connection.out);
+            DefaultTableModel model=(DefaultTableModel)jTable1.getModel();
 
+            new Thread(()->{
+                try {
+                    ArrayList<UserGameDetails> userGamesDetails =
+                            userGameDetailsCrud
+                                    .getAllWithId(app.getUser().getId());
+                                            
 
-            id = app.getUser().getId();
-          //id="9e6db09d-a39c-4699-a86c-b9aa2e4922ec";
-           for (UserGameDetails ugd :getData(connection, id)){
-               data.add(ugd.getPlayerOneDetails().getPlayer().getUserName());
-               data.add(ugd.getPlayerTwoDetails().getPlayer().getUserName());
-               data.add(ugd.getGameMode().toString());
-               data.add(ugd.getGameDifficultyLvl().toString());
-               data.add(ugd.getPlayerOneDetails().getPlayerSimbole().toString());
-               data.add(ugd.getPlayerTwoDetails().getPlayerSimbole().toString());
-               data.add(""+ugd.isRecordedForUser(id));
-               data.add(ugd.getPlayerOneDetails().getPlayerState().toString());
-               data.add(ugd.getPlayerTwoDetails().getPlayerState().toString());
-               model.addRow(data);
+                    for (UserGameDetails ugd :userGamesDetails){
+                        Vector<String> data= new Vector<>();
+                        data.add(ugd.getPlayerOneDetails().getPlayer().getName());
+                        data.add(ugd.getPlayerTwoDetails().getPlayer().getName());
+                        data.add(ugd.getGameMode().toString());
+                        data.add(ugd.getGameDifficultyLvl().toString());
+                        data.add(ugd.getPlayerOneDetails().getPlayerSimbole().toString());
+                        data.add(ugd.getPlayerTwoDetails().getPlayerSimbole().toString());
+                        data.add(""+ugd.isRecordedForUser(app.getUser().getId()));
+                        data.add(ugd.getPlayerOneDetails().getPlayerState().toString());
+                        data.add(ugd.getPlayerTwoDetails().getPlayerState().toString());
+                        EventQueue.invokeLater(()->{
+                            model.addRow(data);
+                            revalidate();
+                        });
+                    } 
+                                            
+                                                                   
 
-
-         }
+                                            } catch (IOException ex) {
+                    Logger.getLogger(History.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }).start();
 
 
 
@@ -88,7 +106,6 @@ public class History extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
@@ -122,16 +139,6 @@ public class History extends javax.swing.JFrame {
         getContentPane().add(jLabel1);
         jLabel1.setBounds(1260, -10, 40, 40);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/backBlack.png"))); // NOI18N
-        jLabel3.setText(" ");
-        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel3MouseClicked(evt);
-            }
-        });
-        getContentPane().add(jLabel3);
-        jLabel3.setBounds(20, 0, 60, 30);
-
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 60)); // NOI18N
         jLabel2.setText("-");
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -160,12 +167,12 @@ public class History extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel4MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseDragged
-        this.setLocation(evt.getXOnScreen()-x,evt.getYOnScreen()-y);
+        this.setLocation(evt.getXOnScreen() - x, evt.getYOnScreen() - y);
     }//GEN-LAST:event_jLabel4MouseDragged
 
     private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed
-        x=evt.getX();
-        y=evt.getY();
+        x = evt.getX();
+        y = evt.getY();
     }//GEN-LAST:event_jLabel4MousePressed
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
@@ -174,13 +181,8 @@ public class History extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-System.exit(0);        // TODO add your handling code here:
+        System.exit(0);        // TODO add your handling code here:
     }//GEN-LAST:event_jLabel1MouseClicked
-
-    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        setVisible(false);
-// TODO add your handling code here:
-    }//GEN-LAST:event_jLabel3MouseClicked
 
     /**
      * @param args the command line arguments
@@ -216,10 +218,10 @@ System.exit(0);        // TODO add your handling code here:
             }
         });
     }
-public  Vector<UserGameDetails> getData(ConnectionManager connection, String id) {
-    Vector<UserGameDetails> data = new Vector<>();
-        try {
 
+    public Vector<UserGameDetails> getData(ConnectionManager connection, String id) {
+        Vector<UserGameDetails> data = new Vector<>();
+        try {
 
             for (UserGameDetails ugd : (new UserGameDetailsCrud(connection.in, connection.out)).getAllWithId(id)) {
                 data.add(ugd);
@@ -233,7 +235,6 @@ public  Vector<UserGameDetails> getData(ConnectionManager connection, String id)
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

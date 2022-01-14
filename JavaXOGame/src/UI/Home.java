@@ -77,12 +77,13 @@ public class Home extends javax.swing.JFrame {
             connection = ConnectionManager.getInstance();
             win.setText("win : " + getResult(0, connection, appManager.getUser().getUserName()));
             lose.setText("lose : " + getResult(1, connection, appManager.getUser().getUserName()));
+            draw.setText("draw : " + getResult(2, connection, appManager.getUser().getUserName()));
             this.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
             jPanel6.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
             jPanel5.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
             jPanel7.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
             player1=appManager.getUser().getUserName();
-        
+         
         } catch (IOException ex) {
             Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -166,10 +167,10 @@ public class Home extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         lose = new javax.swing.JLabel();
+        draw = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
 
@@ -192,7 +193,7 @@ public class Home extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jLabel13);
-        jLabel13.setBounds(70, 140, 120, 120);
+        jLabel13.setBounds(160, 190, 120, 120);
 
         jLabel14.setBackground(new java.awt.Color(255, 0, 255));
         jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/flappyBird.png"))); // NOI18N
@@ -203,7 +204,7 @@ public class Home extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jLabel14);
-        jLabel14.setBounds(100, 280, 100, 110);
+        jLabel14.setBounds(680, 190, 100, 110);
 
         jLayeredPane1.setLayout(new java.awt.CardLayout());
 
@@ -264,7 +265,7 @@ public class Home extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(106, 106, 106)
                         .addComponent(jLabel12)))
-                .addContainerGap(230, Short.MAX_VALUE))
+                .addContainerGap(114, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -332,7 +333,7 @@ public class Home extends javax.swing.JFrame {
                     .addComponent(localBT, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(singlBT, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(multiBT, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(225, Short.MAX_VALUE))
+                .addContainerGap(109, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -363,7 +364,7 @@ public class Home extends javax.swing.JFrame {
         });
 
         localBT1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        localBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/difficult_1.png"))); // NOI18N
+        localBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/hard3.png"))); // NOI18N
         localBT1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 localBT1MouseClicked(evt);
@@ -400,7 +401,7 @@ public class Home extends javax.swing.JFrame {
                     .addComponent(localBT1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(singlBT1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(multiBT1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(225, Short.MAX_VALUE))
+                .addContainerGap(109, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -513,34 +514,25 @@ public class Home extends javax.swing.JFrame {
         jLayeredPane1.add(jPanel3, "card5");
 
         jPanel1.add(jLayeredPane1);
-        jLayeredPane1.setBounds(221, 239, 390, 270);
+        jLayeredPane1.setBounds(271, 239, 410, 270);
 
         win.setFont(new java.awt.Font("Tempus Sans ITC", 1, 18)); // NOI18N
         win.setForeground(new java.awt.Color(255, 255, 255));
-        win.setText("win : 3");
+        win.setText("win : ");
         jPanel1.add(win);
-        win.setBounds(390, 140, 80, 25);
+        win.setBounds(440, 130, 80, 25);
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/tic.png"))); // NOI18N
         jPanel1.add(jLabel9);
-        jLabel9.setBounds(260, 0, 100, 90);
+        jLabel9.setBounds(290, 0, 100, 90);
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/tac.png"))); // NOI18N
         jPanel1.add(jLabel10);
-        jLabel10.setBounds(390, 20, 100, 50);
+        jLabel10.setBounds(440, 20, 100, 50);
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/toe.png"))); // NOI18N
         jPanel1.add(jLabel11);
-        jLabel11.setBounds(520, 20, 100, 60);
-
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/backWhite.png"))); // NOI18N
-        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel7MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel7);
-        jLabel7.setBounds(20, 10, 48, 30);
+        jLabel11.setBounds(590, 20, 100, 60);
 
         jLabel6.setFont(new java.awt.Font("Tempus Sans ITC", 1, 48)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
@@ -551,7 +543,7 @@ public class Home extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(760, 0, 30, 30);
+        jLabel6.setBounds(850, 0, 30, 30);
 
         jLabel4.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
@@ -568,26 +560,32 @@ public class Home extends javax.swing.JFrame {
 
         lose.setFont(new java.awt.Font("Tempus Sans ITC", 1, 18)); // NOI18N
         lose.setForeground(new java.awt.Color(255, 255, 255));
-        lose.setText("lose : 4");
+        lose.setText("lose : ");
         jPanel1.add(lose);
-        lose.setBounds(390, 180, 100, 25);
+        lose.setBounds(440, 160, 100, 25);
+
+        draw.setFont(new java.awt.Font("Tempus Sans ITC", 1, 18)); // NOI18N
+        draw.setForeground(new java.awt.Color(255, 255, 255));
+        draw.setText("draw : ");
+        jPanel1.add(draw);
+        draw.setBounds(440, 190, 70, 25);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/scorePane (1).png"))); // NOI18N
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(360, 100, 130, 150);
+        jLabel3.setBounds(410, 100, 130, 150);
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/homee.jpg"))); // NOI18N
-        jLabel5.setText("jLabel5");
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/homee_ccexpress.jpeg"))); // NOI18N
+        jLabel5.setPreferredSize(new java.awt.Dimension(900, 600));
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(0, 0, 800, 550);
+        jLabel5.setBounds(0, 0, 900, 550);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 800, Short.MAX_VALUE)
+            .addGap(0, 898, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 898, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -626,7 +624,7 @@ localBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/l
     }//GEN-LAST:event_multiBTMouseExited
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        getPanal(jPanel5);
+         getPanal(jPanel5);
 
         back = 1;// TODO add your handling code here:
     }//GEN-LAST:event_jLabel1MouseClicked
@@ -659,12 +657,12 @@ localBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/l
     }//GEN-LAST:event_singlBT1MouseExited
 
     private void localBT1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_localBT1MouseEntered
-        localBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/difficult2.png"))); // NOI18N
+         localBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/hard4.png"))); // NOI18N
        
     }//GEN-LAST:event_localBT1MouseEntered
 
     private void localBT1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_localBT1MouseExited
-               localBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/difficult_1.png"))); // NOI18N
+               localBT1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button/hard3.png"))); // NOI18N
 
     }//GEN-LAST:event_localBT1MouseExited
 
@@ -695,19 +693,6 @@ y=evt.getY();
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
 System.exit(0);        // TODO add your handling code here:
     }//GEN-LAST:event_jLabel6MouseClicked
-
-    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-if (back == 1) {
-            getPanal(jPanel6);
-            back = 0;
-
-        }
-        if (back == 2) {
-            getPanal(jPanel5);
-            back = 1;
-        }  
-// TODO add your handling code here:
-    }//GEN-LAST:event_jLabel7MouseClicked
 
     private void multiBTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_multiBTMouseClicked
 //        this.setVisible(false);
@@ -913,19 +898,24 @@ new History().setVisible(true);
     public int getResult(int typ, ConnectionManager connection, String name) throws IOException {
         int wins = 0;
         int lose = 0;
+        int draw =0;
     
         for (UserGameDetails ugd : new UserGameDetailsCrud(connection.in, connection.out).getAllWithUserName(name)) {
             if (ugd.getPlayerWithUserName(name).getPlayerState().equals(UserGameDetails.PlayerState.Winner)) {
                 wins++;
-            } else {
+            }  else if(ugd.getPlayerWithUserName(name).getPlayerState().equals(UserGameDetails.PlayerState.Loser)) {
                 lose++;
+            }else{
+            draw++;
             }
         }
         
         if (typ == 0) {
             return wins;
-        } else {
+        } else if(typ==1) {
             return lose;
+        }else{
+        return draw;
         }
     }
 
@@ -970,6 +960,7 @@ new History().setVisible(true);
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField code;
     private javax.swing.JButton createGameRoom;
+    private javax.swing.JLabel draw;
     private javax.swing.JButton findGameWithCode;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -982,7 +973,6 @@ new History().setVisible(true);
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
