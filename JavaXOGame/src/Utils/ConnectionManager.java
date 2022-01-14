@@ -30,22 +30,19 @@ public class ConnectionManager {
      game,data
     }
     
-    private ConnectionManager(socketType type) throws IOException{
-        soc = new Socket("127.0.0.1",5005);
-        in = new DataInputStream(soc.getInputStream());
-        out = new DataOutputStream(soc.getOutputStream());
-        ObjectMapper om = new ObjectMapper();
-        Responce res = om.readValue(in.readUTF(), Responce.class);
-        if(res.getStatusCode()!=responceCodes.ConnectionApproved){
-            switch(res.getStatusCode()){
-                case SQLConnectionError:
-                    try {
-                        throw new SQLException(res.getObject());
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ConnectionManager.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-            }
-        }
+    private ConnectionManager(socketType type) throws IOException {
+             soc = new Socket("127.0.0.1",5005);
+            in = new DataInputStream(soc.getInputStream());
+            out = new DataOutputStream(soc.getOutputStream());
+            ObjectMapper om = new ObjectMapper();
+            Responce res = om.readValue(in.readUTF(), Responce.class);
+            if(res.getStatusCode()!=responceCodes.ConnectionApproved)
+                if(res.getStatusCode()==responceCodes.SQLConnectionError)
+                    throw new IOException("Sql error try connect server to Database");
+                else
+                    throw new IOException(res.getObject());
+      
+      
     }
    
     

@@ -44,7 +44,7 @@ public class RecordedGames extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         try {
-            appManager = AppManager.getinstance();
+            appManager = AppManager.getInstance();
             cm = ConnectionManager.getInstance();
             userGameDetailsCrud= new UserGameDetailsCrud(cm.in,cm.out);
 

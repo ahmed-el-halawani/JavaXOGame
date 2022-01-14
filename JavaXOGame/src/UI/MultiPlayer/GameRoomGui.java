@@ -50,7 +50,7 @@ public final class GameRoomGui extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
 
-        this.appManager = AppManager.getinstance();
+        this.appManager = AppManager.getInstance();
         this.gamebord = gamebord;
         gamePanel = new GameBordPanel();
         

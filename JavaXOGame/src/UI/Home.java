@@ -73,7 +73,7 @@ public class Home extends javax.swing.JFrame {
         setLocationRelativeTo(null);
        
         
-        appManager = AppManager.getinstance();
+        appManager = AppManager.getInstance();
         try {
             connection = ConnectionManager.getInstance();
             update();
@@ -263,7 +263,7 @@ public class Home extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jLabel16);
-        jLabel16.setBounds(680, 140, 100, 110);
+        jLabel16.setBounds(660, 140, 100, 110);
 
         jLayeredPane1.setLayout(new java.awt.CardLayout());
 

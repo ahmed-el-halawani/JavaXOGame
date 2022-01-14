@@ -61,7 +61,7 @@ public final class SingleMode extends javax.swing.JFrame {
             initComponents();
             frstTurn.setText("X turn first");
             cm = ConnectionManager.getInstance();
-            appManager = AppManager.getinstance();
+            appManager = AppManager.getInstance();
 
             game = new Game(gameMode);
             

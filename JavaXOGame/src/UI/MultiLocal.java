@@ -66,7 +66,7 @@ public class MultiLocal extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(MultiLocal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        appManager = AppManager.getinstance();
+        appManager = AppManager.getInstance();
         userGameDetails = new UserGameDetails(
             UserGameDetails.GameModes.Single,
             UserGameDetails.GameDifficultyLvl.Intermediate,

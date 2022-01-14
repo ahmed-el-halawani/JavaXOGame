@@ -66,7 +66,7 @@ class Initiater {
         initComponents();
         setLocationRelativeTo(null);
         this.backFrame = backFrame;
-        appManager = AppManager.getinstance();
+        appManager = AppManager.getInstance();
     }
 
     @SuppressWarnings("unchecked")

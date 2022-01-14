@@ -74,7 +74,7 @@ class Responder implements HelloListener {
             cm = ConnectionManager.getInstance();
             userGameDetailsCrud = new UserGameDetailsCrud(cm.in,cm.out);
             userCrud = new UserCrud(cm.in,cm.out);
-             appManager = AppManager.getinstance();
+             appManager = AppManager.getInstance();
             
         } catch (IOException ex) {
             Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);

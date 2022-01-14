@@ -37,7 +37,7 @@ public class History extends javax.swing.JFrame {
             
             userGameDetailsCrud = new UserGameDetailsCrud(connection.in,connection.out);
 
-            AppManager app = AppManager.getinstance();
+            AppManager app = AppManager.getInstance();
 //            UserGameDetailsCrud userg = new UserGameDetailsCrud(connection.in,connection.out);
             DefaultTableModel model=(DefaultTableModel)jTable1.getModel();
 

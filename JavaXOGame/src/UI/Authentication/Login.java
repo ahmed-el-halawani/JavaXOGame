@@ -438,7 +438,7 @@ public class Login extends javax.swing.JFrame {
 
             EventQueue.invokeLater(()->{
                 if(u != null && u.getPassword().equals(password)){
-                    AppManager app = AppManager.getinstance();
+                    AppManager app = AppManager.getInstance();
                     app.setUser(u);
 
                     JFrame form = new Home();

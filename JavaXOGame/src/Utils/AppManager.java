@@ -21,7 +21,7 @@ public class AppManager {
         this.user = user;
     }
     
-    public static AppManager getinstance(){
+    public static AppManager getInstance(){
         if(appManager ==null )
         {
             appManager = new AppManager();

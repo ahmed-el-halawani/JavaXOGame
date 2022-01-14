@@ -17,6 +17,7 @@ import java.io.*;
 import java.net.*;
 import java.sql.*;
 import java.util.*;
+import java.util.concurrent.Executor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -75,8 +76,10 @@ class RequestHandler extends Thread {
             this.in = new DataInputStream(s.getInputStream());
             this.out = new DataOutputStream(s.getOutputStream());
             this.s = s;
+            DriverManager.setLoginTimeout(10);
             con = DriverManager.getConnection("jdbc:derby://localhost:1527/javaOXDatabase","javaProject","javaProject");
-            
+           
+//            System.out.println("herere");
             userCrud = new UserCrud(con);
             playerDetailsCrud = new PlayerDetailsCrud(in,out,con);
             userGameDetailsCrud = new UserGameDetailsCrud(con,playerDetailsCrud);

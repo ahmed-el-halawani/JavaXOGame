@@ -40,7 +40,7 @@ public final class WaitingScrean extends javax.swing.JFrame {
     GameRoomCrud.ListenersX listener;
     CardLayout cardLayout;
     public WaitingScrean(GameRoomCrud gamebord) {
-        this.appManager = AppManager.getinstance();
+        this.appManager = AppManager.getInstance();
         this.gamebord = gamebord;
         
         initComponents();
