@@ -25,13 +25,13 @@ public class AppManager {
         if(appManager ==null )
         {
             appManager = new AppManager();
-            appManager.setUser(new User(
-                    "2033e557-fb4d-4297-a48b-0a971140593e",
-                    "ahmed34",
-                    "ahmedGomaa244",
-                    "123123123",
-                    User.UserType.Account
-                ));
+//            appManager.setUser(new User(
+//                    "2033e557-fb4d-4297-a48b-0a971140593e",
+//                    "ahmed34",
+//                    "ahmedGomaa244",
+//                    "123123123",
+//                    User.UserType.Account
+//                ));
         }
             
                 

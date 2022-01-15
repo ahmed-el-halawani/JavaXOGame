@@ -39,6 +39,11 @@ public class RunnerFrame extends javax.swing.JFrame {
     public RunnerFrame(String winVideo) {
 
         initComponents();
+        if(winVideo.equals(this.winVideo)){
+            playerState.setText("Winner");
+        }else{
+            playerState.setText("Loser");
+        }
         setTitle("Win Lose Video");
         this.videoSelcted = winVideo;
         setLocationRelativeTo(null);
@@ -123,7 +128,6 @@ public class RunnerFrame extends javax.swing.JFrame {
         playerState.setFont(new java.awt.Font("Tekton Pro Ext", 0, 48)); // NOI18N
         playerState.setForeground(new java.awt.Color(255, 255, 255));
         playerState.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        playerState.setText("Winner");
         jPanel1.add(playerState);
         playerState.setBounds(200, 50, 510, 90);
 
@@ -293,7 +297,7 @@ public class RunnerFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RunnerFrame(winVideo).setVisible(true);
+                new RunnerFrame(loseVideo).setVisible(true);
             }
         });
     }

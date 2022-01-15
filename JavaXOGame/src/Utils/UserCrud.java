@@ -48,14 +48,14 @@ public  class UserCrud implements ICrud<User>{
     
     @Override
     public synchronized int add(User entity) {
-        System.out.println(entity);
+//        System.out.println(entity);
         try {
             JsonAction jsonAction = new JsonAction(
                     entity.toJson(),
                     JsonAction.Types.AddUser,
                     ""
             );
-            System.out.println(obm.writeValueAsString(jsonAction));
+//            System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
             
             Responce res = obm.readValue(in.readUTF(), Responce.class);
@@ -84,7 +84,7 @@ public  class UserCrud implements ICrud<User>{
                     JsonAction.Types.UpdateUser,
                     obm.writeValueAsString(m)
             );
-            System.out.println(obm.writeValueAsString(jsonAction));
+//            System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
             
             Responce res = obm.readValue(in.readUTF(), Responce.class);
@@ -112,7 +112,7 @@ public  class UserCrud implements ICrud<User>{
                     JsonAction.Types.DeleteUser,
                     obm.writeValueAsString(m)
             );
-            System.out.println(obm.writeValueAsString(jsonAction));
+//            System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
             
               
@@ -142,7 +142,7 @@ public  class UserCrud implements ICrud<User>{
                     JsonAction.Types.GetUser,
                     obm.writeValueAsString(m)
             );
-            System.out.println(obm.writeValueAsString(jsonAction));
+//            System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
             
             
@@ -177,7 +177,7 @@ public  class UserCrud implements ICrud<User>{
                     JsonAction.Types.GetUserWithUesrName,
                     obm.writeValueAsString(m)
             );
-            System.out.println(obm.writeValueAsString(jsonAction));
+//            System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
             
             
@@ -213,11 +213,11 @@ public  class UserCrud implements ICrud<User>{
                     JsonAction.Types.GetAllUsers,
                     ""
             );
-            System.out.println(obm.writeValueAsString(jsonAction));
+//            System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
             CollectionType typeReference = TypeFactory.defaultInstance().constructCollectionType(List.class, User.class);
             String j = in.readUTF();
-            System.out.println(j);
+//            System.out.println(j);
             
             Responce res = obm.readValue(j, Responce.class);
             

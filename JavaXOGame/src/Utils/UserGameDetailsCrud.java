@@ -37,17 +37,17 @@ DataOutputStream out;
     }
     @Override
     public int add(UserGameDetails entity) throws JsonProcessingException, IOException{
-      System.out.println(entity);
+//      System.out.println(entity);
        
             JsonAction jsonAction = new JsonAction(
                     entity.toJson(),
                     JsonAction.Types.Add,
                     ""
             );
-            System.out.println(obm.writeValueAsString(jsonAction));
+//            System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
             Responce res = obm.readValue(in.readUTF(), Responce.class);
-            System.out.println(res);
+//            System.out.println(res);
 
             if(res.getStatusCode() == Responce.responceCodes.Done){
                 return obm.readValue(res.getObject(), Integer.class);
@@ -69,10 +69,10 @@ DataOutputStream out;
                     
                     obm.writeValueAsString(m)
             );
-            System.out.println(obm.writeValueAsString(jsonAction));
+//            System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
             Responce res = obm.readValue(in.readUTF(), Responce.class);
-                        System.out.println(res);
+//                        System.out.println(res);
 
             if(res.getStatusCode() == Responce.responceCodes.Done){
                 return obm.readValue(res.getObject(), Integer.class);
@@ -93,10 +93,10 @@ DataOutputStream out;
                     
                     obm.writeValueAsString(m)
             );
-            System.out.println(obm.writeValueAsString(jsonAction));
+//            System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
             Responce res = obm.readValue(in.readUTF(), Responce.class);
-                        System.out.println(res);
+//                        System.out.println(res);
 
             if(res.getStatusCode() == Responce.responceCodes.Done){
                 return obm.readValue(res.getObject(), Integer.class);
@@ -117,10 +117,10 @@ DataOutputStream out;
                
                 obm.writeValueAsString(m)
         );
-        System.out.println(obm.writeValueAsString(jsonAction));
+//        System.out.println(obm.writeValueAsString(jsonAction));
         out.writeUTF(obm.writeValueAsString(jsonAction));
         Responce res = obm.readValue(in.readUTF(), Responce.class);
-                    System.out.println(res);
+//                    System.out.println(res);
 
         if(res.getStatusCode() == Responce.responceCodes.Done){
             if(!res.getObject().equals("null"))
@@ -142,14 +142,14 @@ DataOutputStream out;
                    
                     ""
             );
-            System.out.println(obm.writeValueAsString(jsonAction));
+//            System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
             CollectionType typeReference = TypeFactory.defaultInstance().constructCollectionType(List.class, UserGameDetails.class);
             
             Responce res = obm.readValue(in.readUTF(), Responce.class);
-                        System.out.println(res);
+//                        System.out.println(res);
                         
-            System.out.println(res);
+//            System.out.println(res);
 
             if(res.getStatusCode() == Responce.responceCodes.Done){
                 return obm.readValue(res.getObject(), typeReference);
@@ -170,12 +170,12 @@ DataOutputStream out;
                     
                     obm.writeValueAsString(m)
             );
-            System.out.println(obm.writeValueAsString(jsonAction));
+//            System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
             CollectionType typeReference = TypeFactory.defaultInstance().constructCollectionType(List.class, UserGameDetails.class);
             
             Responce res = obm.readValue(in.readUTF(), Responce.class);
-            System.out.println(res);
+//            System.out.println(res);
             
             if(res.getStatusCode() == Responce.responceCodes.Done){
                 return obm.readValue(res.getObject(), typeReference);
@@ -195,11 +195,11 @@ DataOutputStream out;
                     
                     obm.writeValueAsString(m)
             );
-            System.out.println(obm.writeValueAsString(jsonAction));
+//            System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
             CollectionType typeReference = TypeFactory.defaultInstance().constructCollectionType(List.class, UserGameDetails.class);
             Responce res = obm.readValue(in.readUTF(), Responce.class);
-                        System.out.println(res);
+//                        System.out.println(res);
 
             if(res.getStatusCode() == Responce.responceCodes.Done){
                 return obm.readValue(res.getObject(), typeReference);

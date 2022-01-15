@@ -58,10 +58,11 @@ public final class SingleMode extends javax.swing.JFrame {
     public SingleMode(int gameMode) {
         try {
             initComponents();
+            this.setLocationRelativeTo(null);
             frstTurn.setText("X turn first");
             cm = ConnectionManager.getInstance();
             appManager = AppManager.getInstance();
-
+            
             game = new Game(gameMode);
             
             startGame();
@@ -670,6 +671,8 @@ public final class SingleMode extends javax.swing.JFrame {
             
             
     public void xWin(JButton a, JButton b, JButton c){
+        userGameDetails.playerOneDetails.setPlayerState(UserGameDetails.PlayerState.Winner);
+        userGameDetails.playerTwoDetails.setPlayerState(UserGameDetails.PlayerState.Loser);
         int n;
 
         a.setIcon(new ImageIcon(getClass().getResource("/UI/Board/XPngg.png")));
@@ -694,15 +697,16 @@ public final class SingleMode extends javax.swing.JFrame {
 
          @Override
          public void onRecord() {
-            userGameDetails.playerOneDetails.setPlayerState(UserGameDetails.PlayerState.Winner);
             userGameDetails.playerOneDetails.setIsRecorded(true);
-            userGameDetails.playerTwoDetails.setPlayerState(UserGameDetails.PlayerState.Loser);
-            try {
-                new UserGameDetailsCrud(cm.in,cm.out).add(userGameDetails);
-            } catch (IOException ex) {
-                Logger.getLogger(SingleMode.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
          }}.setVisible(true);
+        
+        
+        try {
+            new UserGameDetailsCrud(cm.in,cm.out).add(userGameDetails);
+        } catch (IOException ex) {
+            Logger.getLogger(SingleMode.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         
 //        
@@ -738,6 +742,8 @@ public final class SingleMode extends javax.swing.JFrame {
     }
     
     public void oWin(JButton a, JButton b, JButton c){
+        userGameDetails.playerOneDetails.setPlayerState(UserGameDetails.PlayerState.Loser);
+        userGameDetails.playerTwoDetails.setPlayerState(UserGameDetails.PlayerState.Winner);
         int n;
         
         a.setIcon(new ImageIcon(getClass().getResource("/UI/Board/oPng.png")));
@@ -761,15 +767,14 @@ public final class SingleMode extends javax.swing.JFrame {
          
          @Override
          public void onRecord() {
-            userGameDetails.playerOneDetails.setPlayerState(UserGameDetails.PlayerState.Loser);
             userGameDetails.playerOneDetails.setIsRecorded(true);
-            userGameDetails.playerTwoDetails.setPlayerState(UserGameDetails.PlayerState.Winner);
-            try {
-                new UserGameDetailsCrud(cm.in,cm.out).add(userGameDetails);
-            } catch (IOException ex) {
-                Logger.getLogger(SingleMode.class.getName()).log(Level.SEVERE, null, ex);
-            }
          }}.setVisible(true);
+        
+        try {
+            new UserGameDetailsCrud(cm.in,cm.out).add(userGameDetails);
+        } catch (IOException ex) {
+            Logger.getLogger(SingleMode.class.getName()).log(Level.SEVERE, null, ex);
+        }
 //        
 //        n = JOptionPane.showConfirmDialog(null, "Do you want record this game?", "Game ended", JOptionPane.YES_NO_OPTION);
 //        
@@ -806,6 +811,8 @@ public final class SingleMode extends javax.swing.JFrame {
     }
     
     public void draw(){
+        userGameDetails.playerOneDetails.setPlayerState(UserGameDetails.PlayerState.Draw);
+        userGameDetails.playerTwoDetails.setPlayerState(UserGameDetails.PlayerState.Draw);
         int n;
 
         frstTurn.setText("    Draw");
@@ -813,14 +820,18 @@ public final class SingleMode extends javax.swing.JFrame {
         
         if(n == JOptionPane.YES_OPTION)
         {
-            userGameDetails.playerOneDetails.setPlayerState(UserGameDetails.PlayerState.Draw);
             userGameDetails.playerOneDetails.setIsRecorded(true);
-            userGameDetails.playerTwoDetails.setPlayerState(UserGameDetails.PlayerState.Draw);
             try {
                 new UserGameDetailsCrud(cm.in,cm.out).add(userGameDetails);
             } catch (IOException ex) {
                 Logger.getLogger(SingleMode.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+        
+        try {
+            new UserGameDetailsCrud(cm.in,cm.out).add(userGameDetails);
+        } catch (IOException ex) {
+            Logger.getLogger(SingleMode.class.getName()).log(Level.SEVERE, null, ex);
         }
          
         n = JOptionPane.showConfirmDialog(null, "Draw, Play again?", "Game ended", JOptionPane.YES_NO_OPTION);

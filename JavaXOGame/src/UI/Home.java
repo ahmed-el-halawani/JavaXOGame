@@ -817,6 +817,11 @@ System.exit(0);        // TODO add your handling code here:
                 @Override
                 public void windowClosed(WindowEvent e) {
                     super.windowClosed(e); 
+                    try {
+                        update();
+                    } catch (IOException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     Home.this.setVisible(true);
                 }
             });
@@ -871,12 +876,14 @@ System.exit(0);        // TODO add your handling code here:
             gamebord .findGameRoom(appManager.getUser());
             JFrame j = new GameRoomGui(gamebord);
             j.setVisible(true);
+            this.setVisible(false);
 
             j.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
                     super.windowClosed(e);
-                    try {                 
+                    try {          
+                         Home.this.setVisible(true);
                         update();
                     } catch (IOException ex) {
                         Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
@@ -891,16 +898,42 @@ System.exit(0);        // TODO add your handling code here:
     private void singlBT1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_singlBT1MouseClicked
 
         SingleMode jframe = new SingleMode(Game.EASY);
-            jframe.setVisible(true);
-            jframe.pack();
-            jframe.setLocationRelativeTo(null);
+        jframe.setVisible(true);
+        this.setVisible(false);
+            
+        jframe.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    super.windowClosed(e); 
+                    try {
+                        update();
+                        Home.this.setVisible(true);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+            });
     }//GEN-LAST:event_singlBT1MouseClicked
 
     private void multiBT1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_multiBT1MouseClicked
         SingleMode jframe = new SingleMode(Game.MID);
             jframe.setVisible(true);
-            jframe.pack();
-            jframe.setLocationRelativeTo(null);
+             Home.this.setVisible(false);
+                 
+        jframe.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    super.windowClosed(e); 
+                    try {
+                        update();
+                        Home.this.setVisible(true);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+            });
     }//GEN-LAST:event_multiBT1MouseClicked
 
     private void localBT1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_localBT1MouseClicked

@@ -559,58 +559,55 @@ public class MultiLocal extends javax.swing.JFrame {
     }
      public void playAgain(){
  
-         if(result=="X wins"||result=="O wins"){
-          
-            setVisible(false);
-            new Video().setVisible(true); 
+        if(result=="X wins"||result=="O wins"){
+
             new RunnerFrame(RunnerFrame.loseVideo){
-         @Override
-         public void onPlayAgain() {
-                for (int i = 0; i <9; i++) {
-                   buttons[i].setIcon(new ImageIcon(getClass().getResource(background)));
-                   buttons[i].setText("");
-                }
-                frstTurn.setText("");
-             
-         }
+             @Override
+                public void onPlayAgain() {
+                    for (int i = 0; i <9; i++) {
+                       buttons[i].setIcon(new ImageIcon(getClass().getResource(background)));
+                       buttons[i].setText("");
+                    }
+                    frstTurn.setText("");
+                 }
 
-         public void onClose(){
-            MultiLocal.this.dispose();
-         }
+                 public void onClose(){
+                    MultiLocal.this.dispose();
+                 }
 
-         @Override
-         public void onRecord() {
+                 @Override
+                 public void onRecord() {
+                    userGameDetails.playerOneDetails.setIsRecorded(true);
+                 }
+            }.setVisible(true);
+
+        }else{
+         int n = JOptionPane
+                    .showConfirmDialog(
+                        this,
+                        "Do you want to play again?",
+                        "Click a button",
+                        JOptionPane.YES_NO_OPTION
+                    );
+
+        if(n==JOptionPane.YES_OPTION){
+            for (int i = 0; i <9; i++) {
+                buttons[i].setIcon(new ImageIcon(getClass().getResource(background)));
+                buttons[i].setText("");
+            }
+            frstTurn.setText("");
+            }else{
+                MultiLocal.this.dispose();
+            }
+        }
+        
+        
             try {
-                userGameDetails.playerOneDetails.setIsRecorded(true);
                 new UserGameDetailsCrud(cm.in, cm.out).add(userGameDetails);
             } catch (IOException ex) {
                 Logger.getLogger(MultiLocal.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-         }
-
-     }.setVisible(true);
-                
-    }else{
-     int n = JOptionPane
-                .showConfirmDialog(
-                    this,
-                    "Do you want to play again?",
-                    "Click a button",
-                    JOptionPane.YES_NO_OPTION
-                );
-     
-    if(n==JOptionPane.YES_OPTION){
-        for (int i = 0; i <9; i++) {
-            buttons[i].setIcon(new ImageIcon(getClass().getResource(background)));
-            buttons[i].setText("");
-        }
-        frstTurn.setText("");
-        }else{
-            MultiLocal.this.dispose();
-        }
     }
-}
  
      
      

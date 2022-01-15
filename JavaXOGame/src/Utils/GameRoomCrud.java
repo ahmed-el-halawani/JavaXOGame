@@ -44,14 +44,14 @@ public class GameRoomCrud {
     }
     
     public void createGameRoom(User user) throws JsonProcessingException, IOException {
-          System.out.println(user);
+//          System.out.println(user);
        
             JsonAction jsonAction = new JsonAction(
                     user.toJson(),
                     JsonAction.Types.createGameRoom,
                     ""
             );
-            System.out.println(obm.writeValueAsString(jsonAction));
+//            System.out.println(obm.writeValueAsString(jsonAction));
             out.writeUTF(obm.writeValueAsString(jsonAction));
     }
 
@@ -61,7 +61,7 @@ public class GameRoomCrud {
             JsonAction.Types.findGameRoom,
             ""
         );
-        System.out.println(obm.writeValueAsString(jsonAction));
+//        System.out.println(obm.writeValueAsString(jsonAction));
         out.writeUTF(obm.writeValueAsString(jsonAction));
 
         
@@ -73,7 +73,7 @@ public class GameRoomCrud {
                 JsonAction.Types.LeaveGameRoom,
                 gameRoom.code
         );
-        System.out.println(obm.writeValueAsString(jsonAction));
+//        System.out.println(obm.writeValueAsString(jsonAction));
         out.writeUTF(obm.writeValueAsString(jsonAction));
     }
     
@@ -84,7 +84,7 @@ public class GameRoomCrud {
                 gameRoom.code
         );
 
-        System.out.println(obm.writeValueAsString(jsonAction));
+//        System.out.println(obm.writeValueAsString(jsonAction));
         out.writeUTF(obm.writeValueAsString(jsonAction));
     }
     
@@ -94,7 +94,7 @@ public class GameRoomCrud {
                 JsonAction.Types.SaveGame,
                 gameRoom.code
         );
-        System.out.println(obm.writeValueAsString(jsonAction));
+//        System.out.println(obm.writeValueAsString(jsonAction));
         out.writeUTF(obm.writeValueAsString(jsonAction));
     }
     
@@ -104,18 +104,18 @@ public class GameRoomCrud {
                 JsonAction.Types.playAgain,
                 gameRoom.code
         );
-        System.out.println(obm.writeValueAsString(jsonAction));
+//        System.out.println(obm.writeValueAsString(jsonAction));
         out.writeUTF(obm.writeValueAsString(jsonAction));
     }
     
     public void findGameRoomWithCode(User user,String code) throws JsonProcessingException, IOException {
-        System.out.println(user);
+//        System.out.println(user);
         JsonAction jsonAction = new JsonAction(
                 user.toJson(),
                 JsonAction.Types.findGameRoomWithCode,
                 code
         );
-        System.out.println(obm.writeValueAsString(jsonAction));
+//        System.out.println(obm.writeValueAsString(jsonAction));
         out.writeUTF(obm.writeValueAsString(jsonAction));
 
     }
@@ -238,8 +238,8 @@ public class GameRoomCrud {
                    
                     try {
                         String r = in.readUTF();
-                        System.out.println("setListener");
-                        System.out.println(r);
+//                        System.out.println("setListener");
+//                        System.out.println(r);
                         Responce res = obm.readValue(r, Responce.class);
                         
                         for(ListenersX next : iterator2) {
