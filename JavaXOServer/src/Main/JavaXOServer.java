@@ -358,6 +358,7 @@ class RequestHandler extends Thread {
                             gameRoom.notifySockets(responceCodes.Winner,gameRoom.toJson());
                             userGameDetailsCrud.add(gameRoom);
                         break;
+                        
                     }
             break;
             default:

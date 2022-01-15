@@ -10,7 +10,10 @@ import Entities.GameRoom;
 import Utils.GameRoomCrud;
 import Entities.Responce;
 import Entities.Responce.responceCodes;
+import Entities.UserGameDetails;
 import static UI.MultiPlayer.GameBordPanel.OSimbole;
+import UI.helperPanels.RunnerFrame;
+import UI.helperPanels.WinVideoPanel;
 import Utils.AppManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.awt.CardLayout;
@@ -138,8 +141,41 @@ public final class GameRoomGui extends javax.swing.JFrame {
     
     public void gameEnded(){
         System.out.println("gameEnded gameEnded");
-        recordGame();
-        playAgain();
+        
+        if(gamebord.gameRoom.getPlayerStateWithId(appManager.getUser().getId()).equals(UserGameDetails.PlayerState.Winner)){
+            new RunnerFrame(RunnerFrame.winVideo){
+                @Override
+                public void onPlayAgain() {
+                    try {
+                        gamebord.playAgain(appManager.getUser());
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(this, "some thing wrong happend cant record game right now", "recording Error", JOptionPane.WARNING_MESSAGE);
+                        Logger.getLogger(GameRoomCrud.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                
+                
+                public void onClose(){
+                    GameRoomGui.this.dispose();
+                }
+
+                @Override
+                public void onRecord() {
+                    try {
+                        gamebord.recordGame(appManager.getUser());
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(this, "some thing wrong happend cant record game right now", "recording Error", JOptionPane.WARNING_MESSAGE);
+                        Logger.getLogger(GameRoomCrud.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                
+                }
+                
+            }.setVisible(true);
+          
+        }
+        
+//        recordGame();
+//        
     }
     
     public void recordGame(){

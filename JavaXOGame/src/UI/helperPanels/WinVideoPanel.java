@@ -6,6 +6,7 @@
 package UI.helperPanels;
 
 import static UI.Video.finsh;
+import static UI.helperPanels.RunnerFrame.winVideo;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.io.File;
@@ -24,42 +25,53 @@ import javafx.scene.media.MediaView;
  * @author A H M E D
  */
 public class WinVideoPanel extends javax.swing.JPanel {
-
+    
+    
+  
     /**
      * Creates new form WinVideoPanel
      */
-    MediaPlayer mediaPlayer;
+   
 
-    private final JFXPanel jfxpanel=new JFXPanel();
-
-    public WinVideoPanel() {
+    public WinVideoPanel(String videoUrl) {
         initComponents();
+        this.videoUrl = videoUrl;
         setVideo();
         video.add(jfxpanel,BorderLayout.CENTER);   
     }
     
-    
-    public void setVideo() {
+    private void setVideo() {
         Platform.runLater(() -> {
-            
-            System.out.println(getClass().getResource("/UI/helperPanels/winnerrr.mp4").getRef());
-            File file= new File("winnerrr.mp4");
-            mediaPlayer=new MediaPlayer(new Media(getClass().getResource("/UI/helperPanels/winnerrr.mp4").getFile()));
+            URL url = getClass().getResource(videoUrl);
+//            File file= new File("F:\\iti lessons\\tasks\\java\\XOGame\\JavaXOGame\\src\\UI\\helperPanels\\winnerrr.mp4");
+            File file= new File(url.getPath());
+            mediaPlayer=new MediaPlayer(new Media(file.toURI().toString()));
             jfxpanel.setScene(new Scene(new Group(new MediaView(mediaPlayer))));
-            mediaPlayer.setVolume(0.7);
+            mediaPlayer.setVolume(0.5);
             mediaPlayer.setAutoPlay(true);
-
             mediaPlayer.setOnEndOfMedia(()->{
                 setVisible(false);
             });
         });
     }
     
+    private void stopVideo(){
+        mediaPlayer.stop();
+        setVisible(false);
+    }
     
-
-  
+    public void onClose(){};
     
- 
+    public void onDrag(int x,int y){};
+    
+    public void startDrag(int x,int y){};
+    
+    public void onPlayAgain(){};
+    
+    public void onBack(){};
+    
+    public void onRecord(){};
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -69,77 +81,192 @@ public class WinVideoPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        video = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        playerState = new javax.swing.JLabel();
+        dragLabel1 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        video = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
-        jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jPanel1.setMaximumSize(new java.awt.Dimension(327676666, 327677777));
-        jPanel1.setName(""); // NOI18N
-        jPanel1.setOpaque(false);
-        jPanel1.setPreferredSize(new java.awt.Dimension(1280, 720));
+        setMinimumSize(new java.awt.Dimension(900, 600));
+        setLayout(null);
+
+        playerState.setBackground(new java.awt.Color(255, 255, 255));
+        playerState.setFont(new java.awt.Font("Tekton Pro Ext", 0, 48)); // NOI18N
+        playerState.setForeground(new java.awt.Color(255, 255, 255));
+        playerState.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        playerState.setText("Winner");
+        add(playerState);
+        playerState.setBounds(200, 50, 510, 90);
+
+        dragLabel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                dragLabel1MouseDragged(evt);
+            }
+        });
+        dragLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                dragLabel1MousePressed(evt);
+            }
+        });
+        add(dragLabel1);
+        dragLabel1.setBounds(0, 0, 840, 50);
+
+        jLabel7.setFont(new java.awt.Font("Tempus Sans ITC", 1, 48)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("x");
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
+        });
+        add(jLabel7);
+        jLabel7.setBounds(850, -10, 27, 62);
+
+        jButton1.setBackground(new java.awt.Color(204, 0, 153));
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(204, 0, 153));
+        jButton1.setText("Record");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+        add(jButton1);
+        jButton1.setBounds(720, 250, 160, 70);
+
+        jPanel2.setLayout(null);
 
         video.setBackground(new java.awt.Color(0, 0, 0));
         video.setLayout(new java.awt.BorderLayout());
+        jPanel2.add(video);
+        video.setBounds(210, 140, 480, 350);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/helperPanels/again2.png"))); // NOI18N
-        jLabel1.setText("jLabel1");
-        video.add(jLabel1, java.awt.BorderLayout.CENTER);
-
-        jButton1.setText("Back To Game");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/again1.png"))); // NOI18N
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel3MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel3MouseExited(evt);
             }
         });
+        jPanel2.add(jLabel3);
+        jLabel3.setBounds(50, 490, 114, 50);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(video, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
-                .addContainerGap(436, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(video, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/end1.png"))); // NOI18N
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel2MouseExited(evt);
+            }
+        });
+        jPanel2.add(jLabel2);
+        jLabel2.setBounds(760, 480, 98, 50);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/Board/XPngg.png"))); // NOI18N
+        jPanel2.add(jLabel4);
+        jLabel4.setBounds(770, 50, 60, 60);
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/Board/oPng.png"))); // NOI18N
+        jPanel2.add(jLabel5);
+        jLabel5.setBounds(60, 40, 60, 60);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/Board/background.png"))); // NOI18N
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
+        jPanel2.add(jLabel1);
+        jLabel1.setBounds(0, 0, 900, 550);
+        jPanel2.add(jLabel6);
+        jLabel6.setBounds(0, 0, 0, 0);
+
+        add(jPanel2);
+        jPanel2.setBounds(0, 1, 900, 560);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        mediaPlayer.stop();
-        setVisible(false);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jLabel3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseEntered
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/again2.png"))); // NOI18N
+    }//GEN-LAST:event_jLabel3MouseEntered
 
+    private void jLabel3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseExited
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/again1.png"))); // NOI18N
+    }//GEN-LAST:event_jLabel3MouseExited
+
+    private void jLabel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseEntered
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/end2.png"))); // NOI18N
+    }//GEN-LAST:event_jLabel2MouseEntered
+
+    private void jLabel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseExited
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/end1.png"))); // NOI18N
+    }//GEN-LAST:event_jLabel2MouseExited
+
+    private void dragLabel1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dragLabel1MouseDragged
+        onDrag(evt.getXOnScreen(),evt.getYOnScreen());
+    }//GEN-LAST:event_dragLabel1MouseDragged
+
+    private void dragLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dragLabel1MousePressed
+        startDrag(evt.getX(),evt.getY());
+    }//GEN-LAST:event_dragLabel1MousePressed
+
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+        stopVideo();
+        onClose();
+    }//GEN-LAST:event_jLabel7MouseClicked
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        stopVideo();
+        onPlayAgain();
+    }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+         stopVideo();
+        onBack();
+    }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+//        jButton1.setVisible(false);
+//        onRecord();
+    }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        jButton1.setVisible(false);
+        onRecord();
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    private MediaPlayer mediaPlayer;
+
+    private final JFXPanel jfxpanel=new JFXPanel();
     
+    private String videoUrl = winVideo;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel dragLabel1;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel playerState;
     private javax.swing.JPanel video;
     // End of variables declaration//GEN-END:variables
 }

@@ -177,6 +177,8 @@ public class GameRoomCrud {
                             (String object) -> {
                                 try {
                                  gameRoom = obm.readValue(object, GameRoom.class);
+                                 
+                                 
                                  win.notif(object);
                                 } catch (JsonProcessingException ex) {
                                  Logger.getLogger(GameRoomCrud.class.getName()).log(Level.SEVERE, null, ex);

@@ -36,7 +36,7 @@ public class Video extends javax.swing.JFrame {
      public Video() {
              initComponents();
 
-          fileURL ="F:\\iti lessons\\tasks\\java\\XOGame\\JavaXOGame\\src\\UI\\winVideo.mp4";
+          fileURL ="F:\\iti lessons\\tasks\\java\\XOGame\\JavaXOGame\\src\\UI\\ddd.mp4";
         modes=1;
          jLabel8.setText(MultiLocal.sendScrean);
         createScren(0);
@@ -146,6 +146,9 @@ public class Video extends javax.swing.JFrame {
         jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel7MouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                dragLabelMousePressed(evt);
             }
         });
 

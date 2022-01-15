@@ -63,13 +63,11 @@ public class Home extends javax.swing.JFrame {
      */
     MultiMain multiOnlinePanel;
     AppManager appManager;
-    RecordedGames recGame;
      ConnectionManager connection;
     public Home() {
 
         initComponents();
         init();
-        recGame = new RecordedGames();
         setLocationRelativeTo(null);
        
         
@@ -835,10 +833,11 @@ System.exit(0);        // TODO add your handling code here:
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
         try {
-            recGame.setVisible(true);
-            recGame.init();
+            RecordedGames rec = new RecordedGames();
+            rec.setVisible(true);
+            rec.init();
             this.setVisible(false);
-            recGame.addWindowListener(new WindowAdapter() {
+            rec.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
                     super.windowClosed(e);
