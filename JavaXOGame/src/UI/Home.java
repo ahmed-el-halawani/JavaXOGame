@@ -87,20 +87,7 @@ public class Home extends javax.swing.JFrame {
         }
         
  
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowActivated(WindowEvent e) {
-                super.windowActivated(e); //To change body of generated methods, choose Tools | Templates.
-                try {
-                    super.windowOpened(e);
-                    System.out.println("hererereer windowActivated");
-                    update();
-                } catch (IOException ex) {
-                    Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            
-            }
-        });
+       
          
       
 
@@ -740,6 +727,19 @@ System.exit(0);        // TODO add your handling code here:
             gamebord.createGameRoom(appManager.getUser());
             JFrame game2 = new GameRoomGui(gamebord);
             game2.setVisible(true);
+
+            game2.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    super.windowClosed(e);
+                    try {                 
+                        update();
+                    } catch (IOException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+            
         } catch (IOException ex) {
             Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -754,7 +754,21 @@ System.exit(0);        // TODO add your handling code here:
             CustomActionListener cal = new CustomActionListener();
 
             cal.addListener(()->{
-                new GameRoomGui(gamebord).setVisible(true);
+                JFrame j =  new GameRoomGui(gamebord);
+                j.setVisible(true);
+                j.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        super.windowClosed(e); 
+                        try {
+                            update();
+                        } catch (IOException ex) {
+                            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                  
+                });
+               
             });
 
             gamebord.setListener(new GameRoomCrud.ListenersX(
@@ -855,7 +869,20 @@ System.exit(0);        // TODO add your handling code here:
             ConnectionManager cm4 = ConnectionManager.createGameSocet();
             GameRoomCrud gamebord = new GameRoomCrud(cm4.in,cm4.out,cm4);
             gamebord .findGameRoom(appManager.getUser());
-            new GameRoomGui(gamebord).setVisible(true);
+            JFrame j = new GameRoomGui(gamebord);
+            j.setVisible(true);
+
+            j.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    super.windowClosed(e);
+                    try {                 
+                        update();
+                    } catch (IOException ex) {
+                        Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
         } catch (IOException ex) {
             Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
         }

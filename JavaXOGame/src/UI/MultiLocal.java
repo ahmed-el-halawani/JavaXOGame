@@ -9,8 +9,11 @@ import Entities.PlayerDetails;
 import Entities.User;
 import Entities.UserGameDetails;
 import Entities.UserGameDetails.PlayerState;
+import UI.MultiPlayer.GameRoomGui;
+import UI.helperPanels.RunnerFrame;
 import Utils.AppManager;
 import Utils.ConnectionManager;
+import Utils.GameRoomCrud;
 import Utils.UserGameDetailsCrud;
 import java.awt.Color;
 import java.io.IOException;
@@ -558,30 +561,56 @@ public class MultiLocal extends javax.swing.JFrame {
  
          if(result=="X wins"||result=="O wins"){
           
-    setVisible(false);
-   new Video().setVisible(true); 
-                    
-
-                //System.exit(0);
-                
-    }else{
-     int n = JOptionPane.showConfirmDialog(
-    this,
-    "Do you want to play again?",
-    "Click a button",
-    JOptionPane.YES_NO_OPTION);
-    if(n==JOptionPane.YES_OPTION){
-        for (int i = 0; i <9; i++) {
+            setVisible(false);
+            new Video().setVisible(true); 
+            new RunnerFrame(RunnerFrame.loseVideo){
+         @Override
+         public void onPlayAgain() {
+                for (int i = 0; i <9; i++) {
                    buttons[i].setIcon(new ImageIcon(getClass().getResource(background)));
                    buttons[i].setText("");
+                }
+                frstTurn.setText("");
+             
+         }
+
+         public void onClose(){
+            MultiLocal.this.dispose();
+         }
+
+         @Override
+         public void onRecord() {
+            try {
+                userGameDetails.playerOneDetails.setIsRecorded(true);
+                new UserGameDetailsCrud(cm.in, cm.out).add(userGameDetails);
+            } catch (IOException ex) {
+                Logger.getLogger(MultiLocal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+         }
+
+     }.setVisible(true);
+                
+    }else{
+     int n = JOptionPane
+                .showConfirmDialog(
+                    this,
+                    "Do you want to play again?",
+                    "Click a button",
+                    JOptionPane.YES_NO_OPTION
+                );
+     
+    if(n==JOptionPane.YES_OPTION){
+        for (int i = 0; i <9; i++) {
+            buttons[i].setIcon(new ImageIcon(getClass().getResource(background)));
+            buttons[i].setText("");
         }
         frstTurn.setText("");
-             }else{
-        setVisible(false);
-
-    }}
-     recordGame();
-     }
+        }else{
+            MultiLocal.this.dispose();
+        }
+    }
+}
  
      
      

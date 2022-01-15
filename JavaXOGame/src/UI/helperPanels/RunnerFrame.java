@@ -5,10 +5,20 @@
  */
 package UI.helperPanels;
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Point;
+import java.io.File;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 
 /**
  *
@@ -16,56 +26,24 @@ import java.util.logging.Logger;
  */
 public class RunnerFrame extends javax.swing.JFrame {
     public static final String winVideo = "/Utils/videos/winnerrr.mp4";
-    public static final String loseVideo = "/Utils/videos/winnerrr.mp4";
+    public static final String loseVideo = "/Utils/videos/loser.mp4";
     Point p;
 
+    MediaPlayer mediaPlayer;
+
+    public String videoSelcted;
+    private final JFXPanel jfxpanel=new JFXPanel();
     /**
      * Creates new form RunnerFrame
      */
     public RunnerFrame(String winVideo) {
+
         initComponents();
-        this.add(new WinVideoPanel(winVideo){
-            @Override
-            public void startDrag(int x, int y) {
-                super.startDrag(x, y);
-                p = new Point(x,y);
-            }
-
-            @Override
-            public void onDrag(int x, int y) {
-                super.onDrag(x, y);
-                RunnerFrame.this.setLocation(x - p.x, y - p.y);
-            }
-
-            @Override
-            public void onClose() {
-                super.onClose(); 
-                RunnerFrame.this.dispose();
-                RunnerFrame.this.onClose();
-            }
-
-            @Override
-            public void onBack() {
-                super.onBack(); //To change body of generated methods, choose Tools | Templates.
-                RunnerFrame.this.dispose();
-                RunnerFrame.this.onClose();
-            }
-
-            @Override
-            public void onPlayAgain() {
-                RunnerFrame.this.dispose();
-                RunnerFrame.this.onPlayAgain();
-            }
-
-            @Override
-            public void onRecord() {
-                super.onRecord(); //To change body of generated methods, choose Tools | Templates.
-                RunnerFrame.this.onRecord();
-            
-            }
-            
-            
-        });
+        setTitle("Win Lose Video");
+        this.videoSelcted = winVideo;
+        setLocationRelativeTo(null);
+        addVideo();
+        video.add(jfxpanel,BorderLayout.CENTER);   
     }
     
     public void onPlayAgain(){};
@@ -74,6 +52,28 @@ public class RunnerFrame extends javax.swing.JFrame {
     
     public void onClose(){};
     
+    
+    
+    
+    
+    private void stopVideo(){
+        mediaPlayer.stop();
+        setVisible(false);
+    }
+    
+    private  void addVideo(){
+        Platform.runLater(() -> {
+            URL url = getClass().getResource(videoSelcted);
+            File file= new File(url.getPath());
+            mediaPlayer=new MediaPlayer(new Media(file.toURI().toString()));
+            jfxpanel.setScene(new Scene(new Group(new MediaView(mediaPlayer))));
+            mediaPlayer.setVolume(0.7);
+            mediaPlayer.setAutoPlay(true);
+    //        mediaPlayer.setOnEndOfMedia(()->{
+    //            setVisible(false);
+    //        });
+        });
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -83,12 +83,185 @@ public class RunnerFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        dragLabel1 = new javax.swing.JLabel();
+        playerState = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        video = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(900, 600));
         setMinimumSize(new java.awt.Dimension(900, 600));
-        setPreferredSize(new java.awt.Dimension(900, 600));
+        setUndecorated(true);
+        setResizable(false);
+
+        jPanel1.setMinimumSize(new java.awt.Dimension(900, 600));
+        jPanel1.setLayout(null);
+
+        dragLabel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                dragLabel1MouseDragged(evt);
+            }
+        });
+        dragLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                dragLabel1MousePressed(evt);
+            }
+        });
+        jPanel1.add(dragLabel1);
+        dragLabel1.setBounds(0, 0, 840, 50);
+
+        playerState.setBackground(new java.awt.Color(255, 255, 255));
+        playerState.setFont(new java.awt.Font("Tekton Pro Ext", 0, 48)); // NOI18N
+        playerState.setForeground(new java.awt.Color(255, 255, 255));
+        playerState.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        playerState.setText("Winner");
+        jPanel1.add(playerState);
+        playerState.setBounds(200, 50, 510, 90);
+
+        jLabel7.setFont(new java.awt.Font("Tempus Sans ITC", 1, 48)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("x");
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel7);
+        jLabel7.setBounds(850, -10, 27, 62);
+
+        jButton1.setBackground(new java.awt.Color(255, 0, 204));
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Record");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jButton1);
+        jButton1.setBounds(720, 250, 160, 70);
+
+        jPanel2.setLayout(null);
+
+        video.setBackground(new java.awt.Color(0, 0, 0));
+        video.setLayout(new java.awt.BorderLayout());
+        jPanel2.add(video);
+        video.setBounds(210, 140, 480, 350);
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/again1.png"))); // NOI18N
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel3MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel3MouseExited(evt);
+            }
+        });
+        jPanel2.add(jLabel3);
+        jLabel3.setBounds(50, 490, 114, 50);
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/end1.png"))); // NOI18N
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel2MouseExited(evt);
+            }
+        });
+        jPanel2.add(jLabel2);
+        jLabel2.setBounds(760, 480, 98, 50);
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/Board/XPngg.png"))); // NOI18N
+        jPanel2.add(jLabel4);
+        jLabel4.setBounds(770, 50, 60, 60);
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/Board/oPng.png"))); // NOI18N
+        jPanel2.add(jLabel5);
+        jLabel5.setBounds(60, 40, 60, 60);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/Board/background.png"))); // NOI18N
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
+        jPanel2.add(jLabel1);
+        jLabel1.setBounds(0, 0, 900, 550);
+        jPanel2.add(jLabel6);
+        jLabel6.setBounds(0, 0, 0, 0);
+
+        jPanel1.add(jPanel2);
+        jPanel2.setBounds(0, 1, 900, 560);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void dragLabel1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dragLabel1MouseDragged
+        setLocation(evt.getXOnScreen()-p.x,evt.getYOnScreen()-p.y);
+    }//GEN-LAST:event_dragLabel1MouseDragged
+
+    private void dragLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dragLabel1MousePressed
+        p = new Point(evt.getX(),evt.getY());
+    }//GEN-LAST:event_dragLabel1MousePressed
+
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+        stopVideo();
+        onClose();
+    }//GEN-LAST:event_jLabel7MouseClicked
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        jButton1.setVisible(false);
+        onRecord();
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        stopVideo();
+        onPlayAgain();
+    }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void jLabel3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseEntered
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/again2.png"))); // NOI18N
+    }//GEN-LAST:event_jLabel3MouseEntered
+
+    private void jLabel3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseExited
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/again1.png"))); // NOI18N
+    }//GEN-LAST:event_jLabel3MouseExited
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        stopVideo();
+        onClose();
+    }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void jLabel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseEntered
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/end2.png"))); // NOI18N
+    }//GEN-LAST:event_jLabel2MouseEntered
+
+    private void jLabel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseExited
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/end1.png"))); // NOI18N
+    }//GEN-LAST:event_jLabel2MouseExited
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        //        jButton1.setVisible(false);
+        //        onRecord();
+    }//GEN-LAST:event_jLabel1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -126,5 +299,18 @@ public class RunnerFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel dragLabel1;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel playerState;
+    private javax.swing.JPanel video;
     // End of variables declaration//GEN-END:variables
 }

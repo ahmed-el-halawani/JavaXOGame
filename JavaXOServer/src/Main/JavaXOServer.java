@@ -264,6 +264,18 @@ class RequestHandler extends Thread {
         return null;
     }
     
+    public Player isThereReadyPlayer(User user){
+        if(availToPlay.isEmpty())
+            return null;
+        
+        for (Player player : availToPlay) {
+            if(!player.user.getUserName().equals(user.getUserName()))
+                return player;
+        }
+        
+        return null;
+    }
+    
     private boolean GameRoomRouts(JsonAction action) throws JsonProcessingException, JsonProcessingException, IOException, JSONException, SQLException{
         gameRoomResponce gemeRoomResponce = null;
         
@@ -304,14 +316,15 @@ class RequestHandler extends Thread {
             
             
             case findGameRoom:
+                Player p = isThereReadyPlayer(new ObjectMapper().readValue(action.getObject(), User.class));
                 System.out.println("availToPlay.isEmpty()");
                 System.out.println(availToPlay.isEmpty());
-                if(availToPlay.isEmpty()){
+                if(p==null){
                     availToPlay.add(new Player(new ObjectMapper().readValue(action.getObject(), User.class),s));
                     new Responce(responceCodes.findGame, gameRoomResponce.FindingGame.name()).sendJson(out);
                 }else{
-                    gameRoom = new GameRoom(availToPlay.get(0),new Player(new ObjectMapper().readValue(action.getObject(), User.class),s));
-                    availToPlay.remove(0);
+                    gameRoom = new GameRoom(p,new Player(new ObjectMapper().readValue(action.getObject(), User.class),s));
+                    availToPlay.remove(p);
                     gameRoom.notifySockets(responceCodes.startGame,gameRoom.toJson());
                 }
             break;

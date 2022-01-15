@@ -12,15 +12,14 @@ import Entities.UserGameDetails;
 import Entities.UserGameDetails.GameDifficultyLvl;
 import SinglePlayer.Game.mButton;
 import UI.Home;
+import UI.helperPanels.RunnerFrame;
 import Utils.AppManager;
 import Utils.ConnectionManager;
-import Utils.GameRoomCrud;
 import Utils.UserGameDetailsCrud;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -683,10 +682,18 @@ public final class SingleMode extends javax.swing.JFrame {
         frstTurn.setText("    X Wins");
         
         
-        n = JOptionPane.showConfirmDialog(null, "Do you want record this game?", "Game ended", JOptionPane.YES_NO_OPTION);
-        
-        if(n == JOptionPane.YES_OPTION)
-        {
+        new RunnerFrame(RunnerFrame.winVideo){
+         @Override
+         public void onPlayAgain() {
+            resetBtn();
+         }
+
+         public void onClose(){
+             SingleMode.this.dispose();
+         }
+
+         @Override
+         public void onRecord() {
             userGameDetails.playerOneDetails.setPlayerState(UserGameDetails.PlayerState.Winner);
             userGameDetails.playerOneDetails.setIsRecorded(true);
             userGameDetails.playerTwoDetails.setPlayerState(UserGameDetails.PlayerState.Loser);
@@ -695,23 +702,39 @@ public final class SingleMode extends javax.swing.JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(SingleMode.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-
-        //JOptionPane.showMessageDialog(null,"X Won");
-        n = JOptionPane.showConfirmDialog(null, "X Won, Play again?", "Game ended", JOptionPane.YES_NO_OPTION);
-        if(n == JOptionPane.YES_OPTION){
-            
-            resetBtn();
-            
-        }
+         }}.setVisible(true);
         
-        if(n == JOptionPane.NO_OPTION){
-            this.dispose();
-            Home home = new Home();
-            home.setVisible(true);
-            home.pack();
-            home.setLocationRelativeTo(null);
-        }
+        
+//        
+//        n = JOptionPane.showConfirmDialog(null, "Do you want record this game?", "Game ended", JOptionPane.YES_NO_OPTION);
+//        
+//        if(n == JOptionPane.YES_OPTION)
+//        {
+//            userGameDetails.playerOneDetails.setPlayerState(UserGameDetails.PlayerState.Winner);
+//            userGameDetails.playerOneDetails.setIsRecorded(true);
+//            userGameDetails.playerTwoDetails.setPlayerState(UserGameDetails.PlayerState.Loser);
+//            try {
+//                new UserGameDetailsCrud(cm.in,cm.out).add(userGameDetails);
+//            } catch (IOException ex) {
+//                Logger.getLogger(SingleMode.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+
+//        //JOptionPane.showMessageDialog(null,"X Won");
+//        n = JOptionPane.showConfirmDialog(null, "X Won, Play again?", "Game ended", JOptionPane.YES_NO_OPTION);
+//        if(n == JOptionPane.YES_OPTION){
+//            
+//            resetBtn();
+//            
+//        }
+//        
+//        if(n == JOptionPane.NO_OPTION){
+//            this.dispose();
+//            Home home = new Home();
+//            home.setVisible(true);
+//            home.pack();
+//            home.setLocationRelativeTo(null);
+//        }
     }
     
     public void oWin(JButton a, JButton b, JButton c){
@@ -725,10 +748,19 @@ public final class SingleMode extends javax.swing.JFrame {
         c.setBackground(Color.GREEN);
         frstTurn.setText("    O Wins");
         
-        n = JOptionPane.showConfirmDialog(null, "Do you want record this game?", "Game ended", JOptionPane.YES_NO_OPTION);
         
-        if(n == JOptionPane.YES_OPTION)
-        {
+        new RunnerFrame(RunnerFrame.loseVideo){
+         @Override
+         public void onPlayAgain() {
+            resetBtn();
+         }
+
+         public void onClose(){
+            SingleMode.this.dispose();
+         }
+         
+         @Override
+         public void onRecord() {
             userGameDetails.playerOneDetails.setPlayerState(UserGameDetails.PlayerState.Loser);
             userGameDetails.playerOneDetails.setIsRecorded(true);
             userGameDetails.playerTwoDetails.setPlayerState(UserGameDetails.PlayerState.Winner);
@@ -737,26 +769,40 @@ public final class SingleMode extends javax.swing.JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(SingleMode.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-
-        
-        
-        
-        
-        //JOptionPane.showMessageDialog(null,"O Won");
-        n = JOptionPane.showConfirmDialog(null, "O Won, Play again?", "Game ended", JOptionPane.YES_NO_OPTION);
-        if(n == JOptionPane.YES_OPTION){
-            resetBtn();
-
-        }
-        
-        if(n == JOptionPane.NO_OPTION){
-            this.dispose();
-            Home home = new Home();
-            home.setVisible(true);
-            home.pack();
-            home.setLocationRelativeTo(null);
-        }
+         }}.setVisible(true);
+//        
+//        n = JOptionPane.showConfirmDialog(null, "Do you want record this game?", "Game ended", JOptionPane.YES_NO_OPTION);
+//        
+//        if(n == JOptionPane.YES_OPTION)
+//        {
+//            userGameDetails.playerOneDetails.setPlayerState(UserGameDetails.PlayerState.Loser);
+//            userGameDetails.playerOneDetails.setIsRecorded(true);
+//            userGameDetails.playerTwoDetails.setPlayerState(UserGameDetails.PlayerState.Winner);
+//            try {
+//                new UserGameDetailsCrud(cm.in,cm.out).add(userGameDetails);
+//            } catch (IOException ex) {
+//                Logger.getLogger(SingleMode.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//
+//        
+//        
+//        
+//        
+//        //JOptionPane.showMessageDialog(null,"O Won");
+//        n = JOptionPane.showConfirmDialog(null, "O Won, Play again?", "Game ended", JOptionPane.YES_NO_OPTION);
+//        if(n == JOptionPane.YES_OPTION){
+//            resetBtn();
+//
+//        }
+//        
+//        if(n == JOptionPane.NO_OPTION){
+//            this.dispose();
+//            Home home = new Home();
+//            home.setVisible(true);
+//            home.pack();
+//            home.setLocationRelativeTo(null);
+//        }
     }
     
     public void draw(){
@@ -777,21 +823,13 @@ public final class SingleMode extends javax.swing.JFrame {
             }
         }
          
-        
-        
         n = JOptionPane.showConfirmDialog(null, "Draw, Play again?", "Game ended", JOptionPane.YES_NO_OPTION);
         if(n == JOptionPane.YES_OPTION){
-            
             resetBtn();
-
         }
         
         if(n == JOptionPane.NO_OPTION){
             this.dispose();
-            Home home = new Home();
-            home.setVisible(true);
-            home.pack();
-            home.setLocationRelativeTo(null);
         }
     }
 
