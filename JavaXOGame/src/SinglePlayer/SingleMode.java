@@ -332,7 +332,7 @@ public final class SingleMode extends javax.swing.JFrame {
                 if(checkWinner()==false){
                     mButton mbutton = game.update(Game.mButton.fromJButtonsList(currentBoard));
                     JButton j = mbutton.jbutton;
-                    userGameDetails.gameBord.put(mbutton.index, UserGameDetails.PlayerSimbole.O);
+                    userGameDetails.gameBord.put(mbutton.index+1, UserGameDetails.PlayerSimbole.O);
                     j.setText(Game.O);
                     j.setIcon(new ImageIcon(getClass().getResource("/UI/Board/oCol2.png")));
                     player1_turn=true;
@@ -354,7 +354,7 @@ public final class SingleMode extends javax.swing.JFrame {
                 if(checkWinner()==false){
                     mButton mbutton = game.update(Game.mButton.fromJButtonsList(currentBoard));
                     JButton j = mbutton.jbutton;
-                    userGameDetails.gameBord.put(mbutton.index, UserGameDetails.PlayerSimbole.O);
+                    userGameDetails.gameBord.put(mbutton.index+1, UserGameDetails.PlayerSimbole.O);
                     j.setText(Game.O);
                     j.setIcon(new ImageIcon(getClass().getResource("/UI/Board/oCol2.png")));
                         player1_turn=true;
@@ -377,7 +377,7 @@ public final class SingleMode extends javax.swing.JFrame {
                 if(checkWinner()==false){
                     mButton mbutton = game.update(Game.mButton.fromJButtonsList(currentBoard));
                     JButton j = mbutton.jbutton;
-                    userGameDetails.gameBord.put(mbutton.index, UserGameDetails.PlayerSimbole.O);
+                    userGameDetails.gameBord.put(mbutton.index+1, UserGameDetails.PlayerSimbole.O);
                     j.setText(Game.O);
                     j.setIcon(new ImageIcon(getClass().getResource("/UI/Board/oCol2.png")));
                         player1_turn=true;
@@ -400,7 +400,7 @@ public final class SingleMode extends javax.swing.JFrame {
                 if(checkWinner()==false){
                     mButton mbutton = game.update(Game.mButton.fromJButtonsList(currentBoard));
                     JButton j = mbutton.jbutton;
-                    userGameDetails.gameBord.put(mbutton.index, UserGameDetails.PlayerSimbole.O);
+                    userGameDetails.gameBord.put(mbutton.index+1, UserGameDetails.PlayerSimbole.O);
                     j.setText(Game.O);
                     j.setIcon(new ImageIcon(getClass().getResource("/UI/Board/oCol2.png")));
                         player1_turn=true;
@@ -423,7 +423,7 @@ public final class SingleMode extends javax.swing.JFrame {
                 if(checkWinner()==false){
                     mButton mbutton = game.update(Game.mButton.fromJButtonsList(currentBoard));
                     JButton j = mbutton.jbutton;
-                    userGameDetails.gameBord.put(mbutton.index, UserGameDetails.PlayerSimbole.O);
+                    userGameDetails.gameBord.put(mbutton.index+1, UserGameDetails.PlayerSimbole.O);
                     j.setText(Game.O);
                     j.setIcon(new ImageIcon(getClass().getResource("/UI/Board/oCol2.png")));
                         player1_turn=true;
@@ -447,7 +447,7 @@ public final class SingleMode extends javax.swing.JFrame {
                 if(checkWinner()==false){
                     mButton mbutton = game.update(Game.mButton.fromJButtonsList(currentBoard));
                     JButton j = mbutton.jbutton;
-                    userGameDetails.gameBord.put(mbutton.index, UserGameDetails.PlayerSimbole.O);
+                    userGameDetails.gameBord.put(mbutton.index+1, UserGameDetails.PlayerSimbole.O);
                     j.setText(Game.O);
                     j.setIcon(new ImageIcon(getClass().getResource("/UI/Board/oCol2.png")));
                         player1_turn=true;
@@ -470,7 +470,7 @@ public final class SingleMode extends javax.swing.JFrame {
                 if(checkWinner()==false){
                    mButton mbutton = game.update(Game.mButton.fromJButtonsList(currentBoard));
                     JButton j = mbutton.jbutton;
-                    userGameDetails.gameBord.put(mbutton.index, UserGameDetails.PlayerSimbole.O);
+                    userGameDetails.gameBord.put(mbutton.index+1, UserGameDetails.PlayerSimbole.O);
                     j.setText(Game.O);
                     j.setIcon(new ImageIcon(getClass().getResource("/UI/Board/oCol2.png")));
                         player1_turn=true;
@@ -493,7 +493,7 @@ public final class SingleMode extends javax.swing.JFrame {
                 if(checkWinner()==false){
                     mButton mbutton = game.update(Game.mButton.fromJButtonsList(currentBoard));
                     JButton j = mbutton.jbutton;
-                    userGameDetails.gameBord.put(mbutton.index, UserGameDetails.PlayerSimbole.O);
+                    userGameDetails.gameBord.put(mbutton.index+1, UserGameDetails.PlayerSimbole.O);
                     j.setText(Game.O);
                     j.setIcon(new ImageIcon(getClass().getResource("/UI/Board/oCol2.png")));
                         player1_turn=true;
@@ -516,7 +516,7 @@ public final class SingleMode extends javax.swing.JFrame {
                 if(checkWinner()==false){
                     mButton mbutton = game.update(Game.mButton.fromJButtonsList(currentBoard));
                     JButton j = mbutton.jbutton;
-                    userGameDetails.gameBord.put(mbutton.index, UserGameDetails.PlayerSimbole.O);
+                    userGameDetails.gameBord.put(mbutton.index+1, UserGameDetails.PlayerSimbole.O);
                     j.setText(Game.O);
                     j.setIcon(new ImageIcon(getClass().getResource("/UI/Board/oCol2.png")));
                         player1_turn=true;
@@ -698,15 +698,14 @@ public final class SingleMode extends javax.swing.JFrame {
          @Override
          public void onRecord() {
             userGameDetails.playerOneDetails.setIsRecorded(true);
-            
+             try {
+                new UserGameDetailsCrud(cm.in,cm.out).add(userGameDetails);
+            } catch (IOException ex) {
+                Logger.getLogger(SingleMode.class.getName()).log(Level.SEVERE, null, ex);
+            }
          }}.setVisible(true);
         
         
-        try {
-            new UserGameDetailsCrud(cm.in,cm.out).add(userGameDetails);
-        } catch (IOException ex) {
-            Logger.getLogger(SingleMode.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
         
 //        
@@ -768,13 +767,14 @@ public final class SingleMode extends javax.swing.JFrame {
          @Override
          public void onRecord() {
             userGameDetails.playerOneDetails.setIsRecorded(true);
+            try {
+                new UserGameDetailsCrud(cm.in,cm.out).add(userGameDetails);
+            } catch (IOException ex) {
+                Logger.getLogger(SingleMode.class.getName()).log(Level.SEVERE, null, ex);
+            }
          }}.setVisible(true);
         
-        try {
-            new UserGameDetailsCrud(cm.in,cm.out).add(userGameDetails);
-        } catch (IOException ex) {
-            Logger.getLogger(SingleMode.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
 //        
 //        n = JOptionPane.showConfirmDialog(null, "Do you want record this game?", "Game ended", JOptionPane.YES_NO_OPTION);
 //        
@@ -828,12 +828,6 @@ public final class SingleMode extends javax.swing.JFrame {
             }
         }
         
-        try {
-            new UserGameDetailsCrud(cm.in,cm.out).add(userGameDetails);
-        } catch (IOException ex) {
-            Logger.getLogger(SingleMode.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         
         n = JOptionPane.showConfirmDialog(null, "Draw, Play again?", "Game ended", JOptionPane.YES_NO_OPTION);
         if(n == JOptionPane.YES_OPTION){
             resetBtn();

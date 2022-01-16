@@ -58,9 +58,6 @@ public class RunnerFrame extends javax.swing.JFrame {
     public void onClose(){};
     
     
-    
-    
-    
     private void stopVideo(){
         mediaPlayer.stop();
         setVisible(false);

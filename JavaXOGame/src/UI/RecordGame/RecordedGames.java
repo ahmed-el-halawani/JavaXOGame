@@ -66,8 +66,8 @@ public class RecordedGames extends javax.swing.JFrame {
             try {
                 ArrayList<UserGameDetails> userGamesDetails = userGameDetailsCrud.getAllWithId(appManager.getUser().getId());
                 
-                for (Iterator<UserGameDetails> iterator = userGamesDetails.iterator(); iterator.hasNext();) {
-                    UserGameDetails next = iterator.next();
+                for (int i = userGamesDetails.size()-1; i >=0 ; i--) {
+                     UserGameDetails next = userGamesDetails.get(i);
                     PlayerDetails p = next.getPlayerWithId(appManager.getUser().getId());
                     if(!p.getIsRecorded())
                         continue;
@@ -84,7 +84,26 @@ public class RecordedGames extends javax.swing.JFrame {
                         recordsList.add(rr);
                         revalidate();
                     });
-                }   
+                }
+//                for (Iterator<UserGameDetails> iterator = userGamesDetails.iterator(); iterator.hasNext();) {
+//                    UserGameDetails next = iterator.next();
+//                    PlayerDetails p = next.getPlayerWithId(appManager.getUser().getId());
+//                    if(!p.getIsRecorded())
+//                        continue;
+//                    
+//                    RecordedRow rr = new RecordedRow(p.getPlayerState(),next.playerOneDetails,next.playerTwoDetails);
+//                    rr.addMouseListener(new MouseAdapter(){
+//                        @Override
+//                        public void mouseClicked(MouseEvent e) {
+//                            super.mouseClicked(e);
+//                            replay(next);
+//                        }
+//                    });
+//                    EventQueue.invokeLater(()->{
+//                        recordsList.add(rr);
+//                        revalidate();
+//                    });
+//                }   
             } catch (IOException ex) {
                 Logger.getLogger(RecordedGames.class.getName()).log(Level.SEVERE, null, ex);
             }

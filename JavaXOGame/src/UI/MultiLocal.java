@@ -9,6 +9,7 @@ import Entities.PlayerDetails;
 import Entities.User;
 import Entities.UserGameDetails;
 import Entities.UserGameDetails.PlayerState;
+import SinglePlayer.SingleMode;
 import UI.MultiPlayer.GameRoomGui;
 import UI.helperPanels.RunnerFrame;
 import Utils.AppManager;
@@ -578,6 +579,11 @@ public class MultiLocal extends javax.swing.JFrame {
                  @Override
                  public void onRecord() {
                     userGameDetails.playerOneDetails.setIsRecorded(true);
+                    try {
+                        new UserGameDetailsCrud(cm.in, cm.out).add(userGameDetails);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MultiLocal.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                  }
             }.setVisible(true);
 
@@ -602,11 +608,7 @@ public class MultiLocal extends javax.swing.JFrame {
         }
         
         
-            try {
-                new UserGameDetailsCrud(cm.in, cm.out).add(userGameDetails);
-            } catch (IOException ex) {
-                Logger.getLogger(MultiLocal.class.getName()).log(Level.SEVERE, null, ex);
-            }
+          
     }
  
      

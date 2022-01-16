@@ -423,17 +423,13 @@ public class Login extends javax.swing.JFrame {
     boolean isLoading = false;
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
         
-        if(isLoading)
-            return;
         
         String userName = jTextField1.getText(); 
         String password = String.valueOf(jPasswordField1.getPassword());
         
            
         new Thread(()->{
-            EventQueue.invokeLater(()->{
-                isLoading = true;
-            });
+           
             User u = userCrud.getWithUserName(userName);
 
             EventQueue.invokeLater(()->{
