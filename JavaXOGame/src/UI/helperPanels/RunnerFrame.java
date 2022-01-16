@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Point;
 import java.io.File;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,9 +66,14 @@ public class RunnerFrame extends javax.swing.JFrame {
     
     private  void addVideo(){
         Platform.runLater(() -> {
-            URL url = getClass().getResource(videoSelcted);
-            File file= new File(url.getPath());
-            mediaPlayer=new MediaPlayer(new Media(file.toURI().toString()));
+//            URL url = getClass().getResource(videoSelcted);
+//            File file= new File(videoSelcted);
+//            
+            try {
+                mediaPlayer=new MediaPlayer(new Media(getClass().getResource(videoSelcted).toURI().toString()));
+            } catch (URISyntaxException ex) {
+                Logger.getLogger(RunnerFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
             jfxpanel.setScene(new Scene(new Group(new MediaView(mediaPlayer))));
             mediaPlayer.setVolume(0.7);
             mediaPlayer.setAutoPlay(true);
